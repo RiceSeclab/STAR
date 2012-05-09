@@ -1,0 +1,60 @@
+\label{sec:intro}
+
+DRE voting systems came with a promise of improvement. By having a
+computer mediating the user's voting experience, they could ostensibly
+improve usability through summary screens, as well as supporting a
+variety of accessibility features including enlarged text, audio
+output, and specialized input devices. They also promised to improve
+the life of the election administrator, yielding quick tallies without
+any of the ambiguities that come along with hand-marked paper ballots.
+And, of course, they were promised to be secure and reliable, tested
+and certified. In practice, very little of this turned out to be as
+good as promised.
+
+Many of the current DRE voting systems experienced their biggest sales
+volume following the demonstrated failures of punch card voting
+systems in Florida in 2000. The subsequent Help America Vote Act
+provided a one-time injection of funds that made these purchases
+possible. Now, a decade later, these machines are reaching the end of
+their service lifetimes. 
+
+Last year, the election administration office of a county that was an
+early adopter of these DRE systems reached the conclusion that current
+systems on the market were inadequate for their need to replace their
+end-of-life DRE systems. They were also unhappy with the
+current-generation precinct-based optical scanned paper ballot systems
+for a variety of reasons. In particular, hand-marked paper ballots
+open the door to ambiguous voter intent, which this county unhappily
+had to deal with in its earlier centrally-tabulated optical scan
+system. They didn't want to go back to that. Likewise, with early
+voting and election day vote centers, pre-printed paper ballots would
+be a management nightmare, and ballot-on-demand printing systems
+require laser printers that cannot run all day on battery backup
+systems\footnote{A laser printer may consume as much as 1000 watts
+  while printing. A reasonably good UPS, weighing 26~kg, can provide
+  that much power for only ten minutes. Since a printer must take time
+  to warm up for each page when printed one-off (perhaps 10
+  seconds total per page), as few as 60 ballots could be printed before the
+  battery would be exhausted.}.
+
+A group of academic experts in voting systems was collected for the
+purpose of attempting to specify a replacement system, in sufficient
+detail that bids could be solicited from manufacturers to implement
+the system. Our group included experts in cryptography, auditing, and
+usability, leading to some interesting challenges and questions. We
+were charged with several basic constraints. The user experience must
+resemble current DRE systems, but there should be a tangible
+voter-verifiable paper ballot, printed by the machine and deposited by
+the voter in a physical ballot box. This would allow for fast machine
+tallies and statistical audits to ensure their equivalence to the
+paper records. We were free to recommend sophisticated cryptographic
+methods, auditing methods, and pretty much whatever else we felt was
+beneficial, given these constraints. Of course, reducing cost was also
+desirable. The issue of federal or state election certification, for
+the purpose of this exercise, was considered out of scope. Yes, it's a
+real challenge, but it wasn't our challenge.
+
+%%% Local Variables: 
+%%% mode: latex
+%%% TeX-master: "star"
+%%% End: 
