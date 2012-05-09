@@ -1,12 +1,12 @@
 \label{sec:voterflow}
 
 \begin{figure*}
-\inputgraphics[width=6.5in]{TravisVote.pdf}
+\includegraphics[width=6.5in]{TravisVote.pdf}
 \caption{The design of the \projname system. Green objects are computers, white objects are paper records, and other objects are shaded in gray. Arrows display the flow of information; green for digital information, black for paper, and dashed lines indicate that the flow is contingent on voter choice.\label{fig:design}.}
 \end{figure*}
 
 Figure~\ref{fig:design} shows how \projname works from the perspective
-of a voter going through the system. We note that the \projname voting system bears a resemblance to the Hart InterCivic eSlate system, or to VoteBox~\cite{votebox}, in that the voting machines are networked together, simplifying the movement of data. Like eSlate, we assume that a group of voting machines will share a common judge's station with a computer like Hart InterCivic's ``Judge Booth Controller'' (JBC) that manages everything. 
+of a voter going through the system. We note that the \projname voting system bears a resemblance to the Hart InterCivic eSlate system, or to VoteBox~\cite{sandler08votebox}, in that the voting machines are networked together, simplifying the movement of data. Like eSlate, we assume that a group of voting machines will share a common judge's station with a computer like Hart InterCivic's ``Judge Booth Controller'' (JBC) that manages everything. 
 
 \begin{enumerate}
 \item {\em Check-in (pollbook).}
@@ -40,7 +40,7 @@ If the voter wants to cast the ballot, s/he takes the paper record to the ballot
 \item {\em Spoil Ballot}
 If the paper record is to be spoiled, the voter returns to a poll worker at a JBC. The record will be placed in a special sleeve so that the poll worker cannot see the selections. The bar code on the record is scanned so that the JBC can record that the ballot is to be spoiled, which means that the decryption of the ballot will be published. The ballot will be stamped to indicate that it is a spoiled ballot. The voter may retain the paper record to check that the decryption matches the selections shown on the paper record. After the spoiled ballot is processed, then the voter is issued a new token.
 
-\item {\emProvisional ballot}
+\item {\em Provisional ballot}
 In the case of a provisional ballot, the voter does not have the cast vs. spoil option, and must return the ballot to a poll worker, who places it into a provisional ballot box. The voter may retain the receipt to see if the ballot ends up being counted.
 \end{enumerate}
 
@@ -50,3 +50,8 @@ Using the receipt, after leaving the polling place, the ballots will be publishe
 
 << sections 2.2 and 3 should go in here somewhere >>
 
+
+%%% Local Variables: 
+%%% mode: latex
+%%% TeX-master: "star"
+%%% End: 
