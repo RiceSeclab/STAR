@@ -1,6 +1,7 @@
 \label{sec:crypto}
 
-\COP{I am focusing here on the crypto-related aspects only.}
+\COP{I am focusing here on the crypto-related aspects only,
+  abstracting from most of the paper flow.}
 
 \paragraph{The core elements}
 \label{sec:crypto-core}
@@ -103,8 +104,8 @@ the polls in order to reduce the time frame during which a malicious
 party could prepare an attack.
 
 This $z_0$ seed is then used as follows: as soon as a ballot marking
-device with identifier $id_m$ computes an encrypted ballot $b_i$, it
-computes a hash $z_i := H(b_i \| z_{i-1} \| id_m)$ and broadcasts that
+device with identifier $m$ computes an encrypted ballot $b_i$, it
+computes a hash $z_i := H(b_i \| m \| z_{i-1})$ and broadcasts that
 value to all other machines on the network. Then, as soon as the polls
 are over, the latest $z$ value is digitally signed and made public.
 
@@ -114,14 +115,32 @@ corrupted marking device to go in the past and to build a full hash
 chain that would be consistent, since this hash chain is broadcast as
 it is created.
 
-\paragraph{Hardening the link between paper and electronic ballots}
+\paragraph{Hardening the link between the paper and electronic
+  election outcome}
 \label{sec:hard-link-betw}
 
-\COP{To be clarified.}
+The ballot marking devices print a human-readable version of each
+ballots, which the voters can inspect for correctness. Besides the
+cast or challenge procedure discussed above, we have the possibility
+to run a risk limiting audit that provides further insurance that the
+election outcome that could be computed from the paper ballots matches
+the one that is computed from the decryption of the encrypted election
+outcome. To this purpose, a list of electronic ballots and a
+one-to-one link with the paper ballots is produced, based on the
+ballot serial numbers. This list of electronic ballots is designed in
+such a way that it is possible to verify that they indeed produce the
+announced election outcome. Then, depending on the winner margin, a
+number of paper ballots are selected at random. Now, using the
+one-to-one committed link, the corresponding electronic ballots are
+compared with the paper ballots. This audit step is declared
+successful if the matching between the selected electronic and paper
+ballots is perfect.
 
-\paragraph{Summing up} The elements described above lead to the
-following workflow. \COP{Sum up, explaining how all elements are
-  computed and in what order.}
+
+
+% \paragraph{Summing up} The elements described above lead to the
+% following workflow. \COP{Sum up, explaining how all elements are
+%   computed and in what order.}
 % \begin{compactenum}
 % \item The trustees choose a threshold $t$ and run a the corresponding
 %   key generation procedure. At the end of this procedure, each trustee

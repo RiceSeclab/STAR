@@ -24,8 +24,24 @@ The first thing the voter does at the voting station is enter the information on
 \item {\em Make selections}
 The voter makes selections on the GUI (for sighted voters) or auditory UI (for non-sighted voters). There is a review screen (or the auditory equivalent) so that the voter can confirm their selections before producing a paper record.
 
-\item {\em Print}
-When the voter has finished making selections, s/he tells the UI to print a paper record of their selections. This cryptographically commits the choices and sends their encrypted ballot to the JBC as well as printing a paper record, which includes not only a human-readable summary of the voter's selections but the encrypted ballot (as a bar code or something similar) and a human-readable crypto receipt (essentially a ballot ID number).
+\item {\em Print} When the voter has finished making selections, s/he
+  tells the UI to print a paper record of their selections. This
+  cryptographically commits the choices and sends their encrypted
+  ballot to the JBC as well as printing a paper record, which includes
+  not only a human-readable summary of the voter's selections but the
+  encrypted ballot (as a bar code or something similar)  and a human-readable
+  crypto receipt (essentially a ballot ID number).
+
+  \COP{Proposal of a variant. There ciphertexts to print are too long
+    when using a homomorphic tallying + we do not want any
+    recognizable link between paper ballots and paper receipts:
+\item {\em Print} When the voter has finished making selections, s/he
+  tells the UI to print a paper record of their selections. This
+  cryptographically commits the choices and sends their encrypted
+  ballot to the JBC as well as printing a paper record, which includes
+  not only a human-readable summary of the voter's selections but a
+  unique serial number (as a bar code or something similar) and a
+  human-readable crypto receipt (essentially a ballot ID number).  }
 
 \item {\em Review printed record}
 The voter may then review the printed record to confirm their selections. There will be at least one station available that can OCR the paper record and read it back to the voter for those who cannot read the paper record.
