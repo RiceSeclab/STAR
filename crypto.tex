@@ -26,7 +26,7 @@ shares is published.
 
 During the polling phase, the ballot marking devices encrypt the votes
 each voter using the public key $K$ and an additively homomorphic
-encryption scheme (e.g., ElGamal). This encryption procedure is
+encryption scheme (e.g., \elgamal). This encryption procedure is
 randomized in order to make sure that two votes for the same
 candidates result in ciphertexts that look independent to any
 observer. 
@@ -141,7 +141,7 @@ following workflow. \COP{Sum up, explaining how all elements are
 %     paper ballot which consists of the selections made by the voter
 %     and $f_i$. The second is a receipt that consists of an
 %     identification number $m$ for the ballot marking device, the date
-%     and time of the vote, and a truncated SHA-256 hash of the ElGamal
+%     and time of the vote, and a truncated SHA-256 hash of the \elgamal
 %     encryption of the voter’s selections together with the previous
 %     hash value.
 
