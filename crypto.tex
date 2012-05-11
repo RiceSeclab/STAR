@@ -38,7 +38,7 @@ version of the ElGamal cryptosystem satisfies the required properties.
 
 Cryptographic key generation can be accomplished in one of two ways ---
 depending on the availability of the election trustees and the desired
-amount of robustness.  The prefered approach is a two-step process,
+amount of robustness.  The preferred approach is a two-step process,
 but a simpler one-step process can be used if the robustness is eliminated.
 At the end of the key generation procedure, the trustees each hold a
 private key share that does not contain any information on the full
@@ -67,14 +67,14 @@ to confirm the homomorphic aggregation of the individual ballots into a
 single encryption of the sum of the ballots (which constitutes an encryption
 of the election tallies). 
 
-At the end of the election, any set of trustees that acheive the pre-set quarum
+At the end of the election, any set of trustees that achieve the pre-set quorum
 threshold use their respective private keys to decrypt the derived aggregate tally
 encryption.  This procedure is simple and efficient and can be completed
 without interaction between the trustees.  We note that the individual 
 encrypted ballots from --- which the aggregate encryption of the tallies is formed
 --- are never individually encrypted.  However, each spoiled ballot {\em is}
 individually decrypted using exactly the same process that is used to decrypt
-the aggegate tally encryption.
+the aggregate tally encryption.
 
 The elements we just described make the core of the workflow and are
 sufficient to compute an election tally while preserving the privacy
@@ -200,7 +200,7 @@ The resulting cryptographic workflow is as follows.
 \item When the polls are closed, the tally is computed: the product
   $c$ of all flagged encrypted votes is computed and verifiably
   decrypted, providing an election result $r$.
-\item A hash structure is computed to suport the SOBA audit described in
+\item A hash structure is computed to support the SOBA audit described in
   section~\ref{sec:audit}.
 \end{enumerate}
 
