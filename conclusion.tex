@@ -1,0 +1,48 @@
+\label{sec:future}
+\label{sec:conclusion}
+
+In many ways, \projname is a straightforward evolution from existing
+commercial voting systems, like the Hart InterCivic eSlate, mixing in
+advanced cryptography, software engineering, usability, and auditing
+techniques from the research literature in a way that will go largely
+unnoticed by most voters, while having a huge impact on the
+reliability, accuracy, fraud-resistance, and transparency of
+elections. Due to space constraints, this document doesn't even
+scratch the surface of the many pragmatic features that our election
+administration colleagues have specified based on their experience
+running prior elections. Clearly, we're long overdue for election
+systems engineered with all the knowledge we now have available.
+
+\projname also opens the door to a variety of interesting future
+directions. For example, while \projname is intended to service any
+given county as an island unto itself, there's no reason why it cannot
+also support {\em remote voting}, where ballot definitions could be
+transmitted anywhere a voter wishes to vote, and results sent back
+home. By virtue of \projname's cryptographic mechanisms, such a remote
+vote is really no different than a local provisional vote and can be
+resolved in a similar fashion, preserving the anonymity of the
+voter. (A variation on this idea was earlier proposed as the RemoteBox
+extension~\cite{remotebox08} to VoteBox~\cite{sandler08votebox}.)
+This could have important ramifications for overseas and military
+voters with access to a suitable impromptu polling place, e.g., on a
+military base or in a consular office.
+
+(We do not want to suggest that \projname
+would be suitable for {\em Internet} voting. Using computers of
+unknown provenance, with inevitable malware infections, and
+without any systematic way to prevent voter bribery or coercion,
+would be a foolhardy way to cast ballots.)
+
+\projname anticipates the possibility that voting machine
+hardware might be nothing more than commodity computers running custom
+software. It remains unclear whether off-the-shelf computers can be
+procured to satisfy all the requirements of voting systems (e.g.,
+long-term storage without necessarily having any climate control, or
+having enough battery life to last for a full day of usage), but
+perhaps such configurations might be possible.
+
+
+%%% Local Variables: 
+%%% mode: latex
+%%% TeX-master: "star"
+%%% End: 
