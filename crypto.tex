@@ -3,6 +3,17 @@
 \COP{I am focusing here on the crypto-related aspects only,
   abstracting from most of the paper flow.}
 
+Notations: 
+\begin{compactitem}
+\item $cv = E_K(v)$ encryption of vote $v$ with proof $p_c$ 
+\item $cs = E_K(s)$ serial number $s$ encryption
+\item $c = (cv, cs)$
+\item $z_i$ hash chaining
+\item $f_i$ hash of encrypted ciphertext
+\item $\pi$ permutation used in verifiable shuffle
+\item $m$ voting machine id
+\end{compactitem}
+
 \paragraph{The core elements}
 \label{sec:crypto-core}
 
@@ -25,7 +36,7 @@ private key share that does not contain any information on the full
 private key, and the unique public key $K$ corresponding to those
 shares is published.
 
-During the polling phase, the voting terminals encrypt the votes
+During the polling phase, the ballot marking devices encrypt the votes
 each voter using the public key $K$ and an additively homomorphic
 encryption scheme (e.g., \elgamal). This encryption procedure is
 randomized in order to make sure that two votes for the same
@@ -67,7 +78,7 @@ Since the tally does not involve the decryption of any individual
 ballot, and since the audit procedure relies on the fact that all
 counted ballots are properly formed, it is crucial to make sure that
 all the encrypted ballots that are added correspond to valid votes.
-This is achieved by requiring the voting terminals to compute,
+This is achieved by requiring the ballot marking devices to compute,
 together with the encryption of the votes, a non-interactive
 zero-knowledge (NIZK) proof that each ballot is well-formed. Such a
 proof guarantees that a ciphertext encrypts a valid vote and does not
@@ -95,16 +106,16 @@ marking devices or trustees to falsify individual ballots or decryption
 operations.
 
 The detection of manipulation of encrypted ballots can be more
-effective by linking ballots with each other, using hash
-chaining (e.g., as in Auditorium~\cite{sandler07auditorium}).  To
-this purpose, each voting terminal is seeded, at the beginning
+effective by linking ballots with each other, using hash chaining.  To
+this purpose, each ballot marking device is seeded, at the beginning
 of the election, with a public start value $z_0$ that includes a
 unique identifier for the election. This unique identifier should be
 hard to predict and chosen as close as possible from the beginning of
 the polls in order to reduce the time frame during which a malicious
 party could prepare an attack.
 
-This $z_0$ seed is then used as follows: as soon as a voting terminal with identifier $m$ computes an encrypted ballot $b_i$, it
+This $z_0$ seed is then used as follows: as soon as a ballot marking
+device with identifier $m$ computes an encrypted ballot $b_i$, it
 computes a hash $z_i := H(b_i \| m \| z_{i-1})$ and broadcasts that
 value to all other machines on the network. Then, as soon as the polls
 are over, the latest $z$ value is digitally signed and made public.
@@ -119,7 +130,7 @@ it is created.
   election outcome}
 \label{sec:hard-link-betw}
 
-The voting terminals print a human-readable version of each
+The ballot marking devices print a human-readable version of each
 ballots, which the voters can inspect for correctness. Besides the
 cast or challenge procedure discussed above, we have the possibility
 to run a risk limiting audit that provides further insurance that the
@@ -136,6 +147,52 @@ compared with the paper ballots. This audit step is declared
 successful if the matching between the selected electronic and paper
 ballots is perfect.
 
+\paragraph{The full protocol}
+\label{sec:full-protocol}
+The resulting cryptographic workflow is then as follows. 
+\begin{enumerate}
+\item The trustees jointly generate a threshold public key/private key
+  encryption pair. The encryption key $K$ is published.
+\item Each voting terminal is initialized with the ballot/election
+  parameters, the public key $K$ and a unique seed $z_0$ that is
+  computed by hashing all election parameters.
+\item When a voter completed his selection $v_i$, the voting terminal
+  performs the following operations: 
+  \begin{enumerate}
+  \item It selects a unique ballot serial number $s$ 
+  \item It computes an encryption $c_v = E_K(v)$ of the vote, as
+    well as a NIZK proof $p_v$ that $c_v$ encrypts a valid choice.
+  \item It computes a ballot fingerprint $f=H(c_v \| p_v)$ and a
+    chained hash $z_i = H(f, m, \z_{i-1})$, where $m$ is the voting
+    terminal unique identifier.
+  \item It broadcasts $(m, c_v, p_v, f, z_i)$ and sends $(s, f)$ to
+    the controller only. 
+  \item It prints a paper ballot in two parts. The first contains $v$
+    in a human readable format as well as $s$ in a robust machine
+    readable format (barcode). The second is a voter receipt that
+    contains the ballot fingerprint $f$.
+  \item It erases $s$ from its memory. 
+  \end{enumerate}
+\item When a ballot is cast, the serial number $s$ is scanned and sent
+  to the controller. An encryption $c_s = E_K(s)$ is computed by the
+  controller, which broadcasts $(c_s, f)$. The ballot with fingerprint
+  $f$ is then flagged to be included in the tally and associated with
+  the encrypted serial number $c_s$.
+\item The tally is computed when the polls are closed: the product $c$
+  of all flagged encrypted votes is computed and verifiably decrypted,
+  providing an election result $r$.
+\item A verifiable shuffle is computed on the sequence $((c_s)_i,
+  (c_v)_i)$, providing a shuffled sequence $((c'_s)_i,
+  (c'_v)_i)$. This operation is repeated by as many trustees as
+  desirable. Note that this operation can be performed by anyone, as
+  it does not require the knowledge of any secret information.
+\item The shuffled serial numbers are verifiably decrypted.
+\item As a function of the winner margin computed from the election
+  result $r$ and of the other election parameters, a certain number of
+  paper ballots is selected randomly. 
+\item The encrypted shuffled ballots with matching serial numbers are
+  verifiably decrypted and compared with the paper ballots. 
+\end{enumerate}
 
 
 % \paragraph{Summing up} The elements described above lead to the
@@ -147,7 +204,7 @@ ballots is perfect.
 %   holds a private key and a unique public key $K$ is published.
 % \item At the beginning of the election day, a public start value $z_0$
 %   is chosen that uniquely identifies the election and voting
-%   office. All voting terminals are initialized with the election
+%   office. All ballot marking devices are initialized with the election
 %   specifics (ballot format, \dots), with the key $K$ and with the seed $z_0$.
 % \item After the completion of the selection by each voter, the ballot
 %   marking device proceeds as follows.
@@ -159,7 +216,7 @@ ballots is perfect.
 %   \item It produces paper printouts of two items. The first is the
 %     paper ballot which consists of the selections made by the voter
 %     and $f_i$. The second is a receipt that consists of an
-%     identification number $m$ for the voting terminal, the date
+%     identification number $m$ for the ballot marking device, the date
 %     and time of the vote, and a truncated SHA-256 hash of the \elgamal
 %     encryption of the voter’s selections together with the previous
 %     hash value.
