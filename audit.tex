@@ -17,14 +17,14 @@ using a risk-limiting method.
 A risk-limiting audit guarantees a large minimum chance of a full hand count of the audit trail if the
 reported outcome (i.e., the set of winners) disagrees with the outcome that the full hand count would reveal.
 The full hand count then sets the record straight, correcting the outcome before it becomes official.
-Risk-limiting audits are widely considered best practice for election audits \citep{bestPractices08}.
+Risk-limiting audits are widely considered best practice for election audits \cite{bestPractices08}.
 
 The most efficient risk-limiting audits, ballot-level comparison audits, rely on comparing 
 the machine interpretation of individual ballots
-(cast vote records or CVRs)
-against a hand interpretation of the same ballots \citep{stark10d,benalohEtal11,lindemanStark12}.
+(cast vote records or CVRs) 
+against a hand interpretation of the same ballots \cite{stark10d,benalohEtal11,lindemanStark12}.
 Current federally certified voting systems do not report cast vote records, so they cannot
-be audited using the most efficient techniques \citep{lindemanStark12,wagnerStark12}.
+be audited using the most efficient techniques \cite{lindemanStark12,wagnerStark12}.
 This necessitates expensive work-arounds.\footnote{% 
     For instance, a {\em transitive audit\/} might require marking the ballots with unique identifiers
     or keeping them in a prescribed order, re-scanning all the ballots to make digital images,
@@ -34,7 +34,7 @@ This necessitates expensive work-arounds.\footnote{%
     which itself entails a great deal of error-prone handwork.
 }
 The preamble to conducting a ballot-level comparison audit using currently deployed voting systems
-can annihilate the efficiency advantage of ballot-level comparison audits \citep{wagnerStark12}.
+can annihilate the efficiency advantage of ballot-level comparison audits \cite{wagnerStark12}.
 
 A big advantage of \projname is that it records and stores individual cast vote records in a way that 
 {\em can\/} be linked to
@@ -63,12 +63,12 @@ it helps to publish the individual reported votes.
 However, if these votes were published ballot by ballot, pattern voting could be used to signal voter identity,
 opening a communication channel that might enable coercion~\cite{rescorla09,benalohEtal11}.
 
-The SOBA risk-limiting protocol \citep{benalohEtal11} solves both of these problems:
+The SOBA risk-limiting protocol \cite{benalohEtal11} solves both of these problems:
 It allows the election official to commit cryptographically and publicly to the vote data; it publishes
 the vote data in plain text but ``unbundled'' into separate contests so that pattern voting cannot
 be used to signal.
 Moreover, the computations that SOBA requires are extremely simple (and could be simplified
-even further using the results in \citet{lindemanStark12}).
+even further using the results in \cite{lindemanStark12}).
 The simplicity increases transparency, because observers can confirm that the calculations
 were done correctly, using a pencil and paper or a hand calculator.
 
@@ -79,7 +79,7 @@ Morover, because the voting terminal generates both the electronic vote data and
 But since voters and election workers will handle the ballots in transit from the voting terminal to the scanner to the audit, the ballots can be altered and discrepancies could be found in the SOBA audit.
 It could also happen that a ballot enters the ballot box but its barcode is not
 picked up, so the electronic vote data ends up in the ``untallied but unchallenged'' group.
-This should be detectable by a compliance audit \citep{benalohEtal11,lindemanStark12,starkWagner12} 
+This should be detectable by a compliance audit \cite{benalohEtal11,lindemanStark12,starkWagner12} 
 as a mismatch between the number of recorded votes and the number of pieces of paper,
 providing an opportunity to resolve the problem before the audit begins.
 
