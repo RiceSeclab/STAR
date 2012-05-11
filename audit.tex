@@ -1,12 +1,97 @@
 \label{sec:audit}
 
-Good assurance against many election problems and attacks can be achieved if enough voters use the challenge and verification options that STAR provides.  But the voters who use them won't constitute a random sample, and the necessary sample size depends on the reported margin of victory, which isn't known before the election.  So a risk-limiting audit with publicly verifiably random selection of samples is still necessary to deal with some attacks, e.g. on the ballot marking device.
+The E2E feature of STAR-Vote enables individual voters to confirm that their votes were included in the
+tabulation, and that the encrypted votes were added correctly.
+The challenge feature---if used by enough voters---assures that the encryption was honest.
+But there might not be many voters who challenge the system; the voters who do are hardly
+representative of the voting public; and some problems may go unnoticed.
 
-The audit should follow best practices as discussed in ~\cite{lindemanStark12} and employ a resilient canvass framework for the chain-of-custody of the ballots, as discussed in ~\cite{starkWagner12}.
+The paper audit trail enables an entirely independent check that the votes were tabulated accurately, that
+the visible trace of voter intent as reflected in the ballot agrees with the encryption, and---importantly---that
+the winners reported by the voting system are the winners that a full hand count of the audit trail would
+reveal.
+The key is to audit the machine interpretation against a manual interpretation of the paper ballots,
+using a risk-limiting method.
+STAR-Vote uses SOBA \cite{benalohEtal11} as its risk-limiting audit.
 
-Since voters and election workers will handle the ballots in transit from the booth to the scanner to the audit, it is possible for there to be discrepancies between the paper record and the electronic one, resulting in some discrepancies in the audit, but it should be even more rare than in with normal hand-marked, scanned ballots.
+A risk-limiting audit guarantees a large minimum chance of a full hand count of the audit trail if the
+reported outcome (i.e., the set of winners) disagrees with the outcome that the full hand count would reveal.
+The full hand count then sets the record straight, correcting the outcome before it becomes official.
+Risk-limiting audits are widely considered best practice for election audits \citep{bestPractices08}.
 
-[Problem with  selecting randomly from the paper ballots rather than from the electronic record: may be hard to hit enough ballots from a close local contest.  Requiring a sort of the paper records is cumbersome.  Why not select from the electronic record instead?]
+The most efficient risk-limiting audits, ballot-level comparison audits, rely on comparing 
+the machine interpretation of individual ballots
+(cast vote records or CVRs)
+against a hand interpretation of the same ballots \citep{stark10d,benalohEtal11,lindemanStark12}.
+Current federally certified voting systems do not report cast vote records, so they cannot
+be audited using the most efficient techniques \citep{lindemanStark12,wagnerStark12}.
+This necessitates expensive work-arounds.\footnote{% 
+    For instance, a {\em transitive audit\/} might require marking the ballots with unique identifiers
+    or keeping them in a prescribed order, re-scanning all the ballots to make digital images,
+    and processing those images with software that can construct CVRs from the images and
+   associate the CVRs with the ballots.
+   That software in turn needs to be programmed with the all the ballot definitions in the contest,
+    which itself entails a great deal of error-prone handwork.
+}
+The preamble to conducting a ballot-level comparison audit using currently deployed voting systems
+can annihilate the efficiency advantage of ballot-level comparison audits \citep{wagnerStark12}.
+
+A big advantage of STAR-Vote is that it records and stores individual cast vote records in a way that 
+{\em can\/} be linked to
+the paper ballot each purports to represent, through the encrypted vote data.
+This makes ballot-level comparison audits extremely simple and efficient.
+It also reduces the vulnerability of the audit to human error, such as accidental changes to the order
+of the physical ballots.\footnote{%
+   For instance, we have seen groups of ballots dropped on the floor accidentally;
+   even though none was lost, restoring them to their original order was impossible.
+}
+
+A comparison audit can be though of as consisting of two parts:
+Checking the addition of the data,\footnote{%
+   This presupposes that the contest under audit is a plurality, majority, super-majority, or vote-for-$k$
+   contest.
+   The operation that must be checked to audit an instant-runoff contest is not addition, but the
+   same principle applies.
+}
+and randomly spot-checking the accuracy of the data added, to confirm that they are accurate
+enough for their sum to give the correct electoral outcome.
+The data are the votes as reported by the voting system.
+For the audit to be meaningful, the election official must commit to the vote data before the
+checks begin.
+Moreover, for the public to verify readily that the reported votes sum to the reported contest totals,
+it helps to publish the individual reported votes.
+However, if these votes were published ballot by ballot, pattern voting could be used to signal voter identity,
+opening a communication channel that might enable coercion~\cite{rescorla09,benalohEtal11}.
+
+The SOBA risk-limiting protocol \citep{benalohEtal11} solves both of these problems:
+It allows the election official to commit cryptographically and publicly to the vote data; it publishes
+the vote data in plain text but ``unbundled'' into separate contests so that pattern voting cannot
+be used to signal.
+Moreover, the computations that SOBA requires are extremely simple (and could be simplified
+even further using the results in \citet{lindemanStark12}).
+The simplicity increases transparency, because observers can confirm that the calculations
+were done correctly, using a pencil and paper or a hand calculator.
+
+The encrypted vote data on the ballot that STAR-Vote produces serves as a unique ballot identifier,
+an ingredient that simplifies SOBA procedures because it eliminates the need to store ballots in a rigid order.
+Moreover, because STAR-Vote generates the electronic vote data directly from the touchscreen device,
+the same device that prints the voter's selections, the SOBA audit should never find a
+discrepancy between the manual interpretation of a paper ballot and the electronic vote data
+corresponding to that ballot: If it does, something has gone seriously wrong.
+
+On the other hand, it could easily happen that a ballot enters the ballot box but its barcode is not
+picked up, so the electronic vote data ends up in the ``untallied but unchallenged'' group.
+This should be detectable by a compliance audit \citep{benalohEtal11,lindemanStark12,starkWagner12} 
+as a mismatch between the number of recorded votes and the number of pieces of paper,
+providing an opportunity to resolve the problem before the audit begins.
+If such cases remain and turn up in the audit sample, SOBA would count them as discrepancies 
+and the sample would expand accordingly, either
+until there is strong evidence that the electoral outcomes are correct despite any errors the audit
+uncovers, or until there has been a complete hand count.
+
+[PBS:  Do we want to go further and talk about how to generate the random sample?  \cite{lindemanStark12}
+spends some time on this, including discussing Rivest's approach that starts with dice rolls for entropy then
+applies SHA-256.]
 
 %%% Local Variables: 
 %%% mode: latex
