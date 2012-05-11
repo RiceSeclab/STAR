@@ -7,7 +7,8 @@
 \usepackage{amsmath, amsfonts, amsthm}
 \usepackage[pdftex]{graphicx}
 
-\newcommand{\COP}[1]{\textsf{[[OP: #1]]}}
+\usepackage{xcolor}
+\newcommand{\COP}[1]{{\color{red}\textsf{[[OP: #1]]}}}
 
 \newcommand{\projname}{STAR-Vote\xspace}
 \newcommand{\elgamal}{Elgamal\xspace}  % so we can at least standardize on one spelling
@@ -25,14 +26,17 @@ Secure, Transparent, Auditable, and Reliable Voting System}
 \section{Introduction}
 \input intro
 
-\section{Design}
-\input design
-
 \section{Voter Flow}
 \input voterflow
 
+\section{Design}
+\input design
+
 \section{Usability}
 \input usability
+
+\section{Audit}
+\input audit
 
 \section{The Cryptographic Workflow}
 \input crypto

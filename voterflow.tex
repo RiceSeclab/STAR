@@ -10,42 +10,79 @@ of a voter going through the system. We note that the \projname voting system be
 
 \begin{enumerate}
 \item {\em Check-in (pollbook).}
-The first step for the voter is to check-in with a poll worker. This is where voter registration is verified and the voter's precinct is identified so that the appropriate ballot style can be generated. The voter also signs a signature list. The voter will receive something to take with them to the JBC that identifies their ballot style; probably a piece of paper with a bar code on it. If the voter registration cannot be verified then this will identify them as requiring a provisional ballot.
+The first step for the voter is to check-in with a poll worker. This is where voter registration is verified and the voter's precinct is identified so that the appropriate ballot style can be generated. The voter also signs their name into some sort of paper book. Subsequently, the voter will receive something to take with them to the judge's station that identifies their proper ballot style. If the voter registration cannot be verified then this will identify them as requiring a provisional ballot. Notably, {\em there will not be an electronic path between the voter registration phase and subsequent phases}. Instead, the token, likely from a thermal printer, will only offer a number to identify the ballot style. This might also be encoded as a one-dimensional bar code to reduce data entry errors. Nothing on this token is secret, nor is it unique to any individual voter.
 
-\item {\em Receive token}
-The voter takes the ballot style identifier to a poll worker at the Judge Booth Controller (JBC) which issues a token, again probably a piece of paper with a 5-digit code on it. (There will probably need to be a special alternative for ADA compliance as not all voters can see/handle paper.) This token authorizes the voter at a voting station and identifies his/her ballot style to the station. The token will also be flagged as provisional if that applies. The token has a limited life, so that the 5 digit sequence can be reused.
+\item {\em Receive token.}
+The voter takes the ballot style identifying token to a poll worker at the judge's station which then issues another token, again probably a piece of paper with a 5-digit code on it. (There will probably need to be a special alternative for ADA compliance as not all voters can see or handle paper.) 
 
-\item {\em Select machine}
+\item {\em Select machine.}
 The voter possibly queues at this point, and then selects from one of the available voting stations.
 
-\item  {\em Enter token}
-The first thing the voter does at the voting station is enter the information on their token. This causes the JBC to send the appropriate ballot style to the voting station and consumes the token.
+\item  {\em Enter token.}
+The first thing the voter does at the voting station is enter the digits on their token. 
+This action, in turn indicates the voter's authenticity and identifies the desired ballot style. The token will also be flagged as provisional if that applies. Once the voter enters the code, it's transmitted over the local network to the judge's station, invalidating it immediately. Only a small number of these codes will ever be active at any time, allowing codes to be generated randomly and reused through the day. There will be no permanent record binding this code to the voter, as that could compromise voter anonymity.\footnote{Hart InterCivic generates comparable codes, but they're not random. Every voter's code is unique to that voter / judge station combination. \projname fixes this problem.}
 
-\item {\em Make selections}
+\item {\em Make selections.}
 The voter makes selections on the GUI (for sighted voters) or auditory UI (for non-sighted voters). There is a review screen (or the auditory equivalent) so that the voter can confirm their selections before producing a paper record.
 
-\item {\em Print}
-When the voter has finished making selections, s/he tells the UI to print a paper record of their selections. This cryptographically commits the choices and sends their encrypted ballot to the JBC as well as printing a paper record, which includes not only a human-readable summary of the voter's selections but the encrypted ballot (as a bar code or something similar) and a human-readable crypto receipt (essentially a ballot ID number).
+\item {\em Print.} When the voter has finished making selections, she
+  tells the UI to print a paper record of their selections. This
+  cryptographically commits the choices and sends their encrypted
+  ballot to the judge's station as well as printing a paper record,
+  which includes not only a human-readable summary of the voter's
+  selections but also a variety of cryptographic data, encoded in one or more
+  two-dimensional barcodes (see Section~\ref{sec:crypto}).
+  One of these barcodes represents a ``receipt'' which the voter can
+  take home for verification purposes. This receipt is insufficient for a
+  voter to prove how she voted to a third-party observer.
 
-\item {\em Review printed record}
-The voter may then review the printed record to confirm their selections. There will be at least one station available that can OCR the paper record and read it back to the voter for those who cannot read the paper record.
+  The printed ballot also includes a simple number,
+  a cryptographic nonce generated by the voting machine, will later serve to identify the
+  correspondence between the plaiantext paper ballot and its encrypted electronic equivalent.
+  By printing this nonce exclusively as a barcode and not in human-readable
+  text, we can mitigate a specific coercion attack, where the
+  randomness of the number might be used to tell the voter whether to
+  cast or challenge the ballot. (Coercion issues and mitigations are discussed further in Section~\ref{sec:coercion}.)
 
-\item {\em Option: Cast, or challenge/spoil}
-After review, the voter has two choices: either cast this ballot or spoil it. Spoiling the ballot may be because of an error (or change of heart) or because the voter wishes to challenge the crypto. The two procedures are described below. Note also that there is a special procedure for provisional ballots.
+  % \COP{Proposal of a variant. There ciphertexts to print are too long
+    % when using a homomorphic tallying + we do not want any
+    % recognizable link between paper ballots and paper receipts:
+% 
+% \item {\em Print.} When the voter has finished making selections, she
+  % tells the UI to print a paper record of their selections. This
+  % cryptographically commits the choices and sends their encrypted
+  % ballot to the judge's station as well as printing a paper record, which includes
+  % not only a human-readable summary of the voter's selections but a
+  % unique serial number (as a bar code or something similar) and a
+  % human-readable crypto receipt (essentially a ballot ID number).  }
+
+\item {\em Review printed record.}
+The voter may then review the printed record to confirm her selections. There will be at least one station available that can OCR the paper record and read it back to the voter for those who cannot visually read the paper record.
+
+\item {\em Option: Cast or challenge/spoil.}
+After review, the voter has two choices: either cast this ballot or spoil it. A voter might spoil the ballot because of an error (or change of heart) or because the voter wishes to challenge the voting system to prove the ciphertext represents the voter's intended choices. The two procedures are described below. Note also that there is a special procedure for provisional ballots.
+
+Regardless of which case, the voter may keep the ``receipt'' portion of her vote to take home. This receipt can be easily separated from the rest of the ballot. We note that most thermal printers include a cutting device that leaves a small paper connection between the two sides of the cut. The voter would simply pull them apart. We also note that ``privacy sleeves'' (i.e., simple paper folders) can protect the privacy of these printed ballots as voters carry them from the voting machine to either the ballot box, to be cast, or the judge's station, to be spoiled.
 
 \begin{enumerate}
-\item  {\em Cast Ballot}
-If the voter wants to cast the ballot, s/he takes the paper record to the ballot box/scanner. The voter optionally removes the receipt and drops it into the box, where the bar code on the record is scanned. This is scan is communicated to the JBC, which then marks the vote as recorded (meaning it will be counted).
+\item  {\em Cast ballot.}
+If the voter wants to cast the ballot, she takes the paper record to the ballot box.
+% The voter optionally removes the receipt and drops it into the box, where the bar code on the record is scanned.
+The ballot box has a simple one-dimensional barcode scanner on it that can recognize the ballot's unique ID number
+and communicate this to the judge's station, allowing the judge's station to keep a record of which ballots have found their way to the ballot box, and thus, which ballots should be tabulated. 
 
-\item {\em Spoil Ballot}
-If the paper record is to be spoiled, the voter returns to a poll worker at a JBC. The record will be placed in a special sleeve so that the poll worker cannot see the selections. The bar code on the record is scanned so that the JBC can record that the ballot is to be spoiled, which means that the decryption of the ballot will be published. The ballot will be stamped to indicate that it is a spoiled ballot. The voter may retain the paper record to check that the decryption matches the selections shown on the paper record. After the spoiled ballot is processed, then the voter is issued a new token.
+\item {\em Spoil ballot.}
+If the paper record is to be spoiled, the voter returns to a poll worker at a judge's station. 
+% The record will be placed in a special sleeve so that the poll worker cannot see the selections.
+The ballot unique ID is scanned so that the judge's station can record that the ballot is to be spoiled. Furthermore, the judge's station knows that the corresponding encrypted ballot record should never be used in a real tally. Instead, it should be decrypted and published as such. The original printed paper ballot thus corresponds to a {\em commitment} by the voting machine, before it ever knew it might be challenged. If the voting machine cannot produce a suitable proof that the ballot encryption matches the plaintext, then it's been caught cheating. Of course, for voters who don't care about verification, they can simply restart the process. For voters who may feel uncomfortable with this process, as it might reveal their intent to a poll worker, we note that a voter could deliberately spoil a ballot that misstates their true intent. We note that dedicated election monitors could be allowed to use voting machines, producing printed ballots that they would be forbidden from placing in the ballot box, but which would be spoiled and then the corresponding ciphertext would be decrypted. In effect, election monitors can conduct {\em parallel testing in the field} on any voting machine at any time during the live election.
 
-\item {\em Provisional ballot}
-In the case of a provisional ballot, the voter does not have the cast vs. spoil option, and must return the ballot to a poll worker, who places it into a provisional ballot box. The voter may retain the receipt to see if the ballot ends up being counted.
+
+\item {\em Provisional ballot.}
+In the case of a provisional ballot, the voter does not have the cast vs. spoil option, and must return the ballot to a poll worker, who places it into a distinct provisional ballot box. The voter may retain the receipt to see if the ballot ends up being counted.
 \end{enumerate}
 
-\item {\em Optional: Voter checks crypto}
-Using the receipt, after leaving the polling place, the ballots will be published. Cast votes are published in encrypted format, so the voter can check to make sure his/her vote is present and will be counted. In addition, any voter can check the tally of the cast votes. Spoiled votes are decrypted before publication so that the crypto can be challenged.
+\item {\em At home (optional): Voter checks crypto.}
+The encrypted votes will be posted on a public ``bulletin board'' (i.e., a web site maintained by the county). The voter receipt corresponds to a cryptographic hash of their vote. A voter should be able to easily verify that her vote is present on the bulletin board. If a voter spoiled her ballot, that should also be visible on the bulletin board, allowing independent observers to know which ballots to ignore and which to count.
 \end{enumerate}
 
 << sections 2.2 and 3 should go in here somewhere >>
