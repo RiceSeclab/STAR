@@ -47,7 +47,7 @@ of the physical ballots.\footnote{%
    even though none was lost, restoring them to their original order was impossible.
 }
 
-A comparison audit can be though of as consisting of two parts:
+A comparison audit can be thought of as consisting of two parts:
 Checking the addition of the data,\footnote{%
    This presupposes that the contest under audit is a plurality, majority, super-majority, or vote-for-$k$
    contest.
@@ -62,7 +62,7 @@ pot-checking begins.
 Moreover, for the public to verify readily that the reported votes sum to the reported contest totals,
 it helps to publish the individual reported votes.
 However, if these votes were published ballot by ballot, pattern voting could be used to signal voter identity,
-opening a communication channel that might enable coercion~\cite{rescorla09,benalohEtal11}.
+opening a communication channel that might enable widespread wholesale coercion~\cite{rescorla09,benalohEtal11}.
 
 The SOBA risk-limiting protocol \cite{benalohEtal11} solves both of these problems:
 It allows the election official to commit cryptographically and publicly to the vote data; it publishes
@@ -81,8 +81,8 @@ the audit should find very few if any discrepancies between them.
 But since voters and election workers will handle the ballots in transit from the voting terminal 
 to the scanner to the audit, the ballots can be altered and the SOBA audit might find discrepancies,
 depending on the rules in place for ascertaining voter intent from the ballot.
-It could also happen that a ballot enters the ballot box but its barcode is not
-picked up, so the electronic vote data ends up in the ``untallied but unchallenged'' group.
+It could also happen that a ballot enters the ballot box but its serial number is not
+picked up, so the electronic vote data ends up in the ``untallied but unspoiled'' group.
 This should be detectable by a compliance audit \cite{benalohEtal11,lindemanStark12,starkWagner12} 
 as a mismatch between the number of recorded votes and the number of pieces of paper,
 providing an opportunity to resolve the problem before the audit begins.
@@ -100,3 +100,4 @@ applies SHA-256.]
 %%% mode: latex
 %%% TeX-master: "star"
 %%% End: 
+
