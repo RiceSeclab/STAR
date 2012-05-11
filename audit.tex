@@ -1,6 +1,6 @@
 \label{sec:audit}
 
-The E2E feature of STAR-Vote enables individual voters to confirm that their votes were included in the
+The E2E feature of \projname enables individual voters to confirm that their votes were included in the
 tabulation, and that the encrypted votes were added correctly.
 The challenge feature---if used by enough voters---assures that the encryption was honest.
 But there might not be many voters who challenge the system; the voters who do are hardly
@@ -12,7 +12,7 @@ the winners reported by the voting system are the winners that a full hand count
 reveal.
 The key is to audit the machine interpretation against a manual interpretation of the paper ballots,
 using a risk-limiting method.
-STAR-Vote uses SOBA \cite{benalohEtal11} as its risk-limiting audit.
+\projname uses SOBA \cite{benalohEtal11} as its risk-limiting audit.
 
 A risk-limiting audit guarantees a large minimum chance of a full hand count of the audit trail if the
 reported outcome (i.e., the set of winners) disagrees with the outcome that the full hand count would reveal.
@@ -36,7 +36,7 @@ This necessitates expensive work-arounds.\footnote{%
 The preamble to conducting a ballot-level comparison audit using currently deployed voting systems
 can annihilate the efficiency advantage of ballot-level comparison audits \citep{wagnerStark12}.
 
-A big advantage of STAR-Vote is that it records and stores individual cast vote records in a way that 
+A big advantage of \projname is that it records and stores individual cast vote records in a way that 
 {\em can\/} be linked to
 the paper ballot each purports to represent, through the encrypted vote data.
 This makes ballot-level comparison audits extremely simple and efficient.
@@ -72,18 +72,17 @@ even further using the results in \citet{lindemanStark12}).
 The simplicity increases transparency, because observers can confirm that the calculations
 were done correctly, using a pencil and paper or a hand calculator.
 
-The encrypted vote data on the ballot that STAR-Vote produces serves as a unique ballot identifier,
+The encrypted vote data on the ballot that \projname produces serves as a unique ballot identifier,
 an ingredient that simplifies SOBA procedures because it eliminates the need to store ballots in a rigid order.
-Moreover, because STAR-Vote generates the electronic vote data directly from the touchscreen device,
-the same device that prints the voter's selections, the SOBA audit should never find a
-discrepancy between the manual interpretation of a paper ballot and the electronic vote data
-corresponding to that ballot: If it does, something has gone seriously wrong.
+Morover, because the voting terminal generates both the electronic vote data and the paper ballot, the audit should find very few if any discrepancies between them.
 
-On the other hand, it could easily happen that a ballot enters the ballot box but its barcode is not
+But since voters and election workers will handle the ballots in transit from the voting terminal to the scanner to the audit, the ballots can be altered and discrepancies could be found in the SOBA audit.
+It could also happen that a ballot enters the ballot box but its barcode is not
 picked up, so the electronic vote data ends up in the ``untallied but unchallenged'' group.
 This should be detectable by a compliance audit \citep{benalohEtal11,lindemanStark12,starkWagner12} 
 as a mismatch between the number of recorded votes and the number of pieces of paper,
 providing an opportunity to resolve the problem before the audit begins.
+
 If such cases remain and turn up in the audit sample, SOBA would count them as discrepancies 
 and the sample would expand accordingly, either
 until there is strong evidence that the electoral outcomes are correct despite any errors the audit
