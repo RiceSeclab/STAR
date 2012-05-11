@@ -1,0 +1,14 @@
+\label{sec:audit}
+
+Good assurance against many election problems and attacks can be achieved if enough voters use the challenge and verification options that STAR provides.  But the voters who use them won't constitute a random sample, and the necessary sample size depends on the reported margin of victory, which isn't known before the election.  So a risk-limiting audit with publicly verifiably random selection of samples is still necessary to deal with some attacks, e.g. on the ballot marking device.
+
+The audit should follow best practices as discussed in ~\cite{lindemanStark12} and employ a resilient canvass framework for the chain-of-custody of the ballots, as discussed in ~\cite{starkWagner12}.
+
+Since voters and election workers will handle the ballots in transit from the booth to the scanner to the audit, it is possible for there to be discrepancies between the paper record and the electronic one, resulting in some discrepancies in the audit, but it should be even more rare than in with normal hand-marked, scanned ballots.
+
+[Problem with  selecting randomly from the paper ballots rather than from the electronic record: may be hard to hit enough ballots from a close local contest.  Requiring a sort of the paper records is cumbersome.  Why not select from the electronic record instead?]
+
+%%% Local Variables: 
+%%% mode: latex
+%%% TeX-master: "star"
+%%% End: 

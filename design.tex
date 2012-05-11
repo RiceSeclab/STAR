@@ -45,7 +45,7 @@ A voter who takes a completed paper ballot to a poll worker can request that the
 
 Upon completion of the election, the election office homomorphically combines the cast ballots into an aggregate encryption of the election tally (this is simply a multiplication of the public encrypted ballots).  At least $k$ of the election trustees then each perform their share of the decryption of the aggregate as well as individual decryptions of each of the spoiled ballots.  The trustees also post data necessary to allow observers to verify the accuracy of the decryptions.
 
-After the tally is announced and the verification data is published, the set of cast ballots is verifiably shuffled with a mix network.  This shuffling could be performed by the same trustees who act as key holders, but the shuffling task could be performed by other parties or even by the election office.  A privacy-preserving risk-limiting audit is then performed by randomly selecting paper ballots and matching each selected ballot with a corresponding encrypted ballot to demonstrate the correct matching.
+After the tally is announced and the verification data is published, the set of cast ballots is verifiably shuffled with a mix network.  This shuffling could be performed by the same trustees who act as key holders, but the shuffling task could be performed by other parties or even by the election office.  A privacy-preserving risk-limiting audit is then performed by randomly selecting paper ballots and matching each selected ballot with a corresponding encrypted ballot to demonstrate the correct matching and provide software-independent evidence of the outcome~\cite{lindemanStark12}~\cite{rivest06sivoting}.
 
 \subsection{Triple Assurance}
 
