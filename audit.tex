@@ -2,7 +2,8 @@
 
 The E2E feature of \projname enables individual voters to confirm that their votes were included in the
 tabulation, and that the encrypted votes were added correctly.
-The challenge feature---if used by enough voters---assures that the encryption was honest.
+The challenge feature---if used by enough voters---assures that the encryption was honest
+and that substantially all the votes are included in the tabulation.
 But there might not be many voters who challenge the system; the voters who do are hardly
 representative of the voting public; and some problems may go unnoticed.
 
@@ -62,7 +63,8 @@ pot-checking begins.
 Moreover, for the public to verify readily that the reported votes sum to the reported contest totals,
 it helps to publish the individual reported votes.
 However, if these votes were published ballot by ballot, pattern voting could be used to signal voter identity,
-opening a communication channel that might enable widespread wholesale coercion~\cite{rescorla09,benalohEtal11}.
+opening a communication channel that might enable 
+widespread wholesale coercion~\cite{rescorla09,benalohEtal11}.
 
 The SOBA risk-limiting protocol \cite{benalohEtal11} solves both of these problems:
 It allows the election official to commit cryptographically and publicly to the vote data; it publishes
@@ -79,8 +81,11 @@ Moreover, because the voting terminal generates both the electronic vote data an
 the audit should find very few if any discrepancies between them.
 
 But since voters and election workers will handle the ballots in transit from the voting terminal 
-to the scanner to the audit, the ballots can be altered and the SOBA audit might find discrepancies,
-depending on the rules in place for ascertaining voter intent from the ballot.
+to the scanner to the audit, voters might make marks on their ballots.
+Depending on the rules in place for ascertaining voter intent from the ballot,
+those marks might be interpreted as expressing voter intent different from the
+printed selections, in which case the SOBA audit might find discrepancies.
+
 It could also happen that a ballot enters the ballot box but its serial number is not
 picked up, so the electronic vote data ends up in the ``untallied but unspoiled'' group.
 This should be detectable by a compliance audit \cite{benalohEtal11,lindemanStark12,starkWagner12} 
@@ -92,9 +97,17 @@ and the sample would expand accordingly, either
 until there is strong evidence that the electoral outcomes are correct despite any errors the audit
 uncovers, or until there has been a complete hand count.
 
-[PBS:  Do we want to go further and talk about how to generate the random sample?  \cite{lindemanStark12}
-spends some time on this, including discussing Rivest's approach that starts with dice rolls for entropy then
-applies SHA-256.]
+The random selection of ballots for the SOBA audit should involve public participation in
+generating many bits of entropy to seed a high-quality, public, pseudo-random 
+number generator (PRNG), which is then used to select a sequence of
+ballots to inspect manually~\cite{lindemanStark12}.
+(For instance, audit observers might roll 10-sided dice repeatedly to generate a 20-digit number.)
+Publishing the PRNG algorithm adds transparency by allowing observers to verify
+that the selection of ballots was fair.
+
+%[PBS:  Do we want to go further and talk about how to generate the random sample?  \cite{lindemanStark12}
+%spends some time on this, including discussing Rivest's approach that starts with dice rolls for entropy then
+%applies SHA-256.]
 
 %%% Local Variables: 
 %%% mode: latex

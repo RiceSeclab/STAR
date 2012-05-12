@@ -2,54 +2,58 @@
 
 A decade ago, DRE voting systems came with a promise of improvement. By having a
 computer mediating the user's voting experience, they could ostensibly
-improve usability through summary screens, as well as supporting a
+improve usability through summary screens and a
 variety of accessibility features including enlarged text, audio
 output, and specialized input devices. They also promised to improve
-the life of the election administrator, yielding quick tallies without
+the life of the election administrator, yielding quick, accurate tallies without
 any of the ambiguities that come along with hand-marked paper ballots.
 And, of course, they were promised to be secure and reliable, tested
 and certified. In practice, much of this was wishful thinking.
 
-Many of the current DRE voting systems experienced their biggest sales
+Many current DRE voting systems experienced their biggest sales
 volume following the demonstrated failures of punch card voting
 systems in Florida in the 2000 presidential election. The subsequent Help America Vote Act
 provided a one-time injection of funds that made these purchases
-possible. Now, a decade later, these machines are beginning to reach the end of
+possible. Now, a decade later, these machines are near the end of
 their service lifetimes. 
 
-Last year, the election administration office of Travis County, Texas, which was an
-early adopter of these DRE systems, reached the conclusion that current
+Last year, the election administration office of Travis County, Texas, an
+early adopter of these DRE systems, concluded that current
 systems on the market were inadequate for their need to replace their
 end-of-life DRE systems. They were also unhappy with the
 current-generation precinct-based optical scanned paper ballot systems
 for a variety of reasons. In particular, hand-marked paper ballots
 open the door to ambiguous voter intent, which Travis County unhappily
-had to deal with in its earlier centrally-tabulated optical scan
+had to deal with in its previous centrally-tabulated optical scan
 system. They didn't want to go back. Likewise, with early
-voting and election day vote centers, allowing any voter to arrive at
-any location and be given the proper ballot style, pre-printed paper ballots would
-be a management nightmare, and ballot-on-demand printing systems
+voting and election day vote centers that must be able to give
+any voter who arrives at
+any location the proper ballot style, pre-printed paper ballots would
+be a management nightmare.
+Ballot-on-demand printing systems
 require laser printers that cannot run all day on battery backup
 systems\footnote{A laser printer may consume as much as 1000 watts
   while printing. A reasonably good UPS, weighing 26~kg, can provide
   that much power for only ten minutes. Since a printer must take time
   to warm up for each page when printed one-off (perhaps 10
   seconds total per page), as few as 60 ballots could be printed before the
-  battery would be exhausted.}.
+  battery would be exhausted.},
+which restricts their reliability.
 
-A group of academic experts in voting systems was assembled for the
-purpose of attempting to specify a replacement system, in sufficient
+A group of academic experts in voting systems was assembled 
+to design a replacement system in sufficient
 detail that bids could be solicited from manufacturers to implement
 the system. Our group included experts in cryptography, auditing, and
 usability, leading to some interesting challenges and questions. We
-were charged with several basic constraints. The user experience must
+were given several basic constraints: The user experience must
 resemble current DRE systems, but there should be a tangible
 voter-verifiable paper ballot, printed by the machine and deposited by
-the voter in a physical ballot box. This would allow for fast machine
+the voter into a physical ballot box. This would allow for fast machine
 tallies and statistical audits to ensure their equivalence to the
-paper records. We were free to recommend sophisticated end-to-end
-cryptographic methods, privacy-preserving risk-limited auditing
-methods, and pretty much whatever else we felt was beneficial, given
+paper records. The system must be able to run all day on battery power.
+We were free to recommend sophisticated end-to-end
+cryptographic methods, privacy-preserving risk-limiting auditing
+methods, and pretty much anything else we felt was beneficial, within
 these constraints. Of course, reducing cost was also desirable as was
 anything that might reduce the burden for poll workers or voters. The
 issue of federal or state election certification, for the purpose of

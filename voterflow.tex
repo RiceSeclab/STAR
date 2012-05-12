@@ -6,7 +6,10 @@
 \end{figure*}
 
 Figure~\ref{fig:design} shows how \projname works from the perspective
-of a voter going through the system. We note that the \projname voting system bears a resemblance to the Hart InterCivic eSlate system, or to VoteBox~\cite{sandler08votebox}, in that the voting machines are networked together, simplifying the movement of data. Like eSlate, we assume that a group of voting machines will share a common judge's station with a computer like Hart InterCivic's ``Judge Booth Controller'' (JBC) that manages everything. 
+of a voter going through the system. 
+The \projname voting system bears a resemblance to the Hart InterCivic eSlate system and to VoteBox~\cite{sandler08votebox}, in that the voting machines are networked together, 
+simplifying the movement of data. 
+Like eSlate, our design contains a networked group of voting machines that share a common judge's station with a computer like Hart InterCivic's ``Judge Booth Controller'' (JBC) that manages everything. 
 
 \begin{enumerate}
 \item {\em Check-in (pollbook).}
@@ -15,14 +18,16 @@ It would actually be possible to allow provisional voters to vote along with oth
 Instead, the token, likely from a thermal printer, will only offer a number to identify the ballot style. This might also be encoded as a one-dimensional bar code to reduce data entry errors. Nothing on this token is secret, nor is it unique to any individual voter.
 
 \item {\em Receive token.}
-The voter takes the ballot style identifying token to a poll worker at the judge's station which then issues another token, again probably a piece of paper with a 5-digit code on it. (There will probably need to be a special alternative for ADA compliance as not all voters can see or handle paper.) 
+The voter takes the ballot-style identifying token to a poll worker at the judge's station which then issues another token, again probably a piece of paper with a 5-digit code on it. (There will probably need to be a special alternative for ADA compliance as not all voters can see or handle paper.) 
 
 \item {\em Select machine.}
 The voter possibly queues at this point, and then selects from one of the available voting stations.
 
 \item  {\em Enter token.}
 The first thing the voter does at the voting station is enter the digits on the token. 
-This action, in turn indicates the voter's authenticity and identifies the desired ballot style. The token will also be flagged as provisional if that applies. Once the voter enters the code, it's transmitted over the local network to the judge's station, invalidating it immediately. Only a small number of these codes will ever be active at any time, allowing codes to be generated randomly and reused through the day. There will be no permanent record binding this code to the voter, as that could compromise voter anonymity.\footnote{Hart InterCivic generates comparable codes, but they're not random. Every voter's code is unique to that voter / judge station combination. \projname fixes this problem.}
+This action, in turn indicates the voter's authenticity and identifies the desired ballot style. The token will also be flagged as provisional if that applies. 
+Once the voter enters the code, it's transmitted over the local network to the judge's station, invalidating it immediately. Only a small number of these codes will ever be active at any time, allowing codes to be generated randomly and reused through the day. 
+There will be no permanent record binding this code to the voter, as that could compromise voter anonymity.\footnote{Hart InterCivic generates comparable codes, but they're not random. Every voter's code is unique to that voter / judge station combination. \projname fixes this problem.}
 
 \item {\em Make selections.}
  The voter makes selections on the GUI (for sighted voters)
@@ -63,9 +68,9 @@ This action, in turn indicates the voter's authenticity and identifies the desir
 The voter may then review the printed record to confirm the indicated selections. There will be at least one station available that can OCR the paper record and read it back to the voter for those who cannot visually read the paper record.
 
 \item {\em Option: Cast or challenge/spoil.}
-After review, the voter has two choices: either cast this ballot or spoil it.
+After reviewing the ballot, the voter has a choice: Cast the ballot or spoil it.
  A voter might spoil the ballot because of an error (or change of heart)
- or because the voter wishes to challenge the voting terminal to show
+ or because the voter wishes to challenge the voting terminal, demanding it to show
  that the voter's selections were correctly recorded and committed to.\footnote{
  This follows the cryptographic verification process introduced by Benaloh
  in \cite{benaloh06simple} and \cite{benaloh07evt}.}
@@ -75,7 +80,7 @@ After review, the voter has two choices: either cast this ballot or spoil it.
  We note that most thermal printers include a cutting device that leaves a
  small paper connection between the two sides of the cut.
  It is therefore a simple matter for the voting terminal to print a single
- sheet for which the voter can separate into the ballot summary and the
+ sheet that the voter can easily separate into the ballot summary and the
  take-home receipt.
  We also note that ``privacy sleeves'' (i.e., simple paper folders) can protect the privacy of these printed ballots as voters carry them from the voting machine to either the ballot box, to be cast, or the judge's station, to be spoiled.
 
@@ -84,7 +89,7 @@ After review, the voter has two choices: either cast this ballot or spoil it.
 A voter who wishes to cast the ballot takes the paper ballot summary to the ballot box.
 % The voter optionally removes the receipt and drops it into the box, where the bar code on the record is scanned.
 The ballot box has a simple scanner that can read the serial number from the ballot
-(which may also be represented as a one-dimensional barcode for reliability)
+(the serial number might also be represented as a one-dimensional barcode for reliability)
 and communicate this to the judge's station, allowing the judge's station to keep a record of which ballots have found their way to the ballot box, and thus, which ballots should be tabulated. 
 {\em An electronic ballot record is not considered complete and should not be
  included in the tally unless and until its corresponding paper ballot summary has
@@ -93,18 +98,20 @@ and communicate this to the judge's station, allowing the judge's station to kee
 \item {\em Spoil ballot.}
 If the paper record is to be spoiled, the voter returns to a poll worker at a judge's station. 
 % The record will be placed in a special sleeve so that the poll worker cannot see the selections.
-The ballot serial number is scanned so that the judge's station can record that the ballot is to be spoiled. Furthermore, the judge's station knows that the corresponding encrypted ballot record should never be used in a real tally. Instead, it should be decrypted and published as such. The original printed paper ballot thus corresponds to a {\em commitment} by the voting machine, before it ever knew it might be challenged.
+The ballot serial number is scanned so that the judge's station can record that the ballot is to be spoiled. Furthermore, the judge's station knows that the corresponding encrypted ballot record should never be used in a real tally. 
+Instead, it should be decrypted and published as such. 
+The original printed paper ballot thus corresponds to a {\em commitment\/} by the voting machine, before it ever knew it might be challenged.
  If the voting machine cannot produce a suitable proof that the ballot encryption matches the plaintext,
  then it's been caught cheating.
  Of course, for voters who don't care about verification,
  they can simply restart the process.
  For voters who may feel uncomfortable with this process,
  as it might reveal their intent to a poll worker,
- we note that voters could deliberately spoil ballots that misstate their true intent. We note that dedicated election monitors could be allowed to use voting machines, producing printed ballots that they would be forbidden from placing in the ballot box, but which would be spoiled and then the corresponding ciphertext would be decrypted. In effect, election monitors can conduct {\em parallel testing in the field} on any voting machine at any time during the live election.
+ we note that voters could deliberately spoil ballots that misstate their true intent. We note that dedicated election monitors could be allowed to use voting machines, producing printed ballots that they would be forbidden from placing in the ballot box, but which would be spoiled and then the corresponding ciphertext would be decrypted. In effect, election monitors can conduct {\em parallel testing in the field\/} on any voting machine at any time during the live election.
 
 
 \item {\em Provisional ballot.}
-In the case of a provisional ballot, the voter does not have the cast vs. spoil option, and must return the ballot to a poll worker, who places it into a distinct provisional ballot box. The voter may retain the receipt to see if the ballot ends up being counted.
+In the case of a provisional ballot, the voter does not have the cast vs.~spoil option, and must return the ballot to a poll worker, who places it into a distinct provisional ballot box. The voter may retain the receipt to see if the ballot ends up being counted.
 \end{enumerate}
 
 \item {\em At home (optional): Voter checks crypto.}
