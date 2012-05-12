@@ -34,10 +34,9 @@ that is used to encrypt ballots.  This should be a threshold cryptosystem
 (so that decryption capabilities are distributed to protect voter privacy)
 that has an additive homomorphic property (to allow individual encrypted ballots to
 be combined into an aggregate encryption of the tally).  An exponential
-version of the ElGamal cryptosystem satisfies the required properties.
+version of the \elgamal cryptosystem satisfies the required properties.
 
-Cryptographic key generation can be accomplished in one of two ways ---
-depending on the availability of the election trustees and the desired
+Cryptographic key generation can be accomplished in one of two ways, depending on the availability of the election trustees and the desired
 amount of robustness.  The preferred approach is a two-step process,
 but a simpler one-step process can be used if the robustness is eliminated.
 At the end of the key generation procedure, the trustees each hold a
@@ -71,8 +70,8 @@ At the end of the election, any set of trustees that achieve the pre-set quorum
 threshold use their respective private keys to decrypt the derived aggregate tally
 encryption.  This procedure is simple and efficient and can be completed
 without interaction between the trustees.  We note that the individual 
-encrypted ballots from --- which the aggregate encryption of the tallies is formed
---- are never individually encrypted.  However, each spoiled ballot {\em is}
+encrypted ballots, from which the aggregate encryption of the tallies
+is formed, are never individually encrypted.  However, each spoiled ballot {\em is}
 individually decrypted using exactly the same process that is used to decrypt
 the aggregate tally encryption.
 
@@ -107,7 +106,7 @@ trustees using corrupted devices) could publish an outcome that does
 not correspond to these ballots. As a result, we require the trustees
 to provide evidence of the correctness of the decryption operations
 that they perform.  This can also be accomplished with NIZK proofs,
-although exponential ElGamal and many other suitable cryptosystems
+although exponential \elgamal and many other suitable cryptosystems
 allow a single value to be published to enable observers to verify that
 the decryption is correct.
 
