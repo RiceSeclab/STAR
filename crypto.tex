@@ -210,6 +210,16 @@ hash chain checks and if all cryptographic proofs check, that is, if
 the ballot validity proofs check, it $c$ is computed and decrypted
 correctly, and if all spoiled ballots are decrypted correctly..
 
+\paragraph{Write-in votes}
+So far, we have not described how our cryptographic construction can
+support write-in voting. Support for write-in votes is required in Texas
+and many other states. \projname should adopt
+the vector-ballot approach~\cite{kiayias04vectorBallot}, wherein there
+is a separate homomorphic counter for the write-in slot plus
+an extended NIZK proof to ensure that the write-in slot only contains
+a string when the write-in counter is non-zero. If there are enough
+write-in votes to influence the election outcome, then the write-in slots, across the whole
+election, will be mixed and tallied.
 
 % \paragraph{Summing up} The elements described above lead to the
 % following workflow. \COP{Sum up, explaining how all elements are
