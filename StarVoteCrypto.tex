@@ -1,0 +1,629 @@
+\documentclass[prodmode]{acmsmall}
+
+\usepackage{xspace}
+\usepackage{url}
+\usepackage{amssymb}
+
+\title{STAR-Vote\\ Cryptographic Aspects}
+\author{Josh Benaloh\affil{Microsoft Research} \and Olivier Pereira\affil{Universit{\'e} catholique de Louvain}}
+
+\newcommand{\COP}[1]{{\sf [[OP: #1]]}}
+
+% Notations
+
+% Public keys
+\newcommand{\kt}{\ensuremath{k_T}\xspace}
+\newcommand{\ka}{\ensuremath{k_A}\xspace}
+\newcommand{\kal}{\ensuremath{k_{AL}}\xspace}
+\newcommand{\kc}{\ensuremath{k_C}\xspace}
+
+% Hash chain seeds
+\newcommand{\zp}{\ensuremath{zp}\xspace}
+\newcommand{\zi}{\ensuremath{zi}\xspace}
+
+% Identifiers
+\newcommand{\bst}{\ensuremath{bst}\xspace}   % Ballot style
+\newcommand{\bid}{\ensuremath{bid}\xspace}   % Ballot id
+\newcommand{\bcid}{\ensuremath{bcid}\xspace} % Ballot casting id
+\newcommand{\uid}{\ensuremath{uid}\xspace}   % Urn id
+\newcommand{\cid}{\ensuremath{cid}\xspace}   % Controller id
+\newcommand{\bmd}{\textsf{BMD}\xspace}       % BMD
+\newcommand{\bmdid}{\ensuremath{mid}\xspace} % BMD id
+\newcommand{\token}{\ensuremath{t}\xspace}   % token
+
+% Cryptographic functions
+\newcommand{\Enc}[2]{\textsf{Enc}_{#1}(#2)\xspace} % Encryption
+\newcommand{\CCEnc}[2]{\textsf{CCEnc}_{#1}(#2)\xspace} % Commitment Consistent Encryption
+\newcommand{\CCExt}[1]{\textsf{CCExt}(#1)\xspace} % Commitment Extraction
+\newcommand{\hash}{\ensuremath{\mathcal{H}}\xspace} % Hash function 
+
+% Variables
+\newcommand{\vote}{\ensuremath{v}\xspace} % Vote
+\newcommand{\cv}{\ensuremath{c_v}\xspace} % Encryption of vote
+\newcommand{\cpv}{\ensuremath{c'_v}\xspace} % Shuffled encryption of vote
+\newcommand{\cpva}{\ensuremath{c^{'A}_v}\xspace} % Re-encrypted shuffled votes
+\newcommand{\pcv}{\ensuremath{\mathbf{c_v}}\xspace} % Encryption of the product of the votes
+\newcommand{\cb}{\ensuremath{c_{\bid}}\xspace} % Encryption of ballot id for auditors
+\newcommand{\cpb}{\ensuremath{c_{\bid}}\xspace} % Shuffled encryption of ballot id for auditors
+\newcommand{\cbc}{\ensuremath{c^C_{\bcid}}\xspace} % Encryption of ballot casting id for controller
+\newcommand{\cpbc}{\ensuremath{c^{'C}_{\bcid}}\xspace} % Encryption of ballot casting id for controller
+
+\newcommand{\G}{\ensuremath{\mathbb{G}}\xspace} % Group
+
+
+
+\begin{document}
+\maketitle
+\section{Election Process}
+\label{sec:election-process}
+
+\subsection{Entities}
+
+We have parties assuming 3 different roles:
+\begin{description}
+\item[Voters] submit votes and want to be able to perform various audit operations. 
+\item[Trustees] compute the election outcome and are responsible
+  of the privacy of the votes.
+\item[Internal Auditors] are responsible of doing internal audit
+  operations. This in particular includes running a risk-limiting
+  audit.
+\end{description}
+
+We also have devices assuming 4 different roles:
+\begin{description}
+\item[Ballot Marking Devices] interact with the voters in order
+  to produce ballots, under electronic and paper format.
+\item[Urns] receive the paper ballots and notify of this
+  reception.
+\item[Auditing Stations] can be used by voter in order to challenge
+  ballot marking devices.
+\item[The Controller] orchestrates the various devices in a voting
+  office. 
+\end{description}
+
+
+\subsection{Setup}
+\label{sec:setup}
+
+
+The following values are created an published before the election
+starts.
+\begin{enumerate}
+\item Trustees produce an election public key \kt for a threshold
+  commitment consistent encryption scheme~\cite{CPP13}.
+\item The controller produces a public key \kc for an encryption
+  scheme.
+\item Two unique hash chain seeds $\zp_0$ and $\zi_0$, one for the
+  public audit part and one for the internal audit part. These seeds
+  are computed as cryptographic hashes of a string representing in a
+  unique, unambiguous and unpredictable way the description of the
+  election, to which is concatenated a special string indicating the
+  chain in which that seed must be
+  used. 
+% This includes the election name, date,
+  % the description of all races, ballot formats, \dots The inputs of
+  % the hash function also include an unpredictable public salt chosen
+  % shortly (a few days) before the beginning of the election in
+  % order to limit the amount of time that attackers might have to
+  % precompute specific collisions on the hash function.
+\end{enumerate}
+The unpredictability may result from poll workers jointly rolling
+dices on the election morning in each polling station and entering the
+outcome of the dice rolls into the controller. 
+
+All ballot marking devices are initialized with \kt, \kc,
+$\zp_0$, $\zi_0$. The urns are initialized with \kc, $\zp_0$ and
+$\zi_0$.
+
+
+
+
+\subsection{Voter identification}
+\label{sec:voter-identification}
+When signing-in, a voter receives a token \token associated to his
+ballot style \bst. This token is made in such a way that it can be
+used only once. 
+%
+Recovery procedures are decided in the case a voter
+claims that his token was consumed by a \bmd that did not return a
+paper ballot.
+
+
+
+
+\subsection{At the Ballot Marking Device}
+\label{sec:at-ballot-marking}
+
+When entering the booth, the voter enters his token and the \bmd
+displays an empty ballot of style \bst, so that the voter can make his
+selection $\vote$.
+
+% When entering the booth, the voter presses a ``Start'' button on the Ballot Marking Device (BMD). That makes the BMD print a unique random ballot identification number (BID) in such a way that the voter is able to tear up that part of the ballot if the BMD stops working, as an evidence that he did 
+
+% \COP{How do we prevent a cheating machine for randomly refusing to print ballots that go in one direction and being able to detect that behavior against the behavior of a voter who would like to get a chance to cast two ballots?}
+
+The \bmd processes these choices as follows: 
+\begin{itemize}
+\item It broadcasts the information that the token introduced by the
+  user is consumed.
+\item It selects an unpredictable ballot identifier $\bid$ (e.g., as a
+  UUID.) This \bid must be kept secret and will be part of the risk
+  limiting audit trail.
+\item It selects a unique ballot casting identifier \bcid
+  (possibly as the concatenation of the \bmdid and a counter). This
+  \bcid will be used to track whether the ballot made its way to the urn. 
+\item It computes $\cbc = \Enc{\kc}{\bcid}$, which will be 
+  used by the controller to link the paper and electronic ballot.
+\item It computes $\cv = \CCEnc{\kt}{\vote, \zp_0}$ and a vector $\cb$
+  of ciphertexts that encrypt $\hash(\bid \| r_i)$ with $\kt$ for each
+  race $r_i$. 
+\item It broadcasts a message that contains the identifier of the
+  ballot marking device $\bmdid$, the time $t$, $\bst$, $\cbc$,
+  $\cb$, $\cv$ and a hash $\zi_i := \hash(\zi_{i-1}, \bmdid, t,
+  \bst, \linebreak[4] \cbc, \cb, \cv)$ for inclusion in the internal audit trail.
+\item It prints a ballot made of two pieces that can be easily taken
+  apart. The first part, contains a human readable summary of \vote
+  and a machine readable version (as a 1D barcode) of $\bid$, $\bcid$
+  and the ballot style $\bst$ (if the ballot is made of multiple
+  pages, then the page number is concatenated to the $\bst$). The
+  second part is a take home receipt that contains a human readable
+  version of the election description, the time $t$ and $\zp_i :=
+  \hash(\zp_{i-1}, \bmdid, t, \CCExt{\cv})$. In order to
+  simplify the audit process, the first 5 symbols of $\zp_i$ are
+  printed in bold and a bit separated from the other symbols. At
+  verification time, the voter will then be invited to search for his
+  receipt based on these 5 characters and to check whether the reply
+  contains the rest of the hash.
+\end{itemize}
+
+When receiving this, the controller decrypts $\cbc$ and appends the
+pair $(\bcid, \zp_i)$ into a local table, until a ballot with that \bcid
+is scanned at the urn. Note that this table should not appear in any
+log, as being able to link a \bcid to a specific time and that time to
+the time at which a voter submitted a specific ballot could violate
+the vote privacy during the internal audit process. In case of
+problem, the encrypted version of the \bcid still appears in all logs,
+which should provide the information needed if an investigation is needed.
+
+\subsection{Challenging the Ballot Marking Device}
+\label{sec:chall-ball-mark}
+
+If the voter wants to challenge the \bmd, it brings the printed ballot
+to a pollworker. The pollworker now proceeds as follows: 
+\begin{itemize}
+\item He physically stamps the ballot to mark it as spoiled, and links
+  its different parts together in such a way that noone will be able
+  to rebuild a full ballot from parts of different ballots in an
+  unnoticeable way (possibly by stamping a unique serial number on all
+  parts of the ballot). This makes that ballot usable as evidence in
+  case of a cheating \bmd. Using specially designed paper would be
+  desirable as well, in order to make forgeries harder. 
+\item He scans the $\bcid$ so that the ballot is recorded to be tallied
+  as part of the spoiled ballots urn. This recording process happens
+  in the same way as a normal casting process, except that a
+  ``spoiled'' flag appears in all messages included in the hash
+  chain. (This scanning step is optional.  Its goal is to facilitate,
+  as a human factor verification, the counting of the number of
+  spoiled ballots against the number of voters who leave the voting
+  office without casting their ballot.)
+\item He gives the ballot back to the voter. 
+\end{itemize}
+
+Later, at tallying time, the spoiled ballots will all be decrypted and
+posted on a bulletin board for voter verification. Any voter who
+either sees that his ballot does not appear decrypted on the board, or
+that the published decryption does not match the human readable
+choices on his ballot, is invited to complain. 
+
+\COP{Talk about how to deal with the complain.}
+
+\subsection{Casting a Ballot}
+\label{sec:casting-ballot}
+
+If the voter is happy with the ballot printed by the \bmd, it brings
+it to the urn. There, the two pieces of the ballot are split, the part
+containing the machine-readable \bcid is scanned and placed into the
+urn, while the other part containing the take-home receipt is kept by
+the voter. 
+
+The urn computes $\cpbc = \Enc{\kc}{\bcid}$ and sends it to the
+controller, together with $\zi_i = \hash(\zi_{i-1}, t, \uid,
+\cpbc)$. The controller decrypts \cpbc and search for \bcid in its
+local ballot table. If \bcid is not in the table, then it triggers an
+alert. Otherwise, if it finds a $(\bid, z)$ pair in its table, it
+removes it from the table, broadcasts $z$ and $\zi_i =
+\hash{H}(\zi_{i-1}, t, \cid, z)$, which indicates that the ballot
+that is associated to $z$ in the hash chain must be included in the
+tally.
+
+\subsection{Tallying process}
+\label{sec:tallying-process}
+
+At the end of the day, all $\cv$'s that have been marked as to be
+included for the tally are checked for validity and aggregated into an
+encryption $\pcv$ of the tally. This tally is then jointly decrypted
+by the trustees and published. (This is done as needed for the
+different races, ballot styles, \dots)
+
+Then, $\CCExt$ is applied to all $\cv$ ciphertexts and the result is
+published with all the information needed to check the $\zp$ hash
+chain, and the trustees publish the information that is needed to
+prove that the tally is consistent with the $\CCExt{\cv}$'s.
+
+Besides, the trustees also jointly verifiably decrypt and publish the
+content of all spoiled ballots. 
+
+\subsection{Audit of the Electronic Process}
+\label{sec:publ-audit-electr}
+
+Anyone can perform a number of verifications from the published information: 
+\begin{enumerate}
+\item check the validity of the published $\CCExt{\cv}$'s;
+\item check that the tally is consistent with the published $\CCExt{\cv}$'s;
+\item check the validity of the $\zp$ hash chain; 
+\item check the number of ballots against the number of voters if the
+  information is public.
+\end{enumerate}
+
+Furthermore, voters are invited to check whether the $\zp_i$ value
+printed on their receipt appears in the list of ballots included in
+the tally. 
+
+All published information is available through an easy to access web
+API in order to ease the design of independent auditing tools, but
+also as a big signed document that commits the election organizers on
+the posted values.
+
+If any of these verification fails, people should complain.
+
+\COP{Discuss how to deal with these complains. }
+
+\subsection{Audit of the Paper Ballots}
+\label{sec:risk-limiting-audit}
+
+After having checked the validity of all the ballots, but before
+decrypting the election outcome, the trustees supervise (or perform),
+contest by contest, a shuffle of all $(\cb, \cv)$ pairs corresponding
+to valid ballots, yielding a list of $(\cpb, \cpv)$ pairs. This
+shuffle is performed in an optimistic way and does not need to be
+verifiable. As a result, it can be performed extremely efficiently:
+all reencryption ciphertexts can be precomputed as $\Enc{\kt}{0}$,
+leaving only a bunch of multiplications to be performed at tallying
+time.
+
+After completion of this shuffle, the trustees decrypt all \cpv and
+$\cpb$ tuples, at the same time as they decrypt the election
+outcome. This decryption yields, for each race $r_i$, a list that
+contains $\hash(bid\|r_i)$ and the cleartext choices that should be
+those on the paper ballot $\bid$ for race $r_i$. This table is made
+available to all people and observers who take part to the
+risk-limiting audit. Note that, thanks to the use of the hash
+function, noone is able to decide which race results belong to the
+same ballot: this can only be recovered by someone who knows the \bid,
+which can be learned from the paper ballots. But, in that case, the
+full ballot is exposed anyway.
+
+It may be desirable to publicly commit to that table. However, the
+$\hash(bid\|r_i)$ should then be removed as a voter who would have
+recorded his \bid could use it to prove that he voted in some
+way. This is not a problem regarding insiders, as it does not
+introduce any weakening of the privacy of the votes with respect to
+them.
+
+From this table, a risk limiting audit can take place. One way of
+doing it is as follows. Make sure that all hashes are unique and that
+the table contains as many races as we should have from the paper
+ballots, then repeat as long as decided for the audit:
+\begin{enumerate}
+\item verifiably select a random paper ballot in the urn;
+\item read its \bid and search for $\hash(\bid\|r_i)$ values in the
+  table for all races $r_i$ present on the ballot;
+\item compare the corresponding plaintexts to the paper ballot.
+\end{enumerate}
+
+Proper care should also be taken to make sure that it is not feasible
+to inspect all paper ballots in search of a specific pattern.%  It seems
+% much easier to have this kind of control on paper ballots than on an
+% electronic record on a computer.
+
+\section{Cryptographic algorithms}
+
+For practical use, we target using:
+\begin{itemize}
+\item Encryption schemes that come with a simple distributed/threshold
+  key generation procedure, in order to simplify and limit the risks
+  of error. In this context, encryption schemes that allow computing
+  in prime order groups are of special interest. 
+\item A security level equivalent to at least 256-bits. This applies
+  for the output size of hash functions (e.g., SHA256 or Keccak) and
+  the order of the groups in which we would compute (see
+  \cite{keylength} for instance.)
+\end{itemize}
+
+We discuss some concrete proposals below. 
+
+\subsection{Key generation}
+\label{sec:key-generation}
+
+We use groups with a public generator of prime order $q$. In all the
+schemes we discuss, the public key is a sequence of elements of the
+form $g^x$ and the private key is a sequence of corresponding $x$,
+possibly shared between a set of key holders.
+
+This can be done in a very simple way in the case of distributed
+(non-threshold) key generation. Let $U_1, \dots, U_n$ be the set of
+key holders and $l$ be a unique election identifier. $U_i$ proceeds as
+follows:
+\begin{enumerate}
+\item select $(x_i, r_i) \leftarrow \mathbb{Z}^2_q$;
+\item publish $g^{x_i}$, and the Schnorr proof made of $c_i=
+  \hash(l, g^{x_i}, g^{r_i})$ and $f_i= r_i + c_ix_i$.
+\end{enumerate}
+Everyone can now verify that $c_i = \hash(l, g^{x_i},
+g^{f_i}/(g^{x_i})^{c_i})$ and compute the public key element as
+$g^x = \prod_i g^{x_i}$.
+
+The key benefit of this approach is that it requires a single round by
+the key holders and does not require any private communication between
+key holders. A single key loss is however sufficient to make it
+infeasible to decrypt any ciphertext.
+%
+Various threshold key generation procedures exist but are much more
+demanding~\cite{GJKR07}.
+
+\COP{Helios uses distributed key generation, which is already often
+  complicated to organize (trustees availability, understanding of the
+  procedure, \dots) especially as it is important to minimize the
+  supervision at that point for privacy reasons. But there is a clear
+  fear of losing a key at some point as well. This is often mitigated
+  by pairing the trustees and then having at least two copies of each
+  key. It would be an interesting effort to see how to organize actual
+  threshold key generation in a usable way.}
+
+We want a commitment consistent encryption scheme for the trustees,
+that makes it simple to have verifiable encryption and decryption
+procedures. 
+
+\subsection{Encryption of 0/1 values}
+\label{sec:encryption-trustees}
+
+The scheme must also be additively homomorphic and it should be
+feasible to decrypt the sum of all votes efficiently.
+
+The most effective way to do this seems to encrypt all choices
+independently and, for validity, to prove that each ciphertext
+encrypts a 0 or a 1 (assuming approval voting). All unregistered
+write-ins can be aggregated in a single candidate, which prevents
+having a full count for them individually. We hope that the number of
+votes they will get will be small enough to not require decrypting
+write-in ciphertexts in the end. 
+
+We describe here two ways to verifiably encrypt and decrypt a 0 or a
+1. The first involves simpler algebraic operations (basic modular
+arithmetic is sufficient) but is less robust from a confidentiality
+point of view. The second offers stronger resilience to mistakes by
+trustees, hacking and advances in computational power and
+cryptanalysis, but involves more sophisticated algebraic operations
+(elliptic curve point operations for voting and pairing evaluation for
+auditing.)
+
+\subsubsection{ElGamal encryption}
+\label{sec:elgamal-encryption}
+
+The simplest choice for encryption is to use exponential ElGamal. 
+\begin{itemize}
+\item The public key is a single group element $h = g^x$ generated as
+suggested above, in a distributed or threshold way.
+\item A choice $m$ is encrypted as follows: choose $r \leftarrow
+\mathbb{Z}_q$ and compute $(\alpha, \beta) = (g^r, g^mh^r)$.
+\item The fact that a ciphertext encrypts 0 or 1 is proven by adding
+the following disjunctive Chaum-Pedersen proof: select $c_{1-m}
+\leftarrow \mathbb{Z}_{2^{256}}$ and $f_{1-m} \leftarrow
+\mathbb{Z}_q$, compute $A_{1-m} = g^{f_{1-m}}/(\alpha)^{c_{1-m}}$ and
+$B_{1-m} = h^{f_{1-m}}/(\beta/g^{1-m})^{c_{1-m}}$, select $s
+\leftarrow \mathbb{Z}_q$, compute $A_m = g^s$ and $B_m = h^s$, then $c
+= \hash(\zp_0, \alpha, \beta, A_0, B_0, A_1, B_1)$. Eventually,
+compute $c_m = c - c_{1-m}$ and $f_m = s + c_mr$. The proof is made of
+$c_0, c_1, f_0, f_1$.
+\item Decryption proceeds by computing a decryption factor $\delta =
+\alpha^x$. Then, $m$ can be computed as the discrete logarithm of
+$\beta/\delta$ in basis $g$.
+\item The correctness of the decryption can be proven by adding the
+following proof. Select $s \leftarrow \mathbb{Z}_q$, compute and
+publish $c = \hash(\zp_0, \alpha, \delta, g^s, h^s)$ and $f = s
++ cx$.
+\end{itemize}
+
+Several observations here: 
+\begin{description}
+\item[Group choice] The group used here can either be a 256 bits prime
+  order subgroup of $\mathbb{Z}_p^*$ where $|p| = 2048$ (or even 3248
+  for general long-term protection) or a 256 bits prime order group on
+  an elliptic curve. Actual choices for these groups are proposed in
+  various places (e.g., \cite{rfc5114,dss}). Explicit formula for
+  elliptic curve operations are widely available as
+  well~\cite{hyperelliptic}. Elliptic curves require more
+  sophisticated algebra but offer ciphertexts that are typically
+  $\approx$ 8--10 times smaller for the same security level.
+\item[Discrete log extraction] We use exponential ElGamal in order to
+  have an additively homomorphic encryption scheme. As a result, the
+  decryption procedure involves extracting a discrete logarithm (DL)
+  in a fixed base. As the number of voters is an upper bound on this
+  DL, an exhaustive search is easy. The full list of values can also
+  be stored in a table in advance if desired. A middle ground consists
+  in using Shanks' baby-step giant-step algorithm. 
+\item[Distributed decryption] Distributed decryption can be done as
+  follows: each key holder computes $\delta_i = \alpha^{x_i}$ and now
+  $m$ is the DL of $\beta/\prod_i \delta_i$ in base $g$. Each key
+  holder also needs to provide a Chaum-Pedersen proof of correct
+  decryption. 
+\item[\textsf{CCExt}] The \textsf{CCExt} function is defined here as
+  the identity function. As a result, when using ElGamal, the full
+  ciphertexts are included as part of the public audit trail \zp. This
+  may result in a full loss of the privacy of the votes if the
+  trustees somehow lose their keys, if a cryptanalytic breakthrough
+  happens, or if people look at the records in a few dozen of years
+  from now when computational power will have increased enough to
+  break the encryption easily.
+\end{description}
+
+\subsubsection{PPATS encryption}
+\label{sec:ppats-encryption}
+
+The PPATS scheme~\cite{CPP13} makes it possible to have public audit trail
+perfectly hiding the votes, at the potential cost of more
+sophisticated algebraic operations. By using this scheme, the public
+audit trail does not risk helping to violate the privacy of the votes
+if keys are revealed or encryption broken.
+
+This scheme uses 3 groups of the same prime order $q$: $\G_1$, $\G_2$
+and $\G_T$, in a setting where there is an asymmetric bilinear map $e:
+\G_1 \times \G_2 \rightarrow \G_T$. We use so-called Type-3
+groups~\cite{GPS08}, so that the DDH problem on which the security of
+ElGamal relies is expected to be hard in these groups. We suppose that
+$g_1$, $g_2$ and $g_T$ generate $\G_1$, $\G_2$ and $\G_T$
+respectively. We furthermore assume that $h_2$ is a second generator
+of $\G_2$ chosen randomly and independent of $g_2$ (in practice, this
+can be done by computing $h_2$ deterministically as a cryptographic
+hash of $g_2$ for instance).
+
+\begin{itemize}
+\item The public key is a single group element $h_1 = g_1^x$
+  generated as suggested above, in a distributed or threshold way.
+\item A choice $m$ is encrypted as follows: choose $r, s \leftarrow
+  \mathbb{Z}^2_q$ and compute $(\alpha, \beta, \gamma) = (g_1^s,
+  g_1^rh_1^s, h_2^mg_2^r)$.
+
+\item The fact that a ciphertext encrypts 0 or 1 is proven by adding
+the following proofs: 
+\begin{itemize}
+\item Choose $m_c, r_c, s_c \leftarrow \mathbb{Z}^3_q$ and compute
+  $(A_c, B_c, C_c) = (g_1^{s_c}, g_1^{r_c}h_1^{s_c},
+  h_2^{m_c}g_2^{r_c})$. The proof is made of $c_c = \hash(\zp_0, \alpha, \beta,
+  \gamma, A_c, B_c, C_c)$ and $f_c = (m_c + c_cm, r_c + c_cr, s_c +
+  c_cs)$;
+\item select $c_{1-m} \leftarrow \mathbb{Z}_{2^{256}}$ and $f_{1-m}
+  \leftarrow \mathbb{Z}_q$, compute $C_{1-m} =
+  g_2^{f_{1-m}}/(\gamma/h_2^{1-m})^{c_{1-m}}$ select $r_o \leftarrow
+  \mathbb{Z}_q$, compute $C_m = g_2^{r_o}$, then $c =
+  \hash(\zp_0, \gamma, C_0, C_1)$. Eventually, compute $c_m = c
+  - c_{1-m}$ and $f_m = r_o + c_mr$. The proof is made of $c_0, c_1,
+  f_0, f_1$.
+\end{itemize}
+
+\item $\CCExt{\alpha, \beta, \gamma, c_c, f_c, c_0, c_1, f_0, f_1} =
+  (\gamma, c_0, c_1, f_0, f_1)$.
+
+\item Decryption proceeds by computing a decryption factor $\delta =
+\alpha^x$. Then, $m$ can be computed as the discrete logarithm of
+$e(\delta/\beta, g_2) \cdot e(g_1, \gamma)$ in basis $e(g_1,h_2)$.
+\item The correctness of the decryption can be proven by publishing
+  $a = \alpha^x$. (It can then be checked that $e(\beta/a, g_2) = e(g_1, \gamma/h_2^m)$.) 
+\end{itemize}
+
+Several observations here: 
+
+\begin{description}
+\item[Group choice] The most common curve choices offering the
+  properties we need are the BLS curves~\cite{BLS02,CLN11} or the BN
+  curves~\cite{BN05,PSNB11}. Various free implementations of the BN
+  curve arithmetic are
+  available~\cite{Naehrig,PBC,bnpairings}. \COP{Microsoft Redmond
+    researchers wrote very efficient software implementations for the
+    these curves.}
+\item[\textsf{CCExt}] The \textsf{CCExt} function now extracts a
+  single group element from the ciphertext, which perfectly hides the
+  vote, as well as the 0-1 validity proof, which is perfectly hiding
+  as well. So, whatever cryptography breakthrough or hacking of the
+  trustees happens, the output of \textsf{CCExt} will not leak
+  anything about the votes.
+\end{description}
+
+\subsection{Encryption of the \bid}
+\label{sec:encrypt-large}
+
+We need to encrypt larger values in various places and, most
+importantly, the $\bid$ which is a high entropy value, and needs to be
+homomorphically encrypted. The high entropy prevents using a scheme in
+exponential mode: we would not be able to extract the final DL at
+decryption time.
+
+Here are two ways to solve this: 
+\begin{enumerate}
+\item Use ElGamal on elliptic curves (not in $\mathbb{Z}_p^*$): it is
+  then easy to encode and decode integers as group elements.
+\item Generate a second ElGamal key in a different group
+  $\mathbb{Z}_p^*$ with $p=2q+1$ where $q$ is a 2047 bits prime and
+  $p$ is equal to $3 \bmod 4$. Then, squaring messages $\bmod p$ is an
+  easily decodable encoding of messages. Note that we do not want to
+  use this group everywhere, as encryption becomes 8 times more expensive.
+\end{enumerate}
+
+This suggests that elliptic curve cryptography might be more
+convenient by limiting the number of keys.
+
+% A simple way to solve this problem is to work is the
+% subgroup of order $q$ of a 2048 bits prime $p=2q+1$, where $p=3 \bmod
+% 4$. In that case, the square root extraction is easy and, if $1\leq m
+% \leq q$, then $m^2$ is an element of the group and the encryption can
+% be computed as $(g^r, m^2h^r)$. So, $\ka$ will be a key in a group of
+% 256 bits order, while $\kal$ will be a key in a group of 2047 bits
+% order.
+
+\subsection{Encryption for the controller}
+\label{sec:encrypt-contr}
+
+The encryption scheme used to send the \bcid to the controller does not
+need any homomorphic property but needs to support efficient decryption.
+
+The solutions above can be used again here, as well as more
+traditional solutions if that eases the implementation (e.g., RSA
+encryption, or hashed ElGamal).
+
+% \subsection{Verifiable shuffle}
+% \label{sec:verifiable-shuffle}
+
+% Most verifiable shuffles can be used for our purpose. The approach of
+% Terelius and Wikstr{\"o}m~\cite{Wik09,TW10} has been successfully used
+% in Helios~\cite{BGP11} and Wombat~\cite{wombat}.
+
+% Note that we actually need the shuffle (and reencryption) to be
+% verifiable in order to make sure that the list of ciphertexts that is
+% used for the risk-limiting audit contains only encryptions of 0 and 1
+% (and that they match the election outcome).
+
+% \subsection{Reencryption for the auditors}
+% \label{sec:reencrypt-audit}
+
+% The output of the mixnet has a set of ciphertexts that are encrypted
+% with the $\kt$ key. The trustees need to transform these into
+% ciphertexts encrypted with the \ka key. We show how to do this in the
+% case of distributed (non threshold) keys.
+
+
+% \begin{enumerate}
+% \item In the ElGamal case, the decryption factor is replaced by an
+%   encryption of it using \ka, that is, given a ciphertext $(\alpha,
+%   \beta)$, the trustee $U_i$ selects $r_i \leftarrow \mathbb{Z}_q$ and
+%   computes $(\alpha'_i, \beta'_i) = (g^{r_i},
+%   \ka^{r_i}/\alpha^{x_i})$. Eventually, the ciphertext $(\alpha',
+%   \beta')$ is computed as $(\prod_i \alpha'_i, \beta \cdot \prod_i
+%   \beta_i) = (g^{\sum_i r_i}, m\cdot \ka^{\sum_i r_i})$. Each trustee
+%   also proofs that this transform was performed correctly by selecting
+%   $(s_i, y_i) \leftarrow \mathbb{Z}_q$, then $c_i = \hash(\zi_0,
+%   \alpha, g^{r_i}, g^{s_i}, \ka^{s_i}/\alpha^{y_i})$ and $(f_1, f_2) =
+%   (s_i + c_i r_i, y_i + c_i x_i)$.
+% \item In the PPAT1 case, the procedure is the same: just consider the
+%   first two elements $(\alpha, \beta)$ as an ElGamal ciphertext.
+% \end{enumerate}
+
+% Note that, in both cases, this requires using the same groups and
+% encryption schemes for encryption with \kt and \ka.
+
+
+
+\bibliographystyle{plain}
+\bibliography{StarVoteCrypto}
+
+
+\end{document}
