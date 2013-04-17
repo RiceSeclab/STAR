@@ -5,8 +5,8 @@
 % \caption{The design of the \projname system. Green objects are computers, white objects are paper records, and other objects are shaded in gray. Arrows display the flow of information; green for digital information, black for paper, and dashed lines indicate that the flow is contingent on voter choice.\label{fig:design}.}
 \caption{The design of the \projname system. The voter registration
   system (left) is connected to the Internet but not to the internal
-  LAN. Voters, moving left to right, first validate their registration
-  status, then the controller issues them a PIN, printed on thermal
+  LAN. Voters, move left to right. First, the voter's registration
+  is validated. Then, the controller issues the voter a PIN, printed on thermal
   paper. The voter proceeds to any open voting terminal, enters the
   PIN, and is given the proper ballot style. The ballot summary is
   printed, and deposited into the ballot box
@@ -15,7 +15,7 @@
 \end{figure*}
 
 Figure~\ref{fig:design} shows how \projname works from the perspective
-of a voter going through the system. 
+of a voter. 
 The \projname voting system bears a resemblance to the Hart InterCivic eSlate system and to VoteBox~\cite{sandler08votebox}, in that the voting machines are networked together, 
 simplifying the movement of data. 
 Like eSlate, our design contains a networked group of voting machines that share a common judge's station with a computer like Hart InterCivic's ``Judge Booth Controller'' (JBC) that manages everything. 
@@ -36,11 +36,12 @@ a 1-D barcode). This sticker goes into a poll book which
 the voter signs, providing a backup to the online database.
 The barcode can also be read by an off-the-shelf scanner connected to
 the controller. This represents the only data flow from the outside
-world into the internal voting network, and is desirable to avoid data
-entry errors that might come from human transcription. We also note
-that nothing on this sticker is secret nor is anything unique to the
-voter. Consequently, the flow of this information does not constitute a violation
-of the voter's privacy, so long as the voter is not the only voter
+world into the internal voting network, and helps avoid data
+entry errors that might come from human transcription. 
+Nothing on this sticker is secret nor is anything unique to the
+voter. 
+Consequently, the flow of this information does not compromise
+the voter's privacy, so long as the voter is not the only voter
 with the same precinct code to vote at that polling location.
 
 Provisional voters will be indicated with a suitable prefix to their
@@ -52,8 +53,9 @@ after the voter's registration status is verified, typically not until
 at least a few days after the end of voting.)
 
 \item {\em Controller.}
-The controller scans the sticker's barcode, identifying the voter's
-precinct and ballot style. The controller then prints a 5-digit code,
+The controller scans the barcode on the sticker to identify 
+the voter's precinct and ballot style. 
+The controller then prints a 5-digit code,
 unique for the remainder of the election in this polling
 place. Holding this printout, the voter can then approach any open
 voting terminal, enter the code, and be presented with the correct
@@ -80,10 +82,10 @@ machine for each voter.
 
 \item {\em Print.} When the voter has finished making selections,
   the voting terminal prints two (possibly joined) items:
-  (1) a paper ballot which includes a human-readable summary of the voter's selections
+  (1)~a paper ballot which includes a human-readable summary of the voter's selections
   and a random (non-sequential) serial number, and
-  (2) a paper a take-home receipt that identifies the voting terminal used, the
-  time of the vote, and a short (16-20 character) hash code which
+  (2)~a paper a take-home receipt that identifies the voting terminal used, the
+  time of the vote, and a short (16-20 character) hash code that
   serves as a commitment to the vote but does not reveal its contents.
   The voting terminal also sends data about the vote and receipt
   to the judge's station. (See Section~\ref{sec:crypto} for the exact
@@ -105,24 +107,30 @@ machine for each voter.
 
 \item {\em Review printed record.}
 The voter may then review the printed record to confirm the indicated
-selections. There will be at least one offline station available that can OCR the paper record and read it back to the voter for those who cannot visually read the paper record.
+selections. 
+There will be at least one offline station available that can 
+scan the paper record and read it back to the 
+voter for those who cannot visually read the paper record.
 
 \item {\em Option: Cast or challenge/spoil.}
 After reviewing the ballot, the voter has a choice: Cast the ballot or spoil it.
  A voter might spoil the ballot because of an error (or change of heart)
  or because the voter wishes to challenge the voting terminal, demanding it to show
- that the voter's selections were correctly recorded and committed to.\footnote{
+ that the voter's selections were correctly recorded and committed to.\footnote{%
  This follows the cryptographic verification process introduced by Benaloh
- in \cite{benaloh06simple} and \cite{benaloh07evt}.}
- The two procedures are described below. Note also that there is a special procedure for provisional ballots.
+ in \cite{benaloh06simple} and \cite{benaloh07evt}.
+ }
+ The two procedures are described below. 
+ Note also that there is a special procedure for provisional ballots.
 
- Regardless of which case, the voter may keep the take-home paper receipt.
+ Regardless, the voter may keep the take-home paper receipt.
  We note that most thermal printers include a cutting device that leaves a
  small paper connection between the two sides of the cut.
  It is therefore a simple matter for the voting terminal to print a single
  sheet that the voter can easily separate into the ballot summary and the
  take-home receipt.
- We also note that ``privacy sleeves'' (i.e., simple paper folders) can protect the privacy of these printed ballots as voters carry them from the voting machine to either the ballot box, to be cast, or the judge's station, to be spoiled.
+ We also note that ``privacy sleeves'' (i.e., simple paper folders) can protect the privacy of these printed ballots as voters carry them from the voting machine either to the ballot box
+ to be cast, or to the judge's station to be spoiled.
 
 \begin{enumerate}
 \item  {\em Ballot box: cast ballot.}
@@ -139,16 +147,24 @@ and communicate this to the controller, allowing the controller to keep a record
 If the paper record is to be spoiled, the voter returns to a poll worker.
 % The record will be placed in a special sleeve so that the poll worker cannot see the selections.
 The ballot serial number is scanned so that the controller can record
-that the ballot is to be spoiled. Furthermore, the controller knows that the corresponding encrypted ballot record should never be used in a real tally. 
+that the ballot is to be spoiled. 
+This informs the controller that the corresponding encrypted ballot 
+record should not be included in contest results.
 Instead, it should be decrypted and published as such after the election is over.
-The original printed paper ballot thus corresponds to a {\em commitment\/} by the voting machine, before it ever knew it might be challenged.
- If the voting machine cannot produce a suitable proof that the ballot encryption matches the plaintext,
- then it's been caught cheating.
- Of course, for voters who don't care about verification,
- they can simply restart the process.
+The original printed paper ballot thus corresponds to a {\em commitment\/} 
+by the voting machine, before it ever ``knew'' it might be challenged.
+ If the voting machine cannot produce a suitable proof that the ballot 
+ encryption matches the plaintext,
+ then it has been caught cheating.
+ Voters who don't care about verification can simply restart the process.
  For voters who may feel uncomfortable with this process,
  as it might reveal their intent to a poll worker,
- we note that voters could deliberately spoil ballots that misstate their true intent. We note that dedicated election monitors could be allowed to use voting machines, producing printed ballots that they would be forbidden from placing in the ballot box, but which would be spoiled and then the corresponding ciphertext would be decrypted. In effect, election monitors can conduct {\em parallel testing in the field\/} on any voting machine at any time during the live election.
+ we note that voters could deliberately spoil ballots that misstate their true intent. 
+ We note that dedicated election monitors could be allowed to use voting machines, 
+ producing printed ballots that they would be forbidden from placing in the ballot box, 
+ but which would be spoiled and then the corresponding ciphertext would be decrypted. 
+ In effect, election monitors can conduct 
+ {\em parallel testing in the field\/} on any voting machine at any time during the live election.
 
 
 \item {\em Provisional ballot.}
@@ -170,9 +186,11 @@ The encrypted votes will be posted on a public ``bulletin board''
  The voter receipt corresponds to a cryptographic hash of the encrypted vote.
  A voter should be able to easily verify that this vote is present on the bulletin board.
  If a voter spoiled a ballot, that should also be visible on the bulletin board
- together with its decrypted selections.  This allows independent observers to
+ together with its decrypted selections.  
+ This allows independent observers to
  know which ballots to include in the tally and allows independent verifiers
- to check that all spoiled ballots are correctly decrypted.  Individual voters can
+ to check that all spoiled ballots are correctly decrypted.  
+ Individual voters can
  check, without any mathematics,
  that the decryptions of their own spoiled ballots match their expectations.
 \end{enumerate}
@@ -181,10 +199,11 @@ The encrypted votes will be posted on a public ``bulletin board''
 
 While this process is more cumbersome than a traditional DRE voting
 system, it has a number of advantages. By having the paper elements,
-this system can benefit from sophisticated end-to-end cryptographic
-techniques (described in Section~\ref{sec:crypto}), which can be
-audited post-election, by hand, to compare to the electronic results
-(see Section~\ref{sec:audit}). Voters also have the confidence that
+this system not only benefits from sophisticated end-to-end cryptographic
+techniques (described in Section~\ref{sec:crypto}), it also can be
+audited post-election, by hand, using a risk-limiting audit
+(see Section~\ref{sec:audit}). 
+Voters also have the confidence that
 comes from holding, verifying, and casting a tangible record of their
 votes, whether or not they trust the computers.
 
