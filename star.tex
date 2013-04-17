@@ -1,11 +1,11 @@
-\documentclass[letterpaper, 10pt, twocolumn]{article}
-\usepackage{usenix}
+\documentclass{acmsmall}
+% \usepackage{usenix}
 
 \usepackage[utf8]{inputenc}
 \usepackage{url} \urlstyle{sf}
 \usepackage{paralist, xspace}
-\usepackage{amsmath, amsfonts, amsthm}
-\usepackage[pdftex]{graphicx}
+%\usepackage{amsmath, amsfonts, amsthm}
+%\usepackage[pdftex]{graphicx}
 
 \usepackage{xcolor}
 \newcommand{\COP}[1]{{\color{red}\textsf{[[OP: #1]]}}}
@@ -13,25 +13,37 @@
 \newcommand{\projname}{STAR-Vote\xspace}
 \newcommand{\elgamal}{Elgamal\xspace}  % so we can at least standardize on one spelling
 
-\title{\projname: \\
-A Secure, Transparent, Auditable, and Reliable Voting
-System}
-
-\author{
-Josh Benaloh (Microsoft Research) \and
-Mike Byrne (Rice University) \and
-Philip Kortum (Rice University) \and
-Neal McBurnett (ElectionAudits) \and
-Olivier Pereira (Université catholique de Louvain) \and
-Philip B. Stark (University of California Berkeley) \and
-Dan S. Wallach (Rice University)}
 
 \begin{document}
-\maketitle
+% XXX add Travis people
+\author{
+% authors hidden for blind review
+Josh Benaloh
+\affil{Microsoft Research}
+Mike Byrne
+\affil{Rice University}
+Bryce Eakin
+\affil{independent researcher}
+Philip Kortum
+\affil{Rice University}
+Neal McBurnett
+\affil{ElectionAudits}
+Olivier Pereira
+\affil{Université catholique de Louvain}
+Philip B. Stark
+\affil{University of California Berkeley}
+Dan S. Wallach
+\affil{Rice University}
+}
+
+\markboth{authors blinded for review}{\projname: A Secure, Transparent, Auditable, and Reliable Voting System}
+\title{\projname: A Secure, Transparent, Auditable, and Reliable Voting System}
 
 \begin{abstract}
 \input abstract
 \end{abstract}
+
+\maketitle
 
 \section{Introduction}
 \input intro
@@ -57,7 +69,7 @@ Dan S. Wallach (Rice University)}
 \section{Conclusions and Future Work}
 \input conclusion
 
-\bibliographystyle{acm}
+\bibliographystyle{ACM-Reference-Format-Journals}
 \bibliography{votebox,security,policy,hfbib,iowa,auth,ucd-elect,shankar,arbaugh,mebane,smartphones,epstein,jhalderm,daw,stark,star}
 
 
