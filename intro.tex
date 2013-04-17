@@ -1,6 +1,7 @@
 \label{sec:intro}
 
-A decade ago, DRE voting systems came with a promise of improvement. By having a
+A decade ago, DRE voting systems promised to improve many aspects of voting. 
+By having a
 computer mediating the user's voting experience, they could ostensibly
 improve usability through summary screens and a
 variety of accessibility features including enlarged text, audio
@@ -11,38 +12,39 @@ And, of course, they were promised to be secure and reliable, tested
 and certified. In practice, much of this was wishful thinking.
 
 Many current DRE voting systems experienced their biggest sales
-volume following the demonstrated failures of punch card voting
-systems in Florida in the 2000 presidential election. The subsequent Help America Vote Act
+volume after the failures of punch card voting
+systems in Florida in the 2000 presidential election. 
+The subsequent Help America Vote Act
 provided a one-time injection of funds that made these purchases
 possible. Now, a decade later, these machines are near the end of
 their service lifetimes. 
 
-Last year, the election administration office of a large county, an
-early adopter of these DRE systems, concluded that current
-systems on the market were inadequate for their need to replace their
-end-of-life DRE systems. They were also unhappy with the
-current-generation precinct-based optical scanned paper ballot
-systems.
-for a variety of reasons. In particular, hand-marked paper ballots
-open the door to ambiguous voter intent, which this county unhappily
-had to deal with in its previous centrally-tabulated optical scan
-system. They didn't want to go back.
+Last year, the election administration office of a large county
+whose current DRE systems are approaching end-of-life
+concluded that no system on the 
+market---DRE or optical scan---meets their needs. 
+This county, an early adopter of DREs, prefers to avoid 
+hand-marked paper ballots because they
+open the door to ambiguous voter intent, a source of
+frustration in its previous centrally-tabulated optical scan
+system. 
+They didn't want to go back.
 
-Fundamentally, we were given a number of constraints in the design of \projname:
+The county's needs and preferences 
+impose a number of constraints on the design of \projname:
 \begin{compactdesc}
 \item[DRE-style UI] 
-The county had previously worked with centrally tabulated,
-    hand-marked paper ballots prior to their DRE experience, and they
-    had no desire to deal with ambiguous voter intent. DRE-style
+    Hand-marked ballots are not to be used, for the reason above.
+    DRE-style
     systems were also preferred for their ability to offer facilities for
     disabled voters.
 
 \item[Printed paper ballot summaries]
     While the DRE-style UI was
-    desired for ballot entry, printed ballots were desired for their
-    obvious security benefits, having been verified by voters, and redundancy against failures in the
+    desired for entering selections, printed ballots were desired for their
+    security benefits, verifiability by voters, and redundancy against failures in the
     electronic system. In order to save on paper, the county wished to
-    only print a list of the selected candidates, analogous to the
+    only print a list of each voter's selections, analogous to the
     summary screens on many current-generation DRE systems.
 
 \item[All-day battery life]
@@ -52,48 +54,53 @@ The county had previously worked with centrally tabulated,
 
 \item[Early voting and election-day vote centers]
     This county supports two weeks of early voting, where any voter
-    may go to any of more than 20 locations across the county. Also,
+    may vote in any of more than 20~locations. Also,
     on Election Day, any voter may go to any local polling
-    place. Voters apparently love this flexibility.
+    place. Voters report loving this flexibility.
 
 \item[COTS hardware]
     Current DRE systems are surprisingly expensive. The county wants
     to use commercially available, off-the-shelf equipment, whenever
     possible, to reduce costs and shorten upgrade cycles.
+    That is, ``office equipment''  rather than ``election
+    equipment'' should be used where possible.
 
 \item[Long ballots]
-    While voters in many countries select their candidate for member
-    of parliament and that's it, in our county, voters regularly face
-    100 or more contests, electing federal, state, and regional
-    officials as well as selecting judges and voting on propositions
+    While voters in many countries only select a candidate for member
+    of parliament, in the U.S., voters regularly face
+    100 or more contests for federal, state, and regional
+    offices; judges; propositions;
     and constitutional amendments. \projname must support very long
     ballots.
 \end{compactdesc}
 
-These constraints interact in surprising ways. Pre-printed paper
-ballots, even if we relaxed the requirement for the DRE-style user
-interface, would still be unacceptable for vote centers, which may
+These constraints interact in surprising ways. 
+Even if the county did not have a strong preference for a DRE-like UI, 
+pre-printed paper
+ballots are inefficient for vote centers, which may
 need to support hundreds or thousands of distinct ballot
 styles. Likewise, the requirement to run all-day on battery backup
 eliminates the possibility of using laser printers, which consume too
-much power\footnote{A laser printer may consume as much as 1000 watts
+much power.\footnote{%
+   A laser printer may consume as much as 1000~watts
   while printing. A reasonably good UPS, weighing 26~kg, can provide
-  that much power for only ten minutes. Since a printer must take time
-  to warm up for each page when printed one-off (perhaps 10
-  seconds total per page), as few as 60 ballots could be printed before the
-  battery would be exhausted.}.
+  that much power for only ten minutes. Since a printer must 
+  warm up for each page when printed one-off (perhaps 10
+  seconds per page), the battery might be exhausted by printing
+  as few as 60 ballots.
+ }
 
 We were charged with using the latest advances in human factors,
 end-to-end cryptography, and statistical auditing techniques, while
-keeping costs down and satisfying so many challenging constraints.
+keeping costs down and satisfying many challenging constraints.
 We want to generate quick, verifiable tallies when the election is
-over, yet enabling a variety of audit mechanisms (some
+over, yet incorporate a variety of audit mechanisms (some
 voter-verifiable, others conducted by auditors with additional
 privileges). 
 
 We were notably not required to worry about Federal and State
 certification. Of course, for \projname to go into production, these
-challenges would need to be addressed, but at least for now, our focus
+challenges need to be addressed, but at least for now, our focus
 has been on designing the best possible voting system given these
 constraints.
 
