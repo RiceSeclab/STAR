@@ -17,48 +17,85 @@ provided a one-time injection of funds that made these purchases
 possible. Now, a decade later, these machines are near the end of
 their service lifetimes. 
 
-Last year, the election administration office of Travis County, Texas, an
+Last year, the election administration office of a large county, an
 early adopter of these DRE systems, concluded that current
 systems on the market were inadequate for their need to replace their
 end-of-life DRE systems. They were also unhappy with the
-current-generation precinct-based optical scanned paper ballot systems
+current-generation precinct-based optical scanned paper ballot
+systems.
 for a variety of reasons. In particular, hand-marked paper ballots
-open the door to ambiguous voter intent, which Travis County unhappily
+open the door to ambiguous voter intent, which this county unhappily
 had to deal with in its previous centrally-tabulated optical scan
-system. They didn't want to go back. Likewise, with early
-voting and election day vote centers that must be able to give
-any voter who arrives at
-any location the proper ballot style, pre-printed paper ballots would
-be a management nightmare.
-Ballot-on-demand printing systems
-require laser printers that cannot run all day on battery backup
-systems\footnote{A laser printer may consume as much as 1000 watts
+system. They didn't want to go back.
+
+Fundamentally, we were given a number of constraints in the design of \projname:
+\begin{compactdesc}
+\item[DRE-style UI] 
+The county had previously worked with centrally tabulated,
+    hand-marked paper ballots prior to their DRE experience, and they
+    had no desire to deal with ambiguous voter intent. DRE-style
+    systems were also preferred for their ability to offer facilities for
+    disabled voters.
+
+\item[Printed paper ballot summaries]
+    While the DRE-style UI was
+    desired for ballot entry, printed ballots were desired for their
+    obvious security benefits, having been verified by voters, and redundancy against failures in the
+    electronic system. In order to save on paper, the county wished to
+    only print a list of the selected candidates, analogous to the
+    summary screens on many current-generation DRE systems.
+
+\item[All-day battery life]
+    Power failures happen. Current-generation DRE systems have
+    batteries that can last for hours. The new system must also be
+    able to operate for hours without mains power.
+
+\item[Early voting and election-day vote centers]
+    This county supports two weeks of early voting, where any voter
+    may go to any of more than 20 locations across the county. Also,
+    on Election Day, any voter may go to any local polling
+    place. Voters apparently love this flexibility.
+
+\item[COTS hardware]
+    Current DRE systems are surprisingly expensive. The county wants
+    to use commercially available, off-the-shelf equipment, whenever
+    possible, to reduce costs and shorten upgrade cycles.
+
+\item[Long ballots]
+    While voters in many countries select their candidate for member
+    of parliament and that's it, in our county, voters regularly face
+    100 or more contests, electing federal, state, and regional
+    officials as well as selecting judges and voting on propositions
+    and constitutional amendments. \projname must support very long
+    ballots.
+\end{compactdesc}
+
+These constraints interact in surprising ways. Pre-printed paper
+ballots, even if we relaxed the requirement for the DRE-style user
+interface, would still be unacceptable for vote centers, which may
+need to support hundreds or thousands of distinct ballot
+styles. Likewise, the requirement to run all-day on battery backup
+eliminates the possibility of using laser printers, which consume too
+much power\footnote{A laser printer may consume as much as 1000 watts
   while printing. A reasonably good UPS, weighing 26~kg, can provide
   that much power for only ten minutes. Since a printer must take time
   to warm up for each page when printed one-off (perhaps 10
   seconds total per page), as few as 60 ballots could be printed before the
-  battery would be exhausted.},
-which restricts their reliability.
+  battery would be exhausted.}.
 
-A group of academic experts in voting systems was assembled 
-to design a replacement system in sufficient
-detail that bids could be solicited from manufacturers to implement
-the system. Our group included experts in cryptography, auditing, and
-usability, leading to some interesting challenges and questions. We
-were given several basic constraints: The user experience must
-resemble current DRE systems, but there should be a tangible
-voter-verifiable paper ballot, printed by the machine and deposited by
-the voter into a physical ballot box. This would allow for fast machine
-tallies and statistical audits to ensure their equivalence to the
-paper records. The system must be able to run all day on battery power.
-We were free to recommend sophisticated end-to-end
-cryptographic methods, privacy-preserving risk-limiting auditing
-methods, and pretty much anything else we felt was beneficial, within
-these constraints. Of course, reducing cost was also desirable as was
-anything that might reduce the burden for poll workers or voters. The
-issue of federal or state election certification, for the purpose of
-this exercise, was considered out of scope. (Yes, it's a real
-challenge, but it wasn't our challenge.)
+We were charged with using the latest advances in human factors,
+end-to-end cryptography, and statistical auditing techniques, while
+keeping costs down and satisfying so many challenging constraints.
+We want to generate quick, verifiable tallies when the election is
+over, yet enabling a variety of audit mechanisms (some
+voter-verifiable, others conducted by auditors with additional
+privileges). 
+
+We were notably not required to worry about Federal and State
+certification. Of course, for \projname to go into production, these
+challenges would need to be addressed, but at least for now, our focus
+has been on designing the best possible voting system given these
+constraints.
 
 %%% Local Variables: 
 %%% mode: latex
