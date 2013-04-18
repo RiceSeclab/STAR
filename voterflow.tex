@@ -118,10 +118,13 @@ voter for those who cannot visually read the paper record.
 After reviewing the ballot, the voter has a choice: Cast the ballot or spoil it.
  A voter might spoil the ballot because of an error (or change of heart)
  or because the voter wishes to challenge the voting terminal, demanding it to show
- that the voter's selections were correctly recorded and committed to.\footnote{%
- This follows the cryptographic verification process introduced by Benaloh
- in \cite{benaloh06simple} and \cite{benaloh07evt}.
- }
+ that the voter's selections were correctly recorded and committed
+ to. This process represents a novel variant on Benaloh challenges 
+\cite{benaloh06simple,benaloh07evt}; rather than asking the voter a
+``cast or challenge'' question, the voter either deposits the ballot
+in the box or not. This represents a potentially significant usability
+gain over prior variants of the Benaloh challenge.
+
  The two procedures are described below. 
  Note also that there is a special procedure for provisional ballots.
 
