@@ -2214,18 +2214,18 @@
 \acmPages{\@totalpg\@lastpg\global\advance\@totalpg-\@firstpg\global\advance\@totalpg\@ne\ifnum\the\@totalpg<\z@0\else\the\@totalpg\fi\ pages}
 
 % Reference Format
-\gdef\formatline{{\em{\@journalNameShort\ }}\@acmVolume, \@acmNumber, Article~\@acmArticle\ (\monthWord{\@acmMonth}\ \@acmYear), \@acmPages.\\ % Need Journal Name in italics - in 'ACM Reference Format' before 1. INTRODUCTION - Gerry - March 2012
-{\tt DOI:}http://dx.doi.org/10.1145/\@doi} % Gerry March 2012 - on first page in 'ACM Reference Format'
-\gdef\copyrightline{\copyright\ \@acmYear\ \@cpyright\ \$\@acmPrice}
-\gdef\doiline{{\tt DOI:}http://dx.doi.org/10.1145/\@doi} % Gerry - March 2012 - beneath copyright line
+\gdef\formatline{}
+% {\tt DOI:}http://dx.doi.org/10.1145/\@doi} % Gerry March 2012 - on first page in 'ACM Reference Format'
+% \gdef\copyrightline{\copyright\ \@acmYear\ \@cpyright\ \$\@acmPrice}
+% \gdef\doiline{{\tt DOI:}http://dx.doi.org/10.1145/\@doi} % Gerry - March 2012 - beneath copyright line
 
 % Page Style
 \mark{{}{}}
 
 \def\ps@headings{%
     \let\@mkboth\@gobbletwo
-    \def\@oddhead{{\rhfont\rightmark}\hfill{\foliofont \@acmArticle:\thepage}}%
-    \def\@evenhead{{\foliofont \@acmArticle:\thepage}\hfill{\rhfont\leftmark}}%
+    \def\@oddhead{{\rhfont\rightmark}\hfill{\foliofont \thepage}}%
+    \def\@evenhead{{\foliofont \thepage}\hfill{\rhfont\leftmark}}%
     \def\@evenfoot{\null\hfill{\rfootfont\@runningfoot}}
     \def\@oddfoot{{\rfootfont\@runningfoot} \hfill\null}%
     \let\partmark\@gobble
@@ -2262,10 +2262,10 @@
  \def\pubphrase{Publication date}
 \fi\fi\fi\fi
 
-\runningfoot{\@journalName, Vol.~\@acmVolume, No.~\@acmNumber, Article~\@acmArticle,\ \pubphrase:\ \monthWord{\@acmMonth}\ \@acmYear.}
+\runningfoot{}
 
 \def\@firstfoot{}
-\gdef\firstfoot{\@journalName, Vol.~\@acmVolume,\ No.~\@acmNumber,\ Article\ \@acmArticle,\ \pubphrase:\ \monthWord{\@acmMonth}\ \@acmYear.}
+\gdef\firstfoot{}
 
 \def\ps@titlepage{%
     \let\@mkboth\@gobbletwo
@@ -3643,13 +3643,13 @@ Online Appendix to:\par\@title\par{}}}\vskip 12\p@
 \newdef{remark}[theorem]{Remark}
 
 % Page number Panel
-\def\openartnum{\vbox to 1.125in{\vskip.125in\vfill\hbox to 26pt{\textcolor{white}{\fontfamily{\sfdefault}\fontsize{12}{7}\selectfont\bfseries\@acmArticle}\hfill}\vfill}}
-\def\closeartnum{\vbox to 1.125in{\vskip-.125in\vfill\hbox to 26pt{\textcolor{white}{\fontfamily{\sfdefault}\fontsize{12}{7}\selectfont\bfseries\@acmArticle}\hfill}\vfill}}
-\def\artnum{\vbox to 1in{\vfill\hbox to 26pt{\textcolor{white}{\fontfamily{\sfdefault}\fontsize{12}{7}\selectfont\bfseries\@acmArticle}\hfill}\vfill}}
+\def\openartnum{}
+\def\closeartnum{}
+\def\artnum{}
 %
-\def\opentab{\hbox{\vrule width45.75pt depth0pt height1.125in\hspace*{-35.5pt}\openartnum}}
-\def\normtab{\hbox{\vrule width45.75pt depth0pt height1in\hspace*{-35.5pt}\artnum}}
-\def\closetab{\hbox{\vrule width45.75pt depth0pt height1.125in\hspace*{-35.5pt}\closeartnum}}
+\def\opentab{}
+\def\normtab{}
+\def\closetab{}
 %
 \newcommand\tab{\ifcase\@articleSeq\or
 \vbox{\vskip-.125in\opentab}\or \vbox{\vskip1in\normtab}\or \vbox{\vskip2in\normtab}\or \vbox{\vskip3in\normtab}\or \vbox{\vskip4in\normtab}\or \vbox{\vskip5in\normtab}\or \vbox{\vskip6in\normtab}\or \vbox{\vskip7in\normtab}\or \vbox{\vskip8in\normtab}\or \vbox{\vskip9in\closetab}\or
