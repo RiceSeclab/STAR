@@ -5,7 +5,7 @@
 % \caption{The design of the \projname system. Green objects are computers, white objects are paper records, and other objects are shaded in gray. Arrows display the flow of information; green for digital information, black for paper, and dashed lines indicate that the flow is contingent on voter choice.\label{fig:design}.}
 \caption{The design of the \projname system. The voter registration
   system (left) is connected to the Internet but not to the internal
-  LAN. Voters, move left to right. First, the voter's registration
+  LAN. Voters move left to right. First, the voter's registration
   is validated, and a thermal printout indicates the proper ballot
   style. This moves to the controller, which scans it and issues the
   voter a PIN, again printed on thermal
@@ -25,26 +25,24 @@ Like eSlate, our design contains a networked group of voting machines that share
 \begin{enumerate}
 \item {\em Registration (pollbook).}
 The first step for the voter is to check-in with a poll worker. This
-is where voter registration is verified and the voter's precinct is
-identified so that the appropriate ballot style can be generated. 
+is where voter registration is verified and the voter's precinct and ballot style are determined. 
 The registration system, via cellular modem, notifies a centralized
 database of the voter's change in status, to eliminate any risk of
 double-voting.
 
 The registration system will
 use a thermal label printer to generate a sticker with the
-voter's name and precinct indicated (the precinct also indicated with
-a 1-D barcode). This sticker goes into a poll book which
+voter's name, precinct and ballot style indicated.  The precinct and ballot style are also indicated with
+a 1-D barcode. This sticker goes into a poll book which
 the voter signs, providing a backup to the online database.
 The barcode can also be read by an off-the-shelf scanner connected to
 the controller. This represents the only data flow from the outside
 world into the internal voting network, and helps avoid data
 entry errors that might come from human transcription. 
-Nothing on this sticker is secret nor is anything unique to the
-voter. 
+Nothing in the barcode is secret nor is it unique to the voter. 
 Consequently, the flow of this information does not compromise
 the voter's privacy, so long as the voter is not the only voter
-with the same precinct code to vote at that polling location.
+with the same precinct and ballot style to vote at that polling location.
 
 Provisional voters will be indicated with a suitable prefix to their
 precinct code, allowing the voting system to suitably distinguish
@@ -77,7 +75,7 @@ smartcards or other active electronic devices to initialize a voting
 machine for each voter.
 
 \item {\em Voting terminals.}
- The voter makes selections on the GUI (for sighted voters)
+ The voter makes selections with the GUI (for sighted voters)
  or auditory UI (for non-sighted voters).
  There is a review screen (or the auditory equivalent)
  so that the voter can confirm all selections before producing a paper record.

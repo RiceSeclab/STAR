@@ -23,8 +23,8 @@ trustee public keys such that decryptions can be performed by any $k$
 of the trustees.  This single election public key $K$ is published and
 provided to all voting terminals together with all necessary
 ballot style information to be used in the election.  
-Each voting terminal is also seeded with a start value $z_0$ that includes a
-unique identifier for both the voting office and the election.
+A start value $z_0$, which is unpredictable and unique to the election,
+is also chosen and distributed to each voting terminal for reasons discussed below.
 
 During the election, voters use voting terminals to make their
 selections.  Once selections are completed, the voting terminal
