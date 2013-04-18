@@ -63,7 +63,7 @@ observer.
 
 A cryptographic hash value of the commitment extracted from each
 ciphertext (and of a few more data, as discussed below) is also
-computed, fingerprinting the ballot to a 256 bit string, which is
+computed, fingerprinting the ballot to a 256 bit string, an abridged form of which is
 provided to the voter in a human readable form as part of the
 take-home receipt. All the hashes and commitments are computed and
 posted on a publicly accessible web page, as soon as the polls are
@@ -71,7 +71,7 @@ closed. This web page is digitally signed by the election office using
 a traditional signature key.
 
 The posting of all the hashes gives all voters the ability to verify
-that their ballots have been recorded properly.  The commitments that
+that their ballots have been recorded properly.  The commitments
 can also be checked for consistency with the hashes and used to
 confirm the homomorphic aggregation of the individual ballots into a
 single encryption of the sum of the ballots, which constitutes an
@@ -143,13 +143,13 @@ day.
 % the polls in order to reduce the time frame during which a malicious
 % party could prepare an attack.
 
-From this seed, all elections event are chain hashed, with $z_{i+1}$
+From this seed, all election events are chain hashed, with $z_{i+1}$
 being computed as a hash of $z_i$ concatenated to the id of the
 machine on which the event happens and to the event content. Two such
 chains are maintained and properly separated. One is internal and
 contains the full election data, including the encryption of the
-votes, the casting time of each paper ballot, the information on
-machines being added or removed,~\dots\ The second is public and
+votes, the casting time of each paper ballot, and information on
+machines being added or removed.  The second is public and
 chains the commitment extracted from all encrypted votes, together
 with time and identifiers for the election and voting machine. The
 public hash is the one actually printed on the take-home receipt. When
@@ -180,7 +180,7 @@ leads to the announced outcome.
 %
 This is achieved as follows.
 \begin{enumerate}
-\item For each ballot, the ballot marking devices select a random ballot id
+\item For each ballot, the ballot marking device selects a random ballot id sequence number
 $\bid$. This \bid is printed on the ballots as a barcode. Furthermore,
 for each race $r$ to which the voter participates, an encryption of
 $H(\bid \| r)$ is also computed and appended to the encryption of the
