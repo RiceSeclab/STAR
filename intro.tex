@@ -43,14 +43,14 @@ impose several significant constraints on the design of \projname:
     While the DRE-style UI was
     desired for entering selections, printed ballots were desired for their
     security benefits, verifiability by voters, and redundancy against failures in the
-    electronic system. In order to save on paper, the county wished to
+    electronic system. In order to save on paper and paper management, the county wished to
     only print a list of each voter's selections, analogous to the
     summary screens on many current-generation DRE systems.
 
 \item[All-day battery life]
     Power failures happen. Current-generation DRE systems have
     batteries that can last for hours. The new system must also be
-    able to operate for hours without mains power.
+    able to operate for hours without external power.
 
 \item[Early voting and election-day vote centers]
     This county supports two weeks of early voting, where any voter
@@ -66,8 +66,8 @@ impose several significant constraints on the design of \projname:
     equipment'' should be used where possible.
 
 \item[Long ballots]
-    While voters in many countries only vote in a single race in any
-    given election, in the U.S., voters regularly face
+    While voters in many countries only select a candidate for member
+    of parliament, in the U.S., voters regularly face
     100 or more contests for federal, state, and regional
     offices; judges; propositions;
     and constitutional amendments. \projname must support very long
@@ -80,8 +80,7 @@ pre-printed paper
 ballots are inefficient for vote centers, which may
 need to support hundreds or thousands of distinct ballot
 styles. Likewise, the requirement to run all-day on battery backup
-eliminates the possibility of using laser printers for printing
-ballots on demand, since laser printers consume too
+eliminates the possibility of using laser printers, which consume too
 much power.\footnote{%
    A laser printer may consume as much as 1000~watts
   while printing. A reasonably good UPS, weighing 26~kg, can provide
@@ -101,7 +100,7 @@ privileges).
 
 We were notably not required to worry about Federal and State
 certification. Of course, for \projname to go into production, these
-challenges will need to be addressed, but at least for now, our focus
+challenges need to be addressed, but at least for now, our focus
 has been on designing the best possible voting system given these
 constraints.
 
