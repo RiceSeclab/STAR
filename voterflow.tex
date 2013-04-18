@@ -86,9 +86,9 @@ machine for each voter.
   the voting terminal prints two (possibly joined) items:
   (1)~a paper ballot which includes a human-readable summary of the voter's selections
   and a random (non-sequential) serial number, and
-  (2)~a paper a take-home receipt that identifies the voting terminal used, the
+  (2)~a take-home receipt that identifies the voting terminal used, the
   time of the vote, and a short (16-20 character) hash code that
-  serves as a commitment to the vote but does not reveal its contents.
+  serves as a commitment to the vote but does not reveal its contents.\footnote{A secondary hash code with as many as 16-20 additional characters may be included for additional assurance.}
   The voting terminal also sends data about the vote and receipt
   to the judge's station. (See Section~\ref{sec:crypto} for the exact
   cryptographic design.)
@@ -170,9 +170,9 @@ by the voting machine, before it ever ``knew'' it might be challenged.
 
 
 \item {\em Provisional ballot.}
-In the case of a provisional ballot, the voter does not have the cast
-vs.~spoil option, and must return the ballot to a poll worker, who
-places it into a distinct provisional ballot box. The voter may retain
+In the case of a provisional ballot, the voter must return the ballot to a poll worker.  The voter can choose to spoil the
+balot and re-vote or to cast the ballot provisionally by
+having it placed --- under an identifying seal -- into a distinct provisional ballot box. The voter may retain
 the receipt to see if the ballot ends up being counted. Because the
 ballot box is connected to the controller over the LAN, it can also
 query the controller as to whether the ballot is provisional. In the
@@ -200,7 +200,7 @@ The encrypted votes will be posted on a public ``bulletin board''
 % << sections 2.2 and 3 should go in here somewhere >>
 
 While this process is more cumbersome than a traditional DRE voting
-system, it has a number of advantages. By having the paper elements,
+system, it has several advantages. By having the paper elements,
 this system not only benefits from sophisticated end-to-end cryptographic
 techniques (described in Section~\ref{sec:crypto}), it also can be
 audited post-election, by hand, using a risk-limiting audit
