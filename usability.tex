@@ -1,86 +1,148 @@
 \subsection{Design Considerations}
-In designing this reference voting system it was important to maximize the usability of the system within the framework of enhanced security and administrative expediency. The overall design of the system was strongly influenced by usability concerns. For example, a proposal was put forth to have all voters electronically review the paper record on a second station; this was rejected on usability grounds.
-ISO~9241 Part~11~\cite{iso1998} specifies the three metrics of usability as effectiveness, efficiency, and satisfaction, and these are the parameters we attempt to maximize in this design. 
-Effectiveness of the system means that users should be able to reliably accomplish their task, as they see it. In voting, this means completing a ballot that correctly records the candidate selections of their choice, whether that be though individual candidate selection by race, straight party voting, or candidate write-ins. 
-Efficiency measures the ability of a voter to complete the task with a minimum of effort, as measured through time on task or number of discrete operations required to complete a task. 
-Efficiency is important because users want to complete the voting task quickly 
-and voting officials are concerned about voter throughput. 
-Reduced efficiency means longer lines for waiting voters, more time in the polling booth, and higher 
-equipment costs for election officials. 
-Satisfaction describes a user's subjective assessment of the overall experience. 
-While satisfaction does not directly impact a voter's ability to cast a vote in the current election, it can have direct impact on their willingness to engage in the process of voting at all, so low satisfaction might disenfranchise voters even if they can cast their ballots effectively and efficiently. 
-How does this design seek to maximize these usability metrics? 
-For voting systems, the system must generally be assumed to be walk-up-and-use. 
-Voting is an infrequent activity for most, so the system must be intuitive enough that little to no instruction is required to use. 
-The system should minimize the cognitive load on voters, so that they can focus on making candidate selections and not on system navigation or operation. 
-The system should also mitigate the kinds of error that humans are known to make, and support the easy identification and simple correction of those errors before the ballot is cast. 
+In designing this reference voting system it was important to maximize
+the usability of the system within the framework of enhanced security
+and administrative expediency. The overall design of the system was
+strongly influenced by usability concerns. For example, a proposal was
+put forth to have all voters electronically review the paper record on a
+second station; this was rejected on usability grounds. ISO~9241
+Part~11~\cite{iso1998} specifies the three metrics of usability as
+effectiveness, efficiency, and satisfaction, and these are the
+parameters we attempt to maximize in this design. Effectiveness of the
+system means that users should be able to reliably accomplish their
+task, as they see it. In voting, this means completing a ballot that
+correctly records the candidate selections of their choice, whether that
+be though individual candidate selection by race, straight party voting,
+or candidate write-ins. Efficiency measures the ability of a voter to
+complete the task with a minimum of effort, as measured through time on
+task or number of discrete operations required to complete a task.
+Efficiency is important because users want to complete the voting task
+quickly and voting officials are concerned about voter throughput.
+Reduced efficiency means longer lines for waiting voters, more time in
+the polling booth, and higher equipment costs for election officials.
+Satisfaction describes a user's subjective assessment of the overall
+experience. While satisfaction does not directly impact a voter's
+ability to cast a vote in the current election, it can have direct
+impact on their willingness to engage in the process of voting at all,
+so low satisfaction might disenfranchise voters even if they can cast
+their ballots effectively and efficiently. How does this design seek to
+maximize these usability metrics? For voting systems, the system must
+generally be assumed to be walk-up-and-use. Voting is an infrequent
+activity for most, so the system must be intuitive enough that little to
+no instruction is required to use. The system should minimize the
+cognitive load on voters, so that they can focus on making candidate
+selections and not on system navigation or operation. The system should
+also mitigate the kinds of error that humans are known to make, and
+support the easy identification and simple correction of those errors
+before the ballot is cast.
+
 \paragraph{Why not paper?}
-Paper ballots (bubble ballots in particular) have many characteristics that make them highly usable~\cite{hfes-06,byrne-baseline}. 
-Users are familiar with paper, and most have had some experience with bubble-type item selection schemes. Voting for write-in candidates is simple and intuitive. 
-Unlike electric voting machines, paper is nearly 100\% reliable and is immune from issues of power interruption. Further, paper leaves an auditable trail, and wholesale tampering is extremely difficult. 
-However, paper is not a perfect solution. 
-Voters actually show higher satisfaction with electronic voting methods than they do with paper~\cite{everett08chi-dre-usability} and paper has significant weaknesses that computers 
-can overcome more easily. 
-First, the ambiguity that can be caused by partial marks leads to substantial problems in counting, recounting, and re-interpreting paper ballots.
-Second, voting by individuals with disabilities can be more easily accommodated using electronic voting methods (e.g., screen readers, jelly switches).
-Third, electronic voting can significantly aid in the reduction of error (e.g. undervotes, overvotes, stray marks) by the user in the voting process.
-Fourth, electronic voting can more easily support users whose first language is not English, since additional ballots for every possible language request do not have to be printed, distributed and maintained at every polling location. 
-This advantage is also evident in early voting and vote center administration; rather than having to print, transport, secure, and administer every possible ballot for every precinct, the correct ballot can simply be displayed for each voter. 
-Computers also facilitate sophisticated security and cryptography measures 
-that are more difficult to implement in a pure paper format.
-Finally, administration of the ballots can be easier with electronic formats, since vote counting and transportation of the results are more efficient.
-We have taken a hybrid approach in this design, by using both paper and electronic voting methods in order to create a voting system that retains the benefits of each medium while minimizing their weaknesses. 
+Paper ballots (bubble ballots in particular) have many characteristics
+that make them highly usable~\cite{hfes-06,byrne-baseline}. Users are
+familiar with paper, and most have had some experience with bubble-type
+item selection schemes. Voting for write-in candidates can be relatively
+simple and intuitive. Unlike electric voting machines, paper is nearly
+100\% reliable and is immune from issues of power interruption. Further,
+paper leaves an auditable trail, and wholesale tampering is extremely
+difficult. However, paper is not a perfect solution. Voters actually
+show higher satisfaction with electronic voting methods than they do
+with paper~\cite{everett08chi-dre-usability} and paper has significant
+weaknesses that computers can overcome more easily. First, the ambiguity
+that can be caused by partial marks leads to substantial problems in
+counting, recounting, and re-interpreting paper ballots. Second, voting
+by individuals with disabilities can be more easily accommodated using
+electronic voting methods (e.g., screen readers, jelly switches). Third,
+electronic voting can significantly aid in the reduction of error (e.g.
+undervotes, overvotes, stray marks) by the user in the voting process.
+Fourth, electronic voting can more easily support users whose first
+language is not English, since additional ballots for every possible
+language request do not have to be printed, distributed and maintained
+at every polling location. This advantage is also evident in early
+voting and vote center administration; rather than having to print,
+transport, secure, and administer every possible ballot for every
+precinct, the correct ballot can simply be displayed for each voter.
+Computers also facilitate sophisticated security and cryptography
+measures that are more difficult to implement in a pure paper format.
+Finally, administration of the ballots can be easier with electronic
+formats, since vote counting and transportation of the results are more
+efficient. We have taken a hybrid approach in this design, by using both
+paper and electronic voting methods in order to create a voting system
+that retains the benefits of each medium while minimizing their
+weaknesses. 
+
 \paragraph{Usability vs Security}
-Usability and security are often at odds with each other. 
-Password design is a perfect example of this tension. 
-A system that requires a user have a
-32-character password with upper and lower case letters, digits, and symbols with no identifiable words embedded might be highly secure, but it would have significant usability issues. 
-Further, security might actually be \emph{compromised} since users are likely 
-to write such a difficult password down and leave it in an insecure location 
-(e.g., stuck to the computer monitor). 
-For voting systems, 
-we must strive for maximum usability while not sacrificing the security of the system (our security colleagues might argue that we need to maximize security while not sacrificing usability). 
-In our implementation, many of the security mechanisms are invisible to the user. 
-Those that are not invisible are designed in such a way that only those users who choose to exercise the enhanced security/verifiability of the voting process are required to navigate additional tasks (e.g., ballot challenge, post-voting verification). 
-\paragraph{Error reduction}
-The use of computers in combination with paper is anticipated to reduce errors committed by voters. Because voters will fill out the ballot on electronic voting terminals, certain classes of errors are completely eliminated. For example, it will be impossible to over vote or make stray ballot marks, as the interface will preclude the selection of more than a single candidate per race. Under voting will be minimized by employing sequential race presentation, forcing the voter to make a conscious choice to skip a race~\cite{greene-thesis}. Undervotes will also be highlighted in color on the review screen, providing further opportunity for users to 
-correct accidental undervotes. 
-This review screen will also employ a novel party identification marker (described below) 
-that will allow a voter to easily discern the party for which they cast a vote in each race. 
-The use of the paper ballot (printed when the voter signals completion) provides 
-the voter with a final chance to review all choices before casting the final ballot. 
+Usability and security are often at odds with each other. Password
+design is a perfect example of this tension. A system that requires a
+user have a 32-character password with upper and lower case letters,
+digits, and symbols with no identifiable words embedded might be highly
+secure, but it would have significant usability issues. Further,
+security might actually be \emph{compromised} since users are likely to
+write such a difficult password down and leave it in an insecure
+location (e.g., stuck to the computer monitor). For voting systems, we
+must strive for maximum usability while not sacrificing the security of
+the system (our security colleagues might argue that we need to maximize
+security while not sacrificing usability). In our implementation, many
+of the security mechanisms are invisible to the user. Those that are not
+invisible are designed in such a way that only those users who choose to
+exercise the enhanced security/verifiability of the voting process are
+required to navigate additional tasks (e.g., ballot challenge,
+post-voting verification). 
+
+\paragraph{Accessibility vs Security} 
+STAR-Vote makes strategic use of paper to enhance the overall security and auditability of the voting process. From an auditability standpoint, the presence of the paper ballot allows matching of the paper and electronic records and preserves a separate physical copy apart from the electronic tally. From a security standpoint, it allows a voter to verify that the choices selected on the electronic voting terminal (DRE) have been faithfully recorded on the paper ballot (although this voter verification is not a robust as one might hope ~\cite{everett-thesis}), and challenge their vote if they choose to do so. However, the added benefits provided by the inclusion of paper come at a cost to the accessibility of the system. Visually impaired voters must now be given a way to verify the contents of printed material and be guided in the handling of that paper into the scanners and ballot boxes. Voters with mobility impairments must now handle these paper ballots with moderate dexterity in order to feed them into the scanning ballot boxes as well. Solutions to this tradeoff are still under evaluation. Many obvious solutions, such as giving voters with disabilities the option to simply cast an electronic ballot without a paper record, seriously compromise the overall security and auditability of the voting system, and also present significant privacy concerns, since voters who opt out the main flow might be easily identified. Simple but non-optimal solutions are being considered (test-to-speech scanning stations, ballot privacy sleeves and increased poll worker involvement), but we continue to investigate more elegant solutions that involve automatic paper handling mechanisms. A final design has still not been identified.
+
+\paragraph{Error reduction} 
+The use of computers in combination with paper is anticipated to reduce
+errors committed by voters. Because voters will fill out the ballot on
+electronic voting terminals, certain classes of errors are completely
+eliminated. For example, it will be impossible to over vote or make
+stray ballot marks, as the interface will preclude the selection of more
+than a single candidate per race. Under voting will be minimized by
+employing sequential race presentation, forcing the voter to make a
+conscious choice to skip a race~\cite{greene-thesis}. Undervotes will
+also be highlighted in color on the review screen, providing further
+opportunity for users to correct accidental undervotes. This review
+screen will also employ a novel party identification marker (see
+below) that will allow a voter to easily discern the party for which
+they cast a vote in each race. The use of the paper ballot (printed when
+the voter signals completion) provides the voter with a final chance to
+review all choices before casting the final ballot. 
 
 \subsection{User Interface Design Specification}
 The basic design for the UI is a standard touchscreen DRE with auditory interface for visually impaired voters and support for voter-supplied hardware controls for physical impairments (e.g., jelly switches).
+
 \paragraph{The VVSG}
-The starting point for UI specifications is the 2007 version of the Voluntary Voting System Guidelines (VVSG). These guidelines specify many of the critical properties required for a high-quality voting system user interface, from simple visual properties such as font size and display contrast to more subtle properties such as ballot layout. They also require that interfaces meet certain usability benchmarks in terms of error rates and ballot completion time. We believe that no extant commercial voting UI meets these requirements, and that any new system that could meet them would be a marked improvement in terms of usability. That said, there are some additional requirements that we believe should be met. 
+The starting point for UI specifications is the 2012 draft version 1.1 of the Voluntary Voting System Guidelines (VVSG). These guidelines specify many of the critical properties required for a high-quality voting system user interface, from simple visual properties such as font size and display contrast to more subtle properties such as ballot layout. They also require that interfaces meet certain usability benchmarks in terms of error rates and ballot completion time. We believe that no extant commercial voting UI meets these requirements, and that any new system that could meet them would be a marked improvement in terms of usability. That said, there are some additional requirements that we believe should be met. 
+
 \paragraph{Accessibility}
 While the VVSG includes many guidelines regarding accessibility, more recent research aimed at meeting the needs of visually-impaired voters~\cite{piner-11} has produced some additional recommendations that should be followed. These include:
 \begin{itemize}
-\item  The system should include an auditory interface than can be used alone or in conjunction with the visual interface. 
-\item Speech rate (as well as volume) should be adjustable by the voter. 
-\item In order to maximize intelligibility, a synthesized male voice should be used so that speed can be altered without changing pitch. 
+\item  In order  to capitalize on user preference, a synthesized male voice should be used.
 \item Navigation should allow users to skip through sections of speech that are not important to them as well as allowing them to replay any parts they may have missed or not comprehended the first time.
 \item At the end of the voting process, a review of the ballot must be included, but should not be required for the voter. 
 \end{itemize}
+
 \paragraph{Review Screens}
 Another area where the VVSG can be augmented concerns review screens. 
 Voter detection of errors (or possible malfeasance) on review screens is poor~\cite{everett07thesis}, but there is some evidence that UI manipulations can improve detection in some cases~\cite{campbell-evt09}. Thus, \projname  requires the following in addition to the requirements listed in the VVSG:
 \begin{itemize}
-\item  Full names of contests and candidates should be displayed on the review screen; 
-that is, names should be text-wrapped rather than truncated. 
+\item  Full names of contests and candidates should be displayed on the review screen; that is, names should be text-wrapped rather than truncated. 
 Party affiliation should also be displayed.
 \item Undervotes should be highlighted using an orange-colored background. 
 \item Activating (that is, touching on the visual screen or selecting the relevant option in the auditory interface) should return the voter to the full UI for the selected contest.
-\item In addition to party affiliation in text form, graphic markings should be used to indicate the state of each race: voted Republican, voted Democratic, voted Green, etc.---with a distinctive graphic for ``not voted'' as well. These graphic markings (perhaps a donkey for the Democratic Party, an elephant for the Republican Party, etc.) should be highly distinguishable from each other so that a rapid visual scan quickly reveals the state of each race.
+\item In addition to party affiliation in text form, graphic markings should be used to indicate the state of each race: voted Republican, voted Democratic, voted Green, etc.---with a distinctive graphic for ``not voted'' as well. These graphic markings should be highly distinguishable from each other so that a rapid visual scan quickly reveals the state of each race, while taking note of potential usability issues with graphics symbols~\cite{laskowski-symbols}.  Exact graphic symbols for STAR-Vote have not yet been determined.
 \end{itemize}
 
 \paragraph{Paper Record}
-The VVSG has few recommendations for the paper record. For usability, the paper record should meet VVSG guidelines for font size and should contain full names for office and candidate. 
-To facilitate scanner-based retabulations, the font should be OCR-friendly. 
-Contest names should be left-justified while candidate names should be right-justified 
-to a margin that allows for printing of the same graphic symbols used in the review screen to facilitate rapid scanning of ballots for anomalies. 
-Candidate names should not be placed on the same line of text as the contest name and a thin horizontal dividing line should appear between each office and the next in order to minimize possible visual confusion.
+The VVSG has few recommendations for the paper record. For usability,
+the paper record should meet VVSG guidelines for font size and should
+contain full names for office and candidate. To facilitate scanner-based
+retabulations, the font should be OCR-friendly. Contest names should be
+left-justified while candidate names should be right-justified to a
+margin that allows for printing of the same graphic symbols used in the
+review screen to facilitate rapid scanning of ballots for anomalies.
+Candidate names should not be placed on the same line of text as the
+contest name and a thin horizontal dividing line should appear between
+each office and the next in order to minimize possible visual confusion.
 
 \subsection{Issues that still need to be addressed}
 There are still several issues that need to be addressed in order to make the system have the highest usability. The first of these is straight party voting (SPV). SPV can be quite difficult for a voter to understand and accomplish without error, particularly if voters intend to cross-vote in one or more races~\cite{campbell-ieee}. Both paper and electronic methods suffer from these difficulties, and the optimum method of implementation will require additional research. Races in which voters are required to select more than one candidate ($k$ of $n$ races) also create some unique user difficulties, and solutions to those problems are not yet well understood. 
