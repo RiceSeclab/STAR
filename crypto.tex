@@ -31,29 +31,37 @@
 
 \newcommand{\Ext}{\ensuremath{Ext}\xspace}
 
+At its core, the cryptographic workflow of STAR-Vote follows the
+approach of Cramer, Gennaro and Schoenmakers~\cite{CGS97}, also used
+in Helios~\cite{adida09helios} and VoteBox\cite{sandler08votebox},
+among others. Cryptographic analyzes of this approach can be found
+in~\cite{BPW12,CGGI13}. We then augment this approach in various ways
+in order to ease the detection of and recovery from potential problem.   
+
 STAR-Vote keeps an electronic record of all the votes encrypted with a
 threshold cryptosystem (so that decryption capabilities are
 distributed to protect voter privacy) that has an additive homomorphic
 property (to allow individual encrypted ballots to be combined into an
 aggregate encryption of the tally).  The common exponential version of
-the \elgamal cryptosystem satisfies the required properties, even
-though stronger security is obtained by using PPATS
+the \elgamal cryptosystem \cite{EG85} satisfies the required
+properties, and stronger security is obtained by using PPATS
 encryption~\cite{CPP13}, in particular against key manipulation errors
 by the trustees and long-term security. The encryption scheme comes
 with an extraction function \Ext that, from a ciphertext, extracts a
-commitment on the encrypted value. In the case of \elgamal, this is be
-the ciphertext itself, while in the case of PPATS, it is a perfectly
-hiding homomorphic commitment.
+commitment on the encrypted value. In the case of \elgamal, this
+commitment is be the ciphertext itself, while in the case of PPATS, it
+is a perfectly hiding homomorphic commitment.
 
 Cryptographic key generation can be accomplished in one of two ways,
 depending on the availability of the election trustees and the desired
 amount of robustness. The preferred process offers general threshold
 key generation requires multiple rounds~(see \cite{GJKR07} for
 \elgamal and PPATS), but can be simplified into a single-round
-solution if redundancy is eliminated.  At the end of the key
-generation procedure, the trustees each hold a private key share that
-does not contain any information on the full private key, and the
-unique public key $K$ corresponding to those shares is published.
+solution if redundancy is eliminated (as in Helios for
+instance~\cite{adida09helios}).  At the end of the key generation
+procedure, the trustees each hold a private key share that does not
+contain any information on the full private key, and the unique public
+key $K$ corresponding to those shares is published.
 
 During the polling phase, the ballot marking devices encrypt the votes
 of each voter using the public key $K$. This encryption procedure is
@@ -61,14 +69,19 @@ randomized in order to make sure that two votes for the same
 candidates result in ciphertexts that look independent to any
 observer. 
 
-A cryptographic hash value of the commitment extracted from each
-ciphertext (and of a few more data, as discussed below) is also
-computed, fingerprinting the ballot to a 256 bit string, an abridged form of which is
-provided to the voter in a human readable form as part of the
-take-home receipt. All the hashes and commitments are computed and
-posted on a publicly accessible web page, as soon as the polls are
-closed. This web page is digitally signed by the election office using
-a traditional signature key.
+Following Benaloh~\cite{benaloh06simple}, a cryptographic hash value
+of the commitment extracted from each ciphertext (and of a few more
+data, as discussed below) is also computed, fingerprinting the ballot
+to a 256 bit string. An abridged form of which is provided to the
+voter in a human readable form as part of the take-home receipt. All
+the hashes and commitments are computed and posted on a publicly
+accessible web page, as soon as the polls are closed. This web page is
+digitally signed by the election office using a traditional signature
+key (as performed by~\cite{adida09helios}). This signature
+operation makes it infeasible to consistently modify the content of
+the web page without the help of the signer, and provides evidence
+against a malicious signer who would try to sign various versions of
+the bulletin board.
 
 The posting of all the hashes gives all voters the ability to verify
 that their ballots have been recorded properly.  The commitments
@@ -99,16 +112,17 @@ different aspects of the ballot preparation and casting.
 Since the tally does not involve the decryption of any individual
 ballot, and since the audit procedure relies on the fact that all
 counted ballots are properly formed, it is crucial to make sure that
-all the encrypted ballots that are added correspond to valid votes.
-This is achieved by requiring the ballot marking devices to compute,
-together with the encryption of the votes, a non-interactive
-zero-knowledge (NIZK) proof that each ballot is well-formed. Such a
-proof guarantees that each ciphertext encrypts a valid vote and does
-not leak any other information about the content of the vote. As a
-side benefit, this proof can be designed to make the ballots
-non-malleable, which provides an easy technique to prevent the replay
-of old ballots (i.e., reject duplicates). Traditional sigma proofs
-provide the required security properties~\cite{BPW12}.
+all the encrypted ballots that are added correspond to valid
+votes~\cite{benaloh-fischer-85}.  This is achieved by requiring the
+ballot marking devices to compute, together with the encryption of the
+votes, a non-interactive zero-knowledge (NIZK) proof that each ballot
+is well-formed. Such a proof guarantees that each ciphertext encrypts
+a valid vote and does not leak any other information about the content
+of the vote. As a side benefit, this proof can be designed to make the
+ballots non-malleable, which provides an easy technique to prevent the
+replay of old ballots (i.e., reject duplicates). Traditional sigma
+proofs provide the required security properties and are described and
+analyzed in~\cite{BPW12}.
 
 \paragraph{Hardening decryption}
 \label{sec:hardening-decryption}
@@ -130,13 +144,13 @@ voting terminals or trustees to falsify individual ballots or decryption
 operations.
 
 The detection of manipulation of encrypted ballots can be more
-effective by linking ballots with each other, using hash chaining.
-For this purpose, each ballot marking device is seeded, at the
-beginning of the election, with a public start value $z_0$ that
-includes a unique identifier for the election.  This unique identifier
-is chosen at random shortly before the election, either in a central
-way or by the poll workers themselves at the beginning of election
-day.
+effective by linking ballots with each other, using hash
+chaining~\cite{sandler07auditorium,BL11}.  For this purpose, each ballot
+marking device is seeded, at the beginning of the election, with a
+public start value $z_0$ that includes a unique identifier for the
+election.  This unique identifier is chosen at random shortly before
+the election, either in a central way or by the poll workers
+themselves at the beginning of election day.
 
 % This unique identifier should be
 % hard to predict and chosen as close as possible from the beginning of
@@ -168,15 +182,16 @@ election and whose constituents appear on the voter take-home receipts.
 \newcommand{\bid}{\ensuremath{{bid}}\xspace}
 \newcommand{\bcid}{\ensuremath{{bcid}}\xspace}
 
-The voting terminals print human-readable versions of each ballot
-summary which can be inspected for correctness by voters.  In addition
-to the cast or challenge procedure discussed above, we need to produce
-the data required for the risk-limiting audit described in
-Section~\ref{sec:audit}.
+As described in Section~\ref{sec:audit}, STAR-Vote includes a risk
+limiting audit (RLA) based on the human-readable versions of each
+ballot summary printed by the voting terminals and inspected for
+correctness by voters.  This RLA comes in addition to the cast or
+challenge procedure discussed above, and the production of the
+inputs for the RLA is an original contribution of STAR-Vote. 
 
-To this purpose, we need to commit on a full electronic record
-including a 1-to-1 mapping and evidence that this electronic record
-leads to the announced outcome.
+The requirement for running the RLA is to commit on a full electronic
+record including a 1-to-1 mapping and evidence that this electronic
+record leads to the announced outcome.
 %
 This is achieved as follows.
 \begin{enumerate}
@@ -187,7 +202,18 @@ $H(\bid \| r)$ is also computed and appended to the encryption of the
 choices.
 \item At the end of the day, and before decryption of the tallies, the
   trustees (or their delegates) shuffle and rerandomize all encrypted
-  votes, race by race. This shuffle does not need to be verifiable.
+  votes, race by race. This shuffle does not need to be verifiable,
+  even though a verifiable shuffle would improve accountability by
+  making it possible to verify that the shufflers did not cheat if it
+  happens that a discrepancy is detected during the RLA. However, in
+  the case of a non verifiable shuffle, the shufflers must save their
+  permutation and randomness until the end of the election audit. The
+  non-verifiable solution is preferred for its simplicity (verifiable
+  shuffles are particularly challenging to implement properly) and for
+  its efficiency (permutations and reencryption factors can be
+  precomputed, leaving only one multiplication to perform per
+  ciphertext in the online phase, which is convenient when millions of
+  ciphertexts have to be shuffled).
 \item When the trustees decrypt the homomorphically added votes, they
   also decrypt the output of this shuffle. For each race, this
   provides a list of elements of the form $H(\bid \| r)$ and the
@@ -213,20 +239,20 @@ The resulting cryptographic workflow is as follows.
 \begin{enumerate}
 \item The trustees jointly generate a threshold public key/private key
   encryption pair. The encryption key $K$ is published.
-\item Each voting terminal is initialized with the ballot/election
+\item Each voting terminal is initialized with the ballot and election
   parameters, the public key $K$ and seeds $z_0^p$ and $z_0^i$ that
   are computed by hashing all election parameters and a public random
-  salt.
+  salt $z_0$.
 \item When a voter completes the ballot marking process selection
-  to product a ballot $v$, the voting terminal performs the following operations: 
+  to produce a ballot $v$, the voting terminal performs the following operations: 
   \begin{enumerate}
   \item It selects a unique and unpredictable ballot identifier
     $\bid$, as well as a unique (but possibly predictable) ballot
     casting identifier \bcid.
   \item It computes an encryption $c_v = E_K(v)$ of the vote, as well
     as a NIZK proof $p_v$ that $c_v$ is an encryption of a valid
-    ballot. This proof is written to be verifiable from $\Ext(c_v)$
-    only.
+    ballot. This proof is written in such a way that it can be
+    verified from $\Ext(c_v)$ only.
   \item For each race $r_1, \dots, r_n$ to which the voter takes part, it computes
     an encryption $c_\bid = E_K(\bid \| r_1) \| \cdots \| E_K(\bid \| r_n)$. 
   \item It computes a public hash code $z^p_i = H(\bcid \| \Ext(c_v) \| p_v \|
