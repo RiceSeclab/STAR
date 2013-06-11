@@ -107,6 +107,8 @@ Yee haw. Fixed.
 > I was glad to see a usability section, but I was disappointed in the UI design specification section.  There are a list of guidelines that are stated to be additions to the VVSG 2007, but most are in the VVSG:   auditory with visual:  3.3.3.2.D, adjustable speech rate: 3.3.3.C.5, volume 3.3.3C.8, ability to skip sections: partially for referenda 3.3.3.B.5   Other recommendations are not explained well and are without citation which could easily lead to poor, even worse implementations.  For example, why orange for showing undervotes?  What shade of orange?      The recommendation about use of  graphic markings, in principle, is a good idea.  However, it is extremely difficult to design good icons, and not a good idea to suggest party symbols without some research to back this up as a good idea.  See, for example,  "Implications of Graphics on Usability and Accessibility for the Voter"
 > Benjamin Smith, Sharon J. Laskowski, Svetlana Lowry,E-Voting and Identity, Second International Conference, VOTE-ID 2009, Luxembourg, September 7-8, 2009. Proceedings; 01/2009   the recommendation is really, as mentioned at the end of that section, to allow a rapid visual scan of the voter choices.
 
+We were working off an older version of the VVSG;  this work began prior to the more recent 2012 VVSG and so what we proposed were indeed additions.  We have shortened this and clarified what has been completed and what issues are still open--for instance, we have not actually tested a set of icons yet.
+
 > There is a quite lengthy and careful discussion of the security and audit measures, which is not my main area of expertice.  I would have liked to see a more concise writeup on the security methods to leave room for a more careful discussion of the human factors issues.
 > 
 > Finally, this paper tries to take the best, known approaches to meet the requirements for a new voting system.  As such is a case study more than a research paper.  However, there is merit to show how formally stating requirements with a good analysis can lead to a better voting system architecture. Therefore I think this is a useful paper to accept.
@@ -166,6 +168,8 @@ Yee haw. Fixed.
 > 
 > "In order to maximize intelligibility, a synthesized male voice should be used so that
 > speed can be altered without changing pitch." This is still misleading. Any synthesized speech can be sped up or slowed down without changing pitch. A synthesized male voice should be used because research shows that it is preferred.
+
+Correct. Fixed.
 
 > If the vote terminal is storing votes and times, then how do you prevent an election official with access to the machines after the election from determining how every single person who used a given machine voted? This is the classic potential problem with computer voting. Voting machine vendors have at least tried (and frequently failed) to properly randomize cast vote records which would defeat the attack. By storing the votes in order, you would seem to be transforming the argument of "malware installed on the machine could record the votes in order" to "as designed, your system not only records the votes in order, but provides explicit time stamps."
 > 
