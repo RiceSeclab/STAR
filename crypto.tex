@@ -290,7 +290,7 @@ decrypted correctly.
 \paragraph{Write-in votes}
 So far, we have not described how our cryptographic construction can
 support write-in voting. Support for write-in votes is required in
-Texas and many other states. To be general-purpose, \projname adopts
+many states. To be general-purpose, \projname adopts
 the vector-ballot approach~\cite{kiayias04vectorBallot}, wherein there
 is a separate homomorphic counter for the write-in slot plus an
 encryption of the string in the write-in. If there are enough write-in
@@ -298,7 +298,7 @@ votes to influence the election outcome, then the write-in slots,
 across the whole election, will be mixed and tallied (together with
 the corresponding counters).
 
-We note that, at least in Texas, write-in candidates must be
+We note that, at least for elections in our state, write-in candidates must be
 registered in advance. It's conceivable that we could simply allocate
 a separate homomorphic counter for each registered candidate and have
 the \projname terminal help the voter select the desired ``write-in''

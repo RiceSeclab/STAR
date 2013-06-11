@@ -1,168 +1,184 @@
-===========================================================================
-                    JETS, Volume 1, Issue 1 Review #20A
-                Updated Thursday 2 May 2013 11:23:16am PDT
----------------------------------------------------------------------------
-   Paper #20: STAR-Vote: A Secure, Transparent, Auditable, and Reliable
-              Voting System
----------------------------------------------------------------------------
+> ===========================================================================
+>                     JETS, Volume 1, Issue 1 Review #20A
+>                 Updated Thursday 2 May 2013 11:23:16am PDT
+> ---------------------------------------------------------------------------
+>    Paper #20: STAR-Vote: A Secure, Transparent, Auditable, and Reliable
+>               Voting System
+> ---------------------------------------------------------------------------
+> 
+>                       Overall merit: 5. Strong accept
+>                  Reviewer expertise: 4. Expert
 
-                      Overall merit: 5. Strong accept
-                 Reviewer expertise: 4. Expert
+>                          ===== Paper summary =====
+> 
+> A highly detailed description of the requirements and architecture for the STAR-Vote system, a new system being developed by a large city in cooperation with a group of voting technology experts.  The paper addresses a wide variety of issues, including how the system will work, how audits work, usability/accessibility, etc.
+> 
+>                       ===== Comments for author =====
+> 
+> A great paper, describing many aspects of this important new voting system.
+> 
+> A few comments:
+> 
+> * Early in the paper, there should be a description of the threat model.  As you go through the discussion of the technology, an explanation of how the threat model fits with the design would be useful.  For example, what happens if someone tampers with the hardware (e.g., the point of sale device you're proposing to use)?  Or are there protections built into those devices that help?  (The word “tamper” only appears once in the paper, to my surprise.)
 
-                         ===== Paper summary =====
-
-A highly detailed description of the requirements and architecture for the STAR-Vote system, a new system being developed by a large city in cooperation with a group of voting technology experts.  The paper addresses a wide variety of issues, including how the system will work, how audits work, usability/accessibility, etc.
-
-                      ===== Comments for author =====
-
-A great paper, describing many aspects of this important new voting system.
-
-A few comments:
-
-* Early in the paper, there should be a description of the threat model.  As you go through the discussion of the technology, an explanation of how the threat model fits with the design would be useful.  For example, what happens if someone tampers with the hardware (e.g., the point of sale device you're proposing to use)?  Or are there protections built into those devices that help?  (The word “tamper” only appears once in the paper, to my surprise.)
-
-* Was ease of setup/management by pollworkers a criteria?  I didn't see that mentioned anywhere.  Many security errors happen because pollworkers don't understand what they need to do for the election to be run securely, e.g., to ensure that if the voter challenges, then the ballot is NOT inserted in the ballot box.
-
-* What happens if a voter maliciously decides to challenge the results, after the fact (i.e., to claim that their ballot ID isn't included in the list)?  How hard is it for the voter to create a fake receipt, and claim that it’s the real one?  Would using some form of special paper (e.g., watermarked) for the receipts help?
-
-* In the discussion of chain voting, you mention timeouts to limit the technique.  How long a timeout would be adequate?  I’ve seen plenty of voters who take so long to (legitimately) mark a ballot that if there was a timeout, you’d end up hurting slow voters, or if you set it long enough to avoid that problem then you leave plenty of room for chain voting.  So this seems like an inadequate remedy, and one that may cause more problems than it solves.
-
-Minor editorial stuff:
-* You say “In the event that a voter accidentally puts a provisional ballot into the ballot box, the scanner can detect this and reject the pages.”  What pages?  This is the only use of that word (other than as “web page”) – are you referring to the ballot papers?
-
-* Nit: “ballot” is misspelled as “balot” in several places.
-
-* You missed one blinding, where it says “Texas” (as if we didn’t know).
-
-===========================================================================
-                    JETS, Volume 1, Issue 1 Review #20B
-                 Updated Monday 13 May 2013 5:30:41pm PDT
----------------------------------------------------------------------------
-   Paper #20: STAR-Vote: A Secure, Transparent, Auditable, and Reliable
-              Voting System
----------------------------------------------------------------------------
-
-                      Overall merit: 3. Weak accept
-                 Reviewer expertise: 4. Expert
-
-                         ===== Paper summary =====
-
-This paper presents a realistic (and probably soon-to-be-real) protocol for verifiable elections.
-
-                      ===== Comments for author =====
-
-This may be a good protocol and a well-chosen set of design decisions, but I feel the paper needs much more thorough analysis and justification in order to be a good paper.
-
-1. There's no "further work" section at all, though there are at least two other significant works in the same space: the Scantegrity project in Takoma park (various publications) and the Pret a voter project in Victoria (EVT '12).  Clearly you've chosen to base your work on VoteBox and SOBA - I'm interested to hear why.
-
-2.  There's no real analysis of either privacy or integrity.
-(i) Integrity: This is a quite new and unusual method of combining e2e and risk limiting audits.  I'd be interested in a careful explanation of exactly what the threat model is, i.e. what an attacker has to do to manipulate the election now.  For one thing, it's not clear why you need both audits and e2e.  Sections 3.1 and 3.2 are trying to explain this, but they're full of typos and I suspect they were written by someone who didn't fully understand the protocol.  (For instance, in 3.2 it says, "The risk-limiting audit process provides an independent check that a hand count of the paper ballots matches the outcome which a hand count of the paper records would produce."  This is not helpful.)
-(ii) Privacy: Again, I'd like a clear statement of what's being assumed for the protection of ballot privacy.  You've got a voting terminal that knows how people voted and can choose to mount kleptographic attacks.  For example, it could choose the random values r_1, ..., r_n in 3(c) (p.14) to match the voting terminal identifier, date and time that the voter takes home (3(e)).  You probably know about this already, but it should be explicitly in the paper.
-
-Some details:
-- Section 3 is hard to follow.  When I got to Section 6 I finally understood that you have a carefully designed separation between (1) ballot representations that contain plaintext votes (or enough info to link to the plaintext) but no voter identification, and (2) ballot representations that are linkable to voters but contain only encrypted votes.  This wasn't clear from section 3, but I think it should be.
-- I'm confused about how the homomorphic tallying links to the SOBA audit.  Step (2) on p.14 says that the trustees rerandomize all encrypted votes, race by race, but that this shuffle doesn't need to be verifiable (I guess because it's going to be audited, while the homomorphic tally is used as the e2e output).  This begs the question: Why not do a verifiable mix and use that for both auditing and e2e?  (Again, I'm guessing you considered this and had a good reason for not doing it, but I'd like you to write it into the paper.)
-- For those of us who have struggled with the "Web bulletin board" concept, the digitally-signed publicly accessible webpage needs a bit more explanation.  You're obviously assuming that it would be caught if it tried to drop data that had already been posted (and checked) - this assumption should be explicit.
-
-Overall I think this is a good design, and I'd like to see it published.  I sympathize with the problem of marketing a system that is going to be used by real voters and officials who don't want to hear a blow-by-blow account of its vulnerabilities.  Nevertheless an academic paper needs to have a clear and complete (or as complete as possible) explanation of these things.  Unfortunately you're pretty close to the page limit - I'd suggest cutting Section 3 significantly, putting some clearer statements of the attack model and security claims into Section 6 along with the details of the design, and linking to a tech report with a more complete analysis.
-
-===========================================================================
-                    JETS, Volume 1, Issue 1 Review #20C
-                  Updated Monday 6 May 2013 2:06:22pm PDT
----------------------------------------------------------------------------
-   Paper #20: STAR-Vote: A Secure, Transparent, Auditable, and Reliable
-              Voting System
----------------------------------------------------------------------------
-
-                      Overall merit: 3. Weak accept
-                 Reviewer expertise: 3. Knowledgeable
-
-                         ===== Paper summary =====
-
-This papers describes a voting system architecture based on requirements from a county that needs to replace aging DREs with a system that better meets their requirements.  The system is basically a DRE-based sytem that uses COTS hardware with improvements to usability, the use of encryption within the voting workflow so voters can check that their ballot was counted while preserving their privacy, improved security measures and easier audits.
-
-                      ===== Comments for author =====
-
-Overall, the paper has merit because it, indeed was a collaboration between academics with usability and security expertise and election officials.  This collaboration meant that the architecture was designed taking into consideration issues throughtout the voting process, from the poll book through auditing and hence, it is a well-integrated approach.   Describing and addressing the voter flow was also key to this design: workflow is often ignored so I was glad to see it addressed.
-
-The idea using a POS terminal is an interesting one, but are we being overcome by mobile devices with long-lasting batteries? If the authors were designing in 2013, would they focus more on the use of mobile devices?     Would those also change or expand the approaches of assistive technology and accomodation described in the report.  The authors should comment on this, at least in the issues sections.
-
-There is still paper handling of the summary and receipt which presents some accessibility iand privacy issues  -- some additional discussion of the tradeoffs this presents would be interesting (how much can you reduce the paper -- a lot here, but must all solutions have some paper?
-
-I was glad to see a usability section, but I was disappointed in the UI design specification section.  There are a list of guidelines that are stated to be additions to the VVSG 2007, but most are in the VVSG:   auditory with visual:  3.3.3.2.D, adjustable speech rate: 3.3.3.C.5, volume 3.3.3C.8, ability to skip sections: partially for referenda 3.3.3.B.5   Other recommendations are not explained well and are without citation which could easily lead to poor, even worse implementations.  For example, why orange for showing undervotes?  What shade of orange?      The recommendation about use of  graphic markings, in principle, is a good idea.  However, it is extremely difficult to design good icons, and not a good idea to suggest party symbols without some research to back this up as a good idea.  See, for example,  "Implications of Graphics on Usability and Accessibility for the Voter"
-Benjamin Smith, Sharon J. Laskowski, Svetlana Lowry,E-Voting and Identity, Second International Conference, VOTE-ID 2009, Luxembourg, September 7-8, 2009. Proceedings; 01/2009   the recommendation is really, as mentioned at the end of that section, to allow a rapid visual scan of the voter choices.
-
-There is a quite lengthy and careful discussion of the security and audit measures, which is not my main area of expertice.  I would have liked to see a more concise writeup on the security methods to leave room for a more careful discussion of the human factors issues.
-
-Finally, this paper tries to take the best, known approaches to meet the requirements for a new voting system.  As such is a case study more than a research paper.  However, there is merit to show how formally stating requirements with a good analysis can lead to a better voting system architecture. Therefore I think this is a useful paper to accept.
-
-------
-Small edits:
--Spell out abbreviations at the first occurrence:  DRE, ADA, GUI, UI
-
-- In abstract:   "manuscript"  ---> "paper"
-
-- Paragraph 1 of Sec 1: "wishful thinking" is an informal term.   Instaed explain some of the issues that caused the promise to not be met so that the reader will have a better understanding of the situation.     Examples, are the rush to purchase using HAVA funds, caused a rush to design using best practices for software development, user centered design of the UIs, and security.
-
-- "disabled voters" --> "voters with disabilities"
-
-- Under early voting, "loving" is an informal term.   From what surveys or report?
-
-- Under COTS hardware,   last sentence is not a complete sentence
-
-- Under Long ballots,   not just long ballots, but also long contests?
-
-- Paragraph starting "These constraints interact..." you should mention Electronic ballot markers.    These solve the pre-printed ballot problem, but due to the battery constraint, cannot meet the power outage requirement due to the printer consuming too much power, if I understand correctly.  This is a very limiting constraint and at least should be discussed as an issue.   If not for this constraint perhaps the architecture would be quite different. And perhaps for early voting a power outage is not as much of an issue as there would be other centers available-- should discuss in the paper.
-
--There is no spacing between paragraphs which make the paper a bit difficult to read in spots.
-
-===========================================================================
-                    JETS, Volume 1, Issue 1 Review #20E
-                 Updated Monday 20 May 2013 2:23:14pm PDT
----------------------------------------------------------------------------
-   Paper #20: STAR-Vote: A Secure, Transparent, Auditable, and Reliable
-              Voting System
----------------------------------------------------------------------------
-
-                      Overall merit: 2. Weak reject
-                 Reviewer expertise: 4. Expert
-
-                         ===== Paper summary =====
-
-The paper describes a mashup of e2e computerized voting with risk-limiting audits of computer-marked paper ballots.
-
-                      ===== Comments for author =====
-
-I think the paper has improved from last year's submission, but I do not think it is over the bar for acceptance.
-
-The most critical thing missing is an explicit threat model. See, for example, Halderman et al. http://cseweb.ucsd.edu/~hovav/dist/voting-paper.pdf which lays out the types of threats an outsider poses. Since you're designing a new system from scratch, I think you would need to go further and detail insider threats and how they're addressed.
-
-Next, there is not enough analysis of how the e2e interacts with the auditing. When discrepancies are discovered, how are they resolved? In the auditing literature, the paper ballot is assumed to be the final word. In e2e systems, there is usually no paper ballot at all. How do all of the various computed hashes and various stores of plain text and cipher text interact with the auditing requirements?
-
-This is an example of a fairly pervasive problem with the paper: The level of detail is extremely varied ranging from very detailed—e.g., stating the color that undervotes should be displayed in—to almost nonexistent.
-
-I think the paper needs fairly serious restructuring. I would like to see an explicit threat model early on that is referenced throughout the discussion of the technical choices made. Then, I'd like to see the two components (e2e and auditing) described in detail (I think the full crypto protocol provides a nice overview of the crypto you employ, for example). Finally, I'd like to see analysis of how they interact, again with references to the threat model.
-
-In no particular order, here are some additional comments.
-
-This version of the paper still does not address why the contents of spoiled ballots, as opposed to challenge ballots, need to be revealed. This seems like a fairly big problem given that few people actually cast challenge ballots (and I can only imagine that the number decreases when you move to large elections with many candidates) so most are likely to be ballots where a single mistake was made.
-
-"This is achieved by requiring the ballot marking devices to compute, together with the encryption of the votes, a non-interactive zero-knowledge (NIZK) proof that each ballot is well-formed. Such a proof guarantees that each ciphertext encrypts a valid vote and does not leak any other information about the content of the vote." I suspect this last sentence was added to address reviewer #21A last year who wrote, "By using randomized encryption and giving voters a hash on their receipts, you open a substantial covert channel from malicious voting station to coercer -- the voting station can try multiple encryptions until the first few bits of the hash specify the voter's choice in a race of interest, for example." I believe the reviewers criticism holds and your claim that no other information is leaked is incorrect. In particular, in (3)(b) of "the full cryptographic protocol," you state that the NIZK only proves that the encryption is of a valid ballot.
-
-"In order to maximize intelligibility, a synthesized male voice should be used so that
-speed can be altered without changing pitch." This is still misleading. Any synthesized speech can be sped up or slowed down without changing pitch. A synthesized male voice should be used because research shows that it is preferred.
-
-If the vote terminal is storing votes and times, then how do you prevent an election official with access to the machines after the election from determining how every single person who used a given machine voted? This is the classic potential problem with computer voting. Voting machine vendors have at least tried (and frequently failed) to properly randomize cast vote records which would defeat the attack. By storing the votes in order, you would seem to be transforming the argument of "malware installed on the machine could record the votes in order" to "as designed, your system not only records the votes in order, but provides explicit time stamps."
-
-How robust is the system to errors? Can a faulty machine or malware introduce an unrecoverable error into the system? If the answer is no because you have the auditing component, then is the e2e portion necessary? If the answer is no because the e2e prevents that in all cases, then do you need the auditing? If the answer is yes, then this is a very serious flaw to have in a system which, I assume, will be deployed.
+Expanded the "coercion" section into a larger "tampering" section. We're limited by page budget, but hopefully the new material is helpful.
 
 
-===========================================================================
-                                  Comment
-   Paper #20: STAR-Vote: A Secure, Transparent, Auditable, and Reliable
-              Voting System
----------------------------------------------------------------------------
-co-Editor/Chair comment (not really a review; such comments are the norm in social science journals but apparently not in compsci conferences):
+> * Was ease of setup/management by pollworkers a criteria?  I didn't see that mentioned anywhere.  Many security errors happen because pollworkers don't understand what they need to do for the election to be run securely, e.g., to ensure that if the voter challenges, then the ballot is NOT inserted in the ballot box.
+> 
+> * What happens if a voter maliciously decides to challenge the results, after the fact (i.e., to claim that their ballot ID isn't included in the list)?  How hard is it for the voter to create a fake receipt, and claim that it’s the real one?  Would using some form of special paper (e.g., watermarked) for the receipts help?
+
+Discussed in the new threats section.
+
+> * In the discussion of chain voting, you mention timeouts to limit the technique.  How long a timeout would be adequate?  I’ve seen plenty of voters who take so long to (legitimately) mark a ballot that if there was a timeout, you’d end up hurting slow voters, or if you set it long enough to avoid that problem then you leave plenty of room for chain voting.  So this seems like an inadequate remedy, and one that may cause more problems than it solves.
+
+The clock only starts ticking once the ballot is printed. We're talking about the time to talk from voting terminal to ballot box. The paper has been clarified.
 
 
-In addition to the specific kinds of edits mentioned in the reviewers' comments for authors, some editing could be devoted to beefing up the paper's academic appeal. For instance, the sections "Hardening decryption," "Hardening the timeline," "Hardening the link between the paper and electronic election outcome" and "The full cryptographic protocol" are devoid of citations yet seem kind of technical but probably don't have anything new (I'm not competent to say anything about novelty). In any case, there seems to be little reason to believe that it all works. Citations for the pieces or for the whole discussion would surely help. Similarly citations are missing in the "Coercion" section. Also for the usability section (see the reviews). More appropriate citations could be added without harming the legibility of the discussion.
+> Minor editorial stuff:
+> * You say “In the event that a voter accidentally puts a provisional ballot into the ballot box, the scanner can detect this and reject the pages.”  What pages?  This is the only use of that word (other than as “web page”) – are you referring to the ballot papers?
+
+We meant to say "printed ballot". The paper has been clarified.
+
+> * Nit: “ballot” is misspelled as “balot” in several places.
+
+fixed.
+
+
+> * You missed one blinding, where it says “Texas” (as if we didn’t know).
+
+Yee haw. Fixed.
+> 
+> ===========================================================================
+>                     JETS, Volume 1, Issue 1 Review #20B
+>                  Updated Monday 13 May 2013 5:30:41pm PDT
+> ---------------------------------------------------------------------------
+>    Paper #20: STAR-Vote: A Secure, Transparent, Auditable, and Reliable
+>               Voting System
+> ---------------------------------------------------------------------------
+> 
+>                       Overall merit: 3. Weak accept
+>                  Reviewer expertise: 4. Expert
+
+>                          ===== Paper summary =====
+> 
+> This paper presents a realistic (and probably soon-to-be-real) protocol for verifiable elections.
+> 
+>                       ===== Comments for author =====
+> 
+> This may be a good protocol and a well-chosen set of design decisions, but I feel the paper needs much more thorough analysis and justification in order to be a good paper.
+> 
+> 1. There's no "further work" section at all, though there are at least two other significant works in the same space: the Scantegrity project in Takoma park (various publications) and the Pret a voter project in Victoria (EVT '12).  Clearly you've chosen to base your work on VoteBox and SOBA - I'm interested to hear why.
+> 
+> 2.  There's no real analysis of either privacy or integrity.
+> (i) Integrity: This is a quite new and unusual method of combining e2e and risk limiting audits.  I'd be interested in a careful explanation of exactly what the threat model is, i.e. what an attacker has to do to manipulate the election now.  For one thing, it's not clear why you need both audits and e2e.  Sections 3.1 and 3.2 are trying to explain this, but they're full of typos and I suspect they were written by someone who didn't fully understand the protocol.  (For instance, in 3.2 it says, "The risk-limiting audit process provides an independent check that a hand count of the paper ballots matches the outcome which a hand count of the paper records would produce."  This is not helpful.)
+> (ii) Privacy: Again, I'd like a clear statement of what's being assumed for the protection of ballot privacy.  You've got a voting terminal that knows how people voted and can choose to mount kleptographic attacks.  For example, it could choose the random values r_1, ..., r_n in 3(c) (p.14) to match the voting terminal identifier, date and time that the voter takes home (3(e)).  You probably know about this already, but it should be explicitly in the paper.
+> 
+> Some details:
+> - Section 3 is hard to follow.  When I got to Section 6 I finally understood that you have a carefully designed separation between (1) ballot representations that contain plaintext votes (or enough info to link to the plaintext) but no voter identification, and (2) ballot representations that are linkable to voters but contain only encrypted votes.  This wasn't clear from section 3, but I think it should be.
+> - I'm confused about how the homomorphic tallying links to the SOBA audit.  Step (2) on p.14 says that the trustees rerandomize all encrypted votes, race by race, but that this shuffle doesn't need to be verifiable (I guess because it's going to be audited, while the homomorphic tally is used as the e2e output).  This begs the question: Why not do a verifiable mix and use that for both auditing and e2e?  (Again, I'm guessing you considered this and had a good reason for not doing it, but I'd like you to write it into the paper.)
+> - For those of us who have struggled with the "Web bulletin board" concept, the digitally-signed publicly accessible webpage needs a bit more explanation.  You're obviously assuming that it would be caught if it tried to drop data that had already been posted (and checked) - this assumption should be explicit.
+
+> Overall I think this is a good design, and I'd like to see it published.  I sympathize with the problem of marketing a system that is going to be used by real voters and officials who don't want to hear a blow-by-blow account of its vulnerabilities.  Nevertheless an academic paper needs to have a clear and complete (or as complete as possible) explanation of these things.  Unfortunately you're pretty close to the page limit - I'd suggest cutting Section 3 significantly, putting some clearer statements of the attack model and security claims into Section 6 along with the details of the design, and linking to a tech report with a more complete analysis.
+> 
+> ===========================================================================
+>                     JETS, Volume 1, Issue 1 Review #20C
+>                   Updated Monday 6 May 2013 2:06:22pm PDT
+> ---------------------------------------------------------------------------
+>    Paper #20: STAR-Vote: A Secure, Transparent, Auditable, and Reliable
+>               Voting System
+> ---------------------------------------------------------------------------
+> 
+>                       Overall merit: 3. Weak accept
+>                  Reviewer expertise: 3. Knowledgeable
+
+>                          ===== Paper summary =====
+> 
+> This papers describes a voting system architecture based on requirements from a county that needs to replace aging DREs with a system that better meets their requirements.  The system is basically a DRE-based sytem that uses COTS hardware with improvements to usability, the use of encryption within the voting workflow so voters can check that their ballot was counted while preserving their privacy, improved security measures and easier audits.
+> 
+>                       ===== Comments for author =====
+> 
+> Overall, the paper has merit because it, indeed was a collaboration between academics with usability and security expertise and election officials.  This collaboration meant that the architecture was designed taking into consideration issues throughtout the voting process, from the poll book through auditing and hence, it is a well-integrated approach.   Describing and addressing the voter flow was also key to this design: workflow is often ignored so I was glad to see it addressed.
+> 
+> The idea using a POS terminal is an interesting one, but are we being overcome by mobile devices with long-lasting batteries? If the authors were designing in 2013, would they focus more on the use of mobile devices?     Would those also change or expand the approaches of assistive technology and accomodation described in the report.  The authors should comment on this, at least in the issues sections.
+> 
+> There is still paper handling of the summary and receipt which presents some accessibility iand privacy issues  -- some additional discussion of the tradeoffs this presents would be interesting (how much can you reduce the paper -- a lot here, but must all solutions have some paper?
+> 
+> I was glad to see a usability section, but I was disappointed in the UI design specification section.  There are a list of guidelines that are stated to be additions to the VVSG 2007, but most are in the VVSG:   auditory with visual:  3.3.3.2.D, adjustable speech rate: 3.3.3.C.5, volume 3.3.3C.8, ability to skip sections: partially for referenda 3.3.3.B.5   Other recommendations are not explained well and are without citation which could easily lead to poor, even worse implementations.  For example, why orange for showing undervotes?  What shade of orange?      The recommendation about use of  graphic markings, in principle, is a good idea.  However, it is extremely difficult to design good icons, and not a good idea to suggest party symbols without some research to back this up as a good idea.  See, for example,  "Implications of Graphics on Usability and Accessibility for the Voter"
+> Benjamin Smith, Sharon J. Laskowski, Svetlana Lowry,E-Voting and Identity, Second International Conference, VOTE-ID 2009, Luxembourg, September 7-8, 2009. Proceedings; 01/2009   the recommendation is really, as mentioned at the end of that section, to allow a rapid visual scan of the voter choices.
+
+> There is a quite lengthy and careful discussion of the security and audit measures, which is not my main area of expertice.  I would have liked to see a more concise writeup on the security methods to leave room for a more careful discussion of the human factors issues.
+> 
+> Finally, this paper tries to take the best, known approaches to meet the requirements for a new voting system.  As such is a case study more than a research paper.  However, there is merit to show how formally stating requirements with a good analysis can lead to a better voting system architecture. Therefore I think this is a useful paper to accept.
+> 
+> ------
+> Small edits:
+> -Spell out abbreviations at the first occurrence:  DRE, ADA, GUI, UI
+> 
+> - In abstract:   "manuscript"  ---> "paper"
+> 
+> - Paragraph 1 of Sec 1: "wishful thinking" is an informal term.   Instaed explain some of the issues that caused the promise to not be met so that the reader will have a better understanding of the situation.     Examples, are the rush to purchase using HAVA funds, caused a rush to design using best practices for software development, user centered design of the UIs, and security.
+> 
+> - "disabled voters" --> "voters with disabilities"
+> 
+> - Under early voting, "loving" is an informal term.   From what surveys or report?
+> 
+> - Under COTS hardware,   last sentence is not a complete sentence
+> 
+> - Under Long ballots,   not just long ballots, but also long contests?
+> 
+> - Paragraph starting "These constraints interact..." you should mention Electronic ballot markers.    These solve the pre-printed ballot problem, but due to the battery constraint, cannot meet the power outage requirement due to the printer consuming too much power, if I understand correctly.  This is a very limiting constraint and at least should be discussed as an issue.   If not for this constraint perhaps the architecture would be quite different. And perhaps for early voting a power outage is not as much of an issue as there would be other centers available-- should discuss in the paper.
+> 
+> -There is no spacing between paragraphs which make the paper a bit difficult to read in spots.
+> 
+> ===========================================================================
+>                     JETS, Volume 1, Issue 1 Review #20E
+>                  Updated Monday 20 May 2013 2:23:14pm PDT
+> ---------------------------------------------------------------------------
+>    Paper #20: STAR-Vote: A Secure, Transparent, Auditable, and Reliable
+>               Voting System
+> ---------------------------------------------------------------------------
+> 
+>                       Overall merit: 2. Weak reject
+>                  Reviewer expertise: 4. Expert
+
+>                          ===== Paper summary =====
+> 
+> The paper describes a mashup of e2e computerized voting with risk-limiting audits of computer-marked paper ballots.
+> 
+>                       ===== Comments for author =====
+> 
+> I think the paper has improved from last year's submission, but I do not think it is over the bar for acceptance.
+> 
+> The most critical thing missing is an explicit threat model. See, for example, Halderman et al. http://cseweb.ucsd.edu/~hovav/dist/voting-paper.pdf which lays out the types of threats an outsider poses. Since you're designing a new system from scratch, I think you would need to go further and detail insider threats and how they're addressed.
+> 
+> Next, there is not enough analysis of how the e2e interacts with the auditing. When discrepancies are discovered, how are they resolved? In the auditing literature, the paper ballot is assumed to be the final word. In e2e systems, there is usually no paper ballot at all. How do all of the various computed hashes and various stores of plain text and cipher text interact with the auditing requirements?
+> 
+> This is an example of a fairly pervasive problem with the paper: The level of detail is extremely varied ranging from very detailed—e.g., stating the color that undervotes should be displayed in—to almost nonexistent.
+> 
+> I think the paper needs fairly serious restructuring. I would like to see an explicit threat model early on that is referenced throughout the discussion of the technical choices made. Then, I'd like to see the two components (e2e and auditing) described in detail (I think the full crypto protocol provides a nice overview of the crypto you employ, for example). Finally, I'd like to see analysis of how they interact, again with references to the threat model.
+> 
+> In no particular order, here are some additional comments.
+> 
+> This version of the paper still does not address why the contents of spoiled ballots, as opposed to challenge ballots, need to be revealed. This seems like a fairly big problem given that few people actually cast challenge ballots (and I can only imagine that the number decreases when you move to large elections with many candidates) so most are likely to be ballots where a single mistake was made.
+> 
+> "This is achieved by requiring the ballot marking devices to compute, together with the encryption of the votes, a non-interactive zero-knowledge (NIZK) proof that each ballot is well-formed. Such a proof guarantees that each ciphertext encrypts a valid vote and does not leak any other information about the content of the vote." I suspect this last sentence was added to address reviewer #21A last year who wrote, "By using randomized encryption and giving voters a hash on their receipts, you open a substantial covert channel from malicious voting station to coercer -- the voting station can try multiple encryptions until the first few bits of the hash specify the voter's choice in a race of interest, for example." I believe the reviewers criticism holds and your claim that no other information is leaked is incorrect. In particular, in (3)(b) of "the full cryptographic protocol," you state that the NIZK only proves that the encryption is of a valid ballot.
+> 
+> "In order to maximize intelligibility, a synthesized male voice should be used so that
+> speed can be altered without changing pitch." This is still misleading. Any synthesized speech can be sped up or slowed down without changing pitch. A synthesized male voice should be used because research shows that it is preferred.
+
+> If the vote terminal is storing votes and times, then how do you prevent an election official with access to the machines after the election from determining how every single person who used a given machine voted? This is the classic potential problem with computer voting. Voting machine vendors have at least tried (and frequently failed) to properly randomize cast vote records which would defeat the attack. By storing the votes in order, you would seem to be transforming the argument of "malware installed on the machine could record the votes in order" to "as designed, your system not only records the votes in order, but provides explicit time stamps."
+> 
+> How robust is the system to errors? Can a faulty machine or malware introduce an unrecoverable error into the system? If the answer is no because you have the auditing component, then is the e2e portion necessary? If the answer is no because the e2e prevents that in all cases, then do you need the auditing? If the answer is yes, then this is a very serious flaw to have in a system which, I assume, will be deployed.
+> 
+
+> ===========================================================================
+>                                   Comment
+>    Paper #20: STAR-Vote: A Secure, Transparent, Auditable, and Reliable
+>               Voting System
+> ---------------------------------------------------------------------------
+> co-Editor/Chair comment (not really a review; such comments are the norm in social science journals but apparently not in compsci conferences):
+
+
+> In addition to the specific kinds of edits mentioned in the reviewers' comments for authors, some editing could be devoted to beefing up the paper's academic appeal. For instance, the sections "Hardening decryption," "Hardening the timeline," "Hardening the link between the paper and electronic election outcome" and "The full cryptographic protocol" are devoid of citations yet seem kind of technical but probably don't have anything new (I'm not competent to say anything about novelty). In any case, there seems to be little reason to believe that it all works. Citations for the pieces or for the whole discussion would surely help. Similarly citations are missing in the "Coercion" section. Also for the usability section (see the reviews). More appropriate citations could be added without harming the legibility of the discussion.
+> 
