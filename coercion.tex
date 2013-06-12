@@ -26,7 +26,7 @@ goals:
     correctness} of the election outcome, but it does help defeat
   attacks which could disable the system, destroy records, or
   otherwise cause grief to election officials running \projname.
-  VoteBox specifies that it uses pre-rendered user interfaces~\cite{yee07pvote,yee07prui}.
+  VoteBox specifies that it uses pre-rendered user interfaces~\cite{yee07pvote,yee06prui}.
   \projname should probably use this technique as well. 
 
 \item[Robustness against data loss]
@@ -41,11 +41,10 @@ goals:
 
 \item[Mega attacks]
   In the VoteBox paper, the authors considered a variety of attacks with highly capable attackers. Such attackers might run a concurrent election on parallel equipment, in an attempt to substitute the results for genuine votes. Other attackers might mount a ``booth capture'' attack, wherein armed gunmen take over a polling place and cast votes as fast as possible until the police arrive. These attacks, needless to say, are well within the ability of \projname's cryptographic and risk-limiting infrastructure to detect. The best such attackers can hope to do is, in effect, mount a denial of service attack against the election. Attackers with that as their goal can arrive at much simpler approaches and \projname has relatively little it can offer beyond any other election system in this regard.
-
-\item[Voter coercion]
-(See Section~\ref{sec:coercion}, below.)
-
 \end{compactdesc}
+
+A full consideration of threats to \projname and their corresponding countermeasures or mitigations would be far too long to fit in this paper. Instead, we focus on several areas where \projname differs from other e2e voting systems in the literature.
+
 \subsection{Coercion}
 \label{sec:coercion}
 In designing \projname, we made several explicit decisions regarding how much to complicate the protocol and impede the voter experience in order to mitigate known coercion threats.  Specifically, one known threat is that a voter is instructed to create a ballot in a particular way but to then execute a decision to cast or spoil the ballot according to some stimulus received after the ballot has been completed and the receipt has been generated.  The stimulus could come, for example, from subtle motions by a coercer in the poll site, the vibration of a cell phone in silent mode, or some of the (unpredictable) data that is printed on the voter’s receipt.  Some prior protocols have required that the receipt, although committed to by the voting device, not be visible to the voter until after a cast or spoil decision has been made (perhaps by printing the receipt face down behind a glass barrier) and configuring poll sites so that voters cannot see or be seen by members of the public until after they have completed all steps.  We could insist on similar measures here, but in an era where cell phones with video recording capabilities are ubiquitous and eyeglasses with embedded video cameras can easily be purchased, it seems unwise to {\em require} elaborate measures which mitigate some coercion threats but leave others unaddressed.

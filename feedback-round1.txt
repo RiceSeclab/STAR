@@ -79,7 +79,7 @@ We expanded the previous "coercion" section into a broader "threats" section, wh
 
 > (i) Integrity: This is a quite new and unusual method of combining e2e and risk limiting audits.  I'd be interested in a careful explanation of exactly what the threat model is, i.e. what an attacker has to do to manipulate the election now.  For one thing, it's not clear why you need both audits and e2e.  Sections 3.1 and 3.2 are trying to explain this, but they're full of typos and I suspect they were written by someone who didn't fully understand the protocol.  (For instance, in 3.2 it says, "The risk-limiting audit process provides an independent check that a hand count of the paper ballots matches the outcome which a hand count of the paper records would produce."  This is not helpful.)
 
-**Stark todo**
+Tried to clear up this text and added a new paragraph about the benefits of combining risk-limiting audits with e2e techniques.
 
 > (ii) Privacy: Again, I'd like a clear statement of what's being assumed for the protection of ballot privacy.  You've got a voting terminal that knows how people voted and can choose to mount kleptographic attacks.  For example, it could choose the random values r_1, ..., r_n in 3(c) (p.14) to match the voting terminal identifier, date and time that the voter takes home (3(e)).  You probably know about this already, but it should be explicitly in the paper.
 
@@ -88,12 +88,24 @@ We do talk about the risks of a corrupted voting terminal and the need for hardw
 > 
 > Some details:
 > - Section 3 is hard to follow.  When I got to Section 6 I finally understood that you have a carefully designed separation between (1) ballot representations that contain plaintext votes (or enough info to link to the plaintext) but no voter identification, and (2) ballot representations that are linkable to voters but contain only encrypted votes.  This wasn't clear from section 3, but I think it should be.
+
+Section 3 is attempting to motivating the problem without swamping the reader with the sort of details that come in Section 6.
+
 > - I'm confused about how the homomorphic tallying links to the SOBA audit.  Step (2) on p.14 says that the trustees rerandomize all encrypted votes, race by race, but that this shuffle doesn't need to be verifiable (I guess because it's going to be audited, while the homomorphic tally is used as the e2e output).  This begs the question: Why not do a verifiable mix and use that for both auditing and e2e?  (Again, I'm guessing you considered this and had a good reason for not doing it, but I'd like you to write it into the paper.)
+
+We're actually trying to eliminate mixes from STAR altogether. This is work in progress. We should be able to clarify the paper on these issues before the final camera-ready deadline.
+
+
 > - For those of us who have struggled with the "Web bulletin board" concept, the digitally-signed publicly accessible webpage needs a bit more explanation.  You're obviously assuming that it would be caught if it tried to drop data that had already been posted (and checked) - this assumption should be explicit.
 
+We're already well over our page budget (a side effect of all the helpful reviewer feedback). We've added an expanded threats section already. If the reviewers feel it's still valuable, we can work this into that section. (There are so many different little details that we could work in if we had a longer page budget.)
+
 > Overall I think this is a good design, and I'd like to see it published.  I sympathize with the problem of marketing a system that is going to be used by real voters and officials who don't want to hear a blow-by-blow account of its vulnerabilities.  Nevertheless an academic paper needs to have a clear and complete (or as complete as possible) explanation of these things.  Unfortunately you're pretty close to the page limit - I'd suggest cutting Section 3 significantly, putting some clearer statements of the attack model and security claims into Section 6 along with the details of the design, and linking to a tech report with a more complete analysis.
-> 
-> ===========================================================================
+
+There's a much longer spec document in development that's not going to be ready for the camera-ready JETS deadline. That document goes into much more detail and will give us the room for a fully fleshed out consideration of every threat and its corresponding countermeasures and mitigations. In the page budget available to us, we have to focus on what's novel in STAR rather than on topics that all e2e systems have in common.
+
+
+
 >                     JETS, Volume 1, Issue 1 Review #20C
 >                   Updated Monday 6 May 2013 2:06:22pm PDT
 > ---------------------------------------------------------------------------
@@ -113,7 +125,10 @@ We do talk about the risks of a corrupted voting terminal and the need for hardw
 > Overall, the paper has merit because it, indeed was a collaboration between academics with usability and security expertise and election officials.  This collaboration meant that the architecture was designed taking into consideration issues throughtout the voting process, from the poll book through auditing and hence, it is a well-integrated approach.   Describing and addressing the voter flow was also key to this design: workflow is often ignored so I was glad to see it addressed.
 > 
 > The idea using a POS terminal is an interesting one, but are we being overcome by mobile devices with long-lasting batteries? If the authors were designing in 2013, would they focus more on the use of mobile devices?     Would those also change or expand the approaches of assistive technology and accomodation described in the report.  The authors should comment on this, at least in the issues sections.
-> 
+
+The Design section already talked about tablets. We added some text about the new Windows 8 devices (laptops and bigger) which might well be perfect for our needs.
+
+
 > There is still paper handling of the summary and receipt which presents some accessibility iand privacy issues  -- some additional discussion of the tradeoffs this presents would be interesting (how much can you reduce the paper -- a lot here, but must all solutions have some paper?
 > 
 > I was glad to see a usability section, but I was disappointed in the UI design specification section.  There are a list of guidelines that are stated to be additions to the VVSG 2007, but most are in the VVSG:   auditory with visual:  3.3.3.2.D, adjustable speech rate: 3.3.3.C.5, volume 3.3.3C.8, ability to skip sections: partially for referenda 3.3.3.B.5   Other recommendations are not explained well and are without citation which could easily lead to poor, even worse implementations.  For example, why orange for showing undervotes?  What shade of orange?      The recommendation about use of  graphic markings, in principle, is a good idea.  However, it is extremely difficult to design good icons, and not a good idea to suggest party symbols without some research to back this up as a good idea.  See, for example,  "Implications of Graphics on Usability and Accessibility for the Voter"
@@ -122,7 +137,10 @@ We do talk about the risks of a corrupted voting terminal and the need for hardw
 We were working off an older version of the VVSG;  this work began prior to the more recent 2012 VVSG and so what we proposed were indeed additions.  We have shortened this and clarified what has been completed and what issues are still open--for instance, we have not actually tested a set of icons yet.
 
 > There is a quite lengthy and careful discussion of the security and audit measures, which is not my main area of expertice.  I would have liked to see a more concise writeup on the security methods to leave room for a more careful discussion of the human factors issues.
-> 
+
+Other reviewers have pushed for even more discussion of security and audit. Page budget is unfortunately a tight constraint (and we're already going to be asking to go over).
+
+
 > Finally, this paper tries to take the best, known approaches to meet the requirements for a new voting system.  As such is a case study more than a research paper.  However, there is merit to show how formally stating requirements with a good analysis can lead to a better voting system architecture. Therefore I think this is a useful paper to accept.
 > 
 > ------
@@ -142,9 +160,13 @@ We were working off an older version of the VVSG;  this work began prior to the 
 > - Under Long ballots,   not just long ballots, but also long contests?
 > 
 > - Paragraph starting "These constraints interact..." you should mention Electronic ballot markers.    These solve the pre-printed ballot problem, but due to the battery constraint, cannot meet the power outage requirement due to the printer consuming too much power, if I understand correctly.  This is a very limiting constraint and at least should be discussed as an issue.   If not for this constraint perhaps the architecture would be quite different. And perhaps for early voting a power outage is not as much of an issue as there would be other centers available-- should discuss in the paper.
-> 
+
+All fixed.
+
 > -There is no spacing between paragraphs which make the paper a bit difficult to read in spots.
-> 
+
+This came from the "ACM small standard" format, which was suggested by the JETS chairs. We'll push them to come up with something better in time for the camera ready.
+
 > ===========================================================================
 >                     JETS, Volume 1, Issue 1 Review #20E
 >                  Updated Monday 20 May 2013 2:23:14pm PDT
@@ -165,10 +187,14 @@ We were working off an older version of the VVSG;  this work began prior to the 
 > I think the paper has improved from last year's submission, but I do not think it is over the bar for acceptance.
 > 
 > The most critical thing missing is an explicit threat model. See, for example, Halderman et al. http://cseweb.ucsd.edu/~hovav/dist/voting-paper.pdf which lays out the types of threats an outsider poses. Since you're designing a new system from scratch, I think you would need to go further and detail insider threats and how they're addressed.
-> 
+
+We've improved the threat modeling (expanding the "coercion" section into a broader consideration of threats). Given space constraints, we decided to focus more on the threats that are novel with respect to STAR rather than to consider every possible threat, mitigation, and countermeasure.
+
 > Next, there is not enough analysis of how the e2e interacts with the auditing. When discrepancies are discovered, how are they resolved? In the auditing literature, the paper ballot is assumed to be the final word. In e2e systems, there is usually no paper ballot at all. How do all of the various computed hashes and various stores of plain text and cipher text interact with the auditing requirements?
-> 
+
 > This is an example of a fairly pervasive problem with the paper: The level of detail is extremely varied ranging from very detailed—e.g., stating the color that undervotes should be displayed in—to almost nonexistent.
+
+The reviewers are asking us for more details everywhere. 
 > 
 > I think the paper needs fairly serious restructuring. I would like to see an explicit threat model early on that is referenced throughout the discussion of the technical choices made. Then, I'd like to see the two components (e2e and auditing) described in detail (I think the full crypto protocol provides a nice overview of the crypto you employ, for example). Finally, I'd like to see analysis of how they interact, again with references to the threat model.
 > 

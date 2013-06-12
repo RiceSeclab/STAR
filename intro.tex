@@ -9,7 +9,7 @@ output, and specialized input devices. They also promised to improve
 the life of the election administrator, yielding quick, accurate tallies without
 any of the ambiguities that come along with hand-marked paper ballots.
 And, of course, they were promised to be secure and reliable, tested
-and certified. In practice, much of this was wishful thinking.
+and certified. In practice, DRE systems had problems in all these areas.
 
 Many current DRE voting systems experienced their biggest sales
 volume after the failures of punch card voting
@@ -37,7 +37,7 @@ impose several significant constraints on the design of \projname:
     Hand-marked ballots are not to be used, for the reason above.
     DRE-style
     systems were also preferred for their ability to offer facilities for
-    disabled voters.
+    voters with disabilities.
 
 \item[Printed paper ballot summaries]
     While the DRE-style UI was
@@ -56,7 +56,8 @@ impose several significant constraints on the design of \projname:
     This county supports two weeks of early voting, where any voter
     may vote in any of more than 20~locations. Also,
     on Election Day, any voter may go to any local polling
-    place. Voters report loving this flexibility.
+    place. Our county's voters informally report their appreciation of
+    these benefits.
 
 \item[COTS hardware]
     Current DRE systems are surprisingly expensive. The county wants
@@ -71,7 +72,7 @@ impose several significant constraints on the design of \projname:
     100 or more contests for federal, state, and regional
     offices; judges; propositions;
     and constitutional amendments. \projname must support very long
-    ballots.
+    ballots as well as long list of contestants in each race.
 \end{compactdesc}
 
 These constraints interact in surprising ways. 
@@ -88,8 +89,11 @@ much power.\footnote{%
   that much power for only ten minutes. Since a printer must 
   warm up for each page when printed one-off (perhaps 10
   seconds per page), the battery might be exhausted by printing
-  as few as 60 ballots.
- }
+  as few as 60 ballots. }
+We note that counties that face fewer constraints may choose to adopt
+quite different architectures. For example, a county without
+election-day vote centers might instead use pre-printed ballots and
+electronic ballot marking devices.
 
 These constraints likewise eliminate prior-fielded e2e systems like
 Scantegrity \cite{scantegrityTakomaPark,scantegrity}, 
@@ -97,8 +101,10 @@ and Pr\^{e}t \`{a} Voter
 \cite{pret-a-voter-threats06,pret-a-voter-victoria}, which rely on
 hand-marked paper, and
 Helios \cite{adida09helios,adida08helios}, which is meant for use in
-web browsers, not traditional polling locations.
-Instead, we must build something new.
+web browsers, not traditional polling locations. Our design has a lot
+in common with Wombat \cite{wombat}, although it can only support
+elections for a single office, rather than the long ballots with which
+we must content. Instead, to satisfy our constraints, we must build something new.
 
 We were charged with using the latest advances in human factors,
 end-to-end cryptography, and statistical auditing techniques, while
