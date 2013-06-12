@@ -47,9 +47,9 @@ fixed.
 
 > * You missed one blinding, where it says “Texas” (as if we didn’t know).
 
-Yee haw. Fixed.
-> 
-> ===========================================================================
+Fixed.
+
+
 >                     JETS, Volume 1, Issue 1 Review #20B
 >                  Updated Monday 13 May 2013 5:30:41pm PDT
 > ---------------------------------------------------------------------------
@@ -69,10 +69,22 @@ Yee haw. Fixed.
 > This may be a good protocol and a well-chosen set of design decisions, but I feel the paper needs much more thorough analysis and justification in order to be a good paper.
 > 
 > 1. There's no "further work" section at all, though there are at least two other significant works in the same space: the Scantegrity project in Takoma park (various publications) and the Pret a voter project in Victoria (EVT '12).  Clearly you've chosen to base your work on VoteBox and SOBA - I'm interested to hear why.
-> 
+
+The introduction discusses all the constraints we faced. We now have a paragraph that points at Scantegrity, Pret a Voter, and Helios as voting systems that fail to satisfy our given constraints. If the reviewers still want it, we could write up a related work section at the end that tried to round up a broader list of other citations.
+
+
 > 2.  There's no real analysis of either privacy or integrity.
+
+We expanded the previous "coercion" section into a broader "threats" section, which covers many of the details that the reviewers might be interested in.
+
 > (i) Integrity: This is a quite new and unusual method of combining e2e and risk limiting audits.  I'd be interested in a careful explanation of exactly what the threat model is, i.e. what an attacker has to do to manipulate the election now.  For one thing, it's not clear why you need both audits and e2e.  Sections 3.1 and 3.2 are trying to explain this, but they're full of typos and I suspect they were written by someone who didn't fully understand the protocol.  (For instance, in 3.2 it says, "The risk-limiting audit process provides an independent check that a hand count of the paper ballots matches the outcome which a hand count of the paper records would produce."  This is not helpful.)
+
+**Stark todo**
+
 > (ii) Privacy: Again, I'd like a clear statement of what's being assumed for the protection of ballot privacy.  You've got a voting terminal that knows how people voted and can choose to mount kleptographic attacks.  For example, it could choose the random values r_1, ..., r_n in 3(c) (p.14) to match the voting terminal identifier, date and time that the voter takes home (3(e)).  You probably know about this already, but it should be explicitly in the paper.
+
+We do talk about the risks of a corrupted voting terminal and the need for hardware tamper-evidence (TPM). We don't explicitly raise the issue of using the random number generator as a channel since there are so many other channel opportunities and listing the full level of privacy-related malice that can be accomplished, once an attacker controls the software, might take longer than our page budget would allow.
+
 > 
 > Some details:
 > - Section 3 is hard to follow.  When I got to Section 6 I finally understood that you have a carefully designed separation between (1) ballot representations that contain plaintext votes (or enough info to link to the plaintext) but no voter identification, and (2) ballot representations that are linkable to voters but contain only encrypted votes.  This wasn't clear from section 3, but I think it should be.
