@@ -124,6 +124,15 @@ replay of old ballots (i.e., reject duplicates). Traditional sigma
 proofs provide the required security properties and are described and
 analyzed in~\cite{BPW12}.
 
+We note that, if malicious software were to get into the voting
+system, it could use the randomness inherent in the encryption process
+to encode a subliminal message to an external observer. This sort of
+threat, along with the threat of a malicious voting machine that simply records
+every vote cast, in plaintext, in internal memory, is something that
+cryptography cannot address. (More discussion on this appears in
+Section~\ref{sec:sw-hw-eng}.)
+
+
 \paragraph{Hardening decryption}
 \label{sec:hardening-decryption}
 Making sure that the encrypted ballots are valid is not enough: we

@@ -194,25 +194,38 @@ We've improved the threat modeling (expanding the "coercion" section into a broa
 
 > This is an example of a fairly pervasive problem with the paper: The level of detail is extremely varied ranging from very detailed—e.g., stating the color that undervotes should be displayed in—to almost nonexistent.
 
-The reviewers are asking us for more details everywhere. 
-> 
+The reviewers are asking us for more details everywhere. It's hard to identify specific areas to cut. Perhaps this reviewer may want to identify areas that are suitable for cuts? A broader restructuring isn't likely to address the problem that a paper like this must cover a lot of ground and have something for a diverse class of readers. We're trying.
+
 > I think the paper needs fairly serious restructuring. I would like to see an explicit threat model early on that is referenced throughout the discussion of the technical choices made. Then, I'd like to see the two components (e2e and auditing) described in detail (I think the full crypto protocol provides a nice overview of the crypto you employ, for example). Finally, I'd like to see analysis of how they interact, again with references to the threat model.
-> 
+
+We've got a better threat model, as discussed earlier. The design section adds a paragraph or two to talk about the interaction of risk limiting audits and e2e, but it's skeletal. In our page budget, there's no obvious way to shoehorn something like this in. It's probably something worth treating on its own as a future paper.
+
+
 > In no particular order, here are some additional comments.
 > 
 > This version of the paper still does not address why the contents of spoiled ballots, as opposed to challenge ballots, need to be revealed. This seems like a fairly big problem given that few people actually cast challenge ballots (and I can only imagine that the number decreases when you move to large elections with many candidates) so most are likely to be ballots where a single mistake was made.
+
+The core innovation of STAR relative to other e2e systems built around Benaloh challenges is that the act of spoiling or casting a paper ballot encodes the "cast or challenge" mechanism. We already note this in section 2 (voter flow). It's certainly the case that a voter might accidentally spoil a ballot and that might allow somebody to look over their shoulder. It's also the case that a voter might do this deliberately to fool somebody. As such, it's not as helpful to a coercer as you might think.
+
 > 
 > "This is achieved by requiring the ballot marking devices to compute, together with the encryption of the votes, a non-interactive zero-knowledge (NIZK) proof that each ballot is well-formed. Such a proof guarantees that each ciphertext encrypts a valid vote and does not leak any other information about the content of the vote." I suspect this last sentence was added to address reviewer #21A last year who wrote, "By using randomized encryption and giving voters a hash on their receipts, you open a substantial covert channel from malicious voting station to coercer -- the voting station can try multiple encryptions until the first few bits of the hash specify the voter's choice in a race of interest, for example." I believe the reviewers criticism holds and your claim that no other information is leaked is incorrect. In particular, in (3)(b) of "the full cryptographic protocol," you state that the NIZK only proves that the encryption is of a valid ballot.
-> 
+
+We've added some discussion of this in a few places in the paper. Fundamentally, this is a problem that you can't solve with crypto. You have to solve it by locking down the software. (There's some irony that cryptography can only really protect integrity but that we need TPM to protect privacy.)
+
+
 > "In order to maximize intelligibility, a synthesized male voice should be used so that
 > speed can be altered without changing pitch." This is still misleading. Any synthesized speech can be sped up or slowed down without changing pitch. A synthesized male voice should be used because research shows that it is preferred.
 
 Correct. Fixed.
 
 > If the vote terminal is storing votes and times, then how do you prevent an election official with access to the machines after the election from determining how every single person who used a given machine voted? This is the classic potential problem with computer voting. Voting machine vendors have at least tried (and frequently failed) to properly randomize cast vote records which would defeat the attack. By storing the votes in order, you would seem to be transforming the argument of "malware installed on the machine could record the votes in order" to "as designed, your system not only records the votes in order, but provides explicit time stamps."
-> 
+
+We talk about TPM now in several places in the paper. Yes, it's unsatisfying, but it's the best we've got given our constraints.
+
 > How robust is the system to errors? Can a faulty machine or malware introduce an unrecoverable error into the system? If the answer is no because you have the auditing component, then is the e2e portion necessary? If the answer is no because the e2e prevents that in all cases, then do you need the auditing? If the answer is yes, then this is a very serious flaw to have in a system which, I assume, will be deployed.
-> 
+
+The "triple assurance" text concerning the interaction of e2e and audit is better than before. A full consideration of this interaction is probably something that deserves its own paper. Broadly speaking, we like the auditing because it helps with the fragility of the crypto, which is great at telling you that the election tally adds up, but isn't helpful at helping you find the problem when it doesn't.
+
 
 > ===========================================================================
 >                                   Comment
@@ -223,4 +236,5 @@ Correct. Fixed.
 
 
 > In addition to the specific kinds of edits mentioned in the reviewers' comments for authors, some editing could be devoted to beefing up the paper's academic appeal. For instance, the sections "Hardening decryption," "Hardening the timeline," "Hardening the link between the paper and electronic election outcome" and "The full cryptographic protocol" are devoid of citations yet seem kind of technical but probably don't have anything new (I'm not competent to say anything about novelty). In any case, there seems to be little reason to believe that it all works. Citations for the pieces or for the whole discussion would surely help. Similarly citations are missing in the "Coercion" section. Also for the usability section (see the reviews). More appropriate citations could be added without harming the legibility of the discussion.
-> 
+
+We've added a few more citations to this draft and will endeavor to add more in time for the final camera-ready.
