@@ -14,7 +14,6 @@
 %% ---------------------
 %% - removed lots of ACM-specific formatting
 %% - changed fonts back to Times-Roman
-%% - tweaked paragraph indentation
 %%
 %% ACM Version 1.4 (History)
 %% ---------------------
@@ -80,17 +79,15 @@
 %% `NP' means `no parentheses' 
 %%
 \NeedsTeXFormat{LaTeX2e}
-\ProvidesClass{acmsmall}[2012/03/05, fonts included on 28 June 2010]
+\ProvidesClass{usenixjournal}[2013/07/01]
 
-\def\fileversion{v1.4}            
-\def\filedate{July 09, 2012}
+\def\fileversion{v1.0}            
+\def\filedate{July 01, 2013}
 
 % Metadata Information
-\def\@usenixYear{YYYY} %the last two digits of the year, 
-\def\@journalName{ACM Journal Name} %the name of the ACM journal
-\def\@journalNameShort{ACM} %the acronym of the ACM journal 
-\def\@journalCode{jn} %the code of the ACM journal 
-\def\@permissionCodeOne{0000-0000} %the permission code of the ACM journal
+\def\@usenixYear{YYYY}
+\def\@journalName{USENIX Journal Name} %the name of the journal
+\def\@journalNameShort{XXXX} %the acronym of the journal 
 \def\@doi{0000000.0000000} % These 'default' '0' values are over-ridden, during production, with 'correct' numbers entered via source .tex file - Gerry March 2012
 
 % ----------------
@@ -122,56 +119,16 @@
 \DeclareOption{final}{\setlength\overfullrule{0pt}}
 
 \DeclareOption{10pt}{\def\@ptsize{0}} %needed for amssymbols.sty 
-\DeclareOption{11pt}{\ClassError{acmsmall}{11pt style not supported}
-                        {ACM transactions/journals documents can be set in 10pt only}}
+\DeclareOption{11pt}{\ClassError{usenixjournal}{11pt style not supported}
+                        {USENIX journal documents can be set in 10pt only}}
 \DeclareOption{12pt}{\ClassError{acmtrans}{12pt style not supported}
-                        {ACM transactions/journals documents can be set in 10pt only}}
+                        {USENIX journal documents can be set in 10pt only}}
 
-\newif\ifprod@mode\prod@modefalse
-\DeclareOption{prodmode}{\global\prod@modetrue
-\typeout{ACM, Production Font style: 2010/06/28 by Aptara}}
 
-\newif\if@acmtopc
-\newif\if@acmjacm
-\newif\if@acmtissec
-\newif\if@acmtocl
-\newif\if@acmtocs
-\newif\if@acmtochi
-\newif\if@acmtodaes
-\newif\if@acmtods
-\newif\if@acmtois
-\newif\if@acmtomacs
-\newif\if@acmtoms
-\newif\if@acmtoplas
-\newif\if@acmtosem
-\newif\if@acmtoit
-\newif\if@acmtecs
-\newif\if@acmtalip
-\newif\if@acmjeric
-\newif\if@acmtaco
-\newif\if@acmjea
-\newif\if@acmtslp
-\newif\if@acmcie
-\newif\if@acmtos
-\newif\if@acmcsur
-\newif\if@acmjetc
-\newif\if@acmtosn
-\newif\if@acmtalg
-\newif\if@acmtaas
-\newif\if@acmtweb
-\newif\if@acmtkdd
-\newif\if@acmtrets
-\newif\if@acmtmis
-\newif\if@acmtiis
-\newif\if@acmtist
-\newif\if@acmtoct
-\newif\if@acmjdiq
-\newif\if@acmtaccess
-\newif\if@acmtoce
-\newif\if@acmteac
+\def\@articleSeq{1} % Not really used
 
 % Journal Options
-\DeclareOption{usenixjets}{
+\DeclareOption{jets}{
   \typeout{}
   \typeout{Using USENIX JETS Option, 2013/07/01 by dwallach}
   \typeout{}
@@ -199,7 +156,7 @@
 \usepackage{graphicx}
 
 
-\typeout{Document Class `acmsmall' Electronic Submissions
+\typeout{Document Class `usenixjournal' Electronic Submissions
 \fileversion\space <\filedate> (ACM).}
 
 \def\articleSeq#1{\def\@articleSeq{#1}}
@@ -440,20 +397,7 @@
 \def\@runningfoot{}
 \def\runningfoot#1{\gdef\@runningfoot{#1}}
 
-\if@acmtodaes
- \def\pubphrase{Pub. date}
-\else
-\if@acmtosem
- \def\pubphrase{Pub. date}
-\else
-\if@acmjetc
- \def\pubphrase{Pub. date}
-\else
-\if@acmtiis
- \def\pubphrase{Pub. date}
-\else
- \def\pubphrase{Publication date}
-\fi\fi\fi\fi
+\def\pubphrase{Publication date}
 
 \runningfoot{}
 
@@ -642,21 +586,21 @@
         \ignorespaces
 }
 \def\endbottomstuff{\par%
-Permission to make digital or hard copies  of part or all of this work 
-for personal or classroom use is
-granted without fee provided that copies are not made or distributed for profit or commercial
-advantage and that copies show this notice on the first page or initial screen of a display
-along with the full citation. Copyrights for components of this work owned by others than ACM
-must be honored. Abstracting with credit is permitted. To copy otherwise, to republish,
-to post on servers, to redistribute to lists, or to use any component of this work in other
-works requires prior specific permission and\hspace*{.5pt}/or a fee. 
-Permissions may be requested from Publications Dept., ACM, Inc., 2 Penn Plaza, Suite 701, 
-New York, NY 10121-0701 USA, fax $+$1 (212) 869-0481,
-or permissions@acm.org.\par\box\@permissionbox
-\copyrightline\par
-\doiline
-\vskip-13pt
-\strut
+% Permission to make digital or hard copies  of part or all of this work 
+% for personal or classroom use is
+% granted without fee provided that copies are not made or distributed for profit or commercial
+% advantage and that copies show this notice on the first page or initial screen of a display
+% along with the full citation. Copyrights for components of this work owned by others than ACM
+% must be honored. Abstracting with credit is permitted. To copy otherwise, to republish,
+% to post on servers, to redistribute to lists, or to use any component of this work in other
+% works requires prior specific permission and\hspace*{.5pt}/or a fee. 
+% Permissions may be requested from Publications Dept., ACM, Inc., 2 Penn Plaza, Suite 701, 
+% New York, NY 10121-0701 USA, fax $+$1 (212) 869-0481,
+% or permissions@acm.org.\par\box\@permissionbox
+% \copyrightline\par
+% \doiline
+% \vskip-13pt
+% \strut
 \end@float
 }
 
@@ -1561,7 +1505,8 @@ or permissions@acm.org.\par\box\@permissionbox
 
 \def\appendixhead#1{\appendix
 \section*{ELECTRONIC APPENDIX}
-The electronic appendix for this article can be accessed in the ACM Digital Library.}
+\typeout{Split appendix detected. Please generate a single comprehensive PDF instead.}
+Appendix goes here.}
 
 \newif\ifelec@app\global\elec@appfalse
 \long\def\elecappendix{\immediate\write\@mainaux{\string\lastpage{\the\c@page}}%
@@ -1916,6 +1861,6 @@ Online Appendix to:\par\@title\par{}}}\vskip 12\p@
 
 \endinput
 
-% End of file `acmsmall.cls' Version 1.4
+% End of file `usenixjournal.cls' Version 1.4
 
 

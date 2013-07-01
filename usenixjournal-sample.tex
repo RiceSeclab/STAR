@@ -1,17 +1,11 @@
-% v2-acmsmall-sample.tex, dated March 6 2012
-% This is a sample file for ACM small trim journals
+% usenixjournal-sample.tex 
+% This is a sample file for USENIX journals
 %
-% Compilation using 'acmsmall.cls' - version 1.3 (March 2012), Aptara Inc.
-% (c) 2010 Association for Computing Machinery (ACM)
+% (Derived from the ACM "small standard" journal format.
 %
-% Questions/Suggestions/Feedback should be addressed to => "acmtexsupport@aptaracorp.com".
-% Users can also go through the FAQs available on the journal's submission webpage.
-%
-% Steps to compile: latex, bibtex, latex latex
-%
-% For tracking purposes => this is v1.3 - March 2012
+% Steps to compile: pdflatex, bibtex, pdflatex pdflatex
 
-\documentclass[prodmode,acmtecs]{acmsmall} % Aptara syntax
+\documentclass[jets]{usenixjournal}
 
 % Package to generate and customize Algorithm as per ACM style
 \usepackage[ruled]{algorithm2e}
@@ -21,13 +15,6 @@
 \SetAlCapNameFnt{\small}
 \SetAlCapHSkip{0pt}
 \IncMargin{-\parindent}
-
-% Metadata Information
-\acmVolume{9}
-\acmNumber{4}
-\acmArticle{39}
-\acmYear{2010}
-\acmMonth{3}
 
 % Document starts
 \begin{document}
@@ -79,16 +66,6 @@ interference and the tolerance to a wide range of measured time
 synchronization errors.
 \end{abstract}
 
-\category{C.2.2}{Computer-Communication Networks}{Network Protocols}
-
-\terms{Design, Algorithms, Performance}
-
-\keywords{Wireless sensor networks, media access control,
-multi-channel, radio interference, time synchronization}
-
-\acmformat{Gang Zhou, Yafeng Wu, Ting Yan, Tian He, Chengdu Huang, John A. Stankovic,
-and Tarek F. Abdelzaher, 2010. A multifrequency MAC specially
-designed for  wireless sensor network applications.}
 % At a minimum you need to supply the author names, year and a title.
 % IMPORTANT:
 % Full first names whenever they are known, surname last, followed by a period.
@@ -297,7 +274,7 @@ At first sight, the programs looks like an ANSI~C program. It
 contains function calls, assignments, if clauses, and while loops.
 % Figure
 \begin{figure}
-\centerline{\includegraphics{acmsmall-mouse}}
+\centerline{\includegraphics{usenixjournal-mouse}}
 \caption{Code before preprocessing.}
 \label{fig:one}
 \end{figure}
@@ -432,8 +409,6 @@ s=\frac{10}{N_{1}}-\frac{10}{N_{2}}. \nonumber
 By repeating the experiments 100 times, we get the average
 channel-switching time of Micaz motes: 24.3$\mu$s.
 
-\appendixhead{ZHOU}
-
 % Acknowledgments
 \begin{acks}
 The authors would like to thank Dr. Maura Turolla of Telecom
@@ -441,8 +416,8 @@ Italia for providing specifications about the application scenario.
 \end{acks}
 
 % Bibliography
-\bibliographystyle{ACM-Reference-Format-Journals}
-\bibliography{acmsmall-sample-bibfile}
+\bibliographystyle{usenixjournal}
+\bibliography{usenixjournal-sample-bibfile}
                              % Sample .bib file with references that match those in
                              % the 'Specifications Document (V1.5)' as well containing
                              % 'legacy' bibs and bibs with 'alternate codings'.
@@ -450,35 +425,6 @@ Italia for providing specifications about the application scenario.
 
 % History dates
 \received{February 2007}{March 2009}{June 2009}
-
-% Electronic Appendix
-\elecappendix
-
-\medskip
-
-\section{This is an example of Appendix section head}
-
-Channel-switching time is measured as the time length it takes for
-motes to successfully switch from one channel to another. This
-parameter impacts the maximum network throughput, because motes
-cannot receive or send any packet during this period of time, and it
-also affects the efficiency of toggle snooping in MMSN, where motes
-need to sense through channels rapidly.
-
-By repeating experiments 100 times, we get the average
-channel-switching time of Micaz motes: 24.3 $\mu$s. We then conduct
-the same experiments with different Micaz motes, as well as
-experiments with the transmitter switching from Channel 11 to other
-channels. In both scenarios, the channel-switching time does not have
-obvious changes. (In our experiments, all values are in the range of
-23.6 $\mu$s to 24.9 $\mu$s.)
-
-\section{Appendix section head}
-
-The primary consumer of energy in WSNs is idle listening. The key to
-reduce idle listening is executing low duty-cycle on nodes. Two
-primary approaches are considered in controlling duty-cycles in the
-MAC layer.
 
 \end{document}
 % End of v2-acmsmall-sample.tex (March 2012) - Gerry Murray, ACM
