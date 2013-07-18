@@ -157,7 +157,7 @@
 
 
 \typeout{Document Class `usenixjournal' Electronic Submissions
-\fileversion\space <\filedate> (ACM).}
+\fileversion\space <\filedate> (USENIX).}
 
 \def\articleSeq#1{\def\@articleSeq{#1}}
 \def\usenixYear#1{\def\@usenixYear{#1}}
@@ -1852,6 +1852,8 @@ Online Appendix to:\par\@title\par{}}}\vskip 12\p@
 %
 \ps@headings
 \pagenumbering{arabic}
+\pagestyle{empty}
+\thispagestyle{empty}
 \onecolumn
 
 \frenchspacing
